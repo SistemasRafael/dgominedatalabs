@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jQuery Ajax Autocomplete Demo</title>
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#key').on('keyup', function() {
+        var key = $(this).val();		
+        var dataString = 'key='+key;
+	$.ajax({
+            type: "POST",
+            url: "ajax.php",
+            data: dataString,
+            success: function(data) {
+                //Escribimos las sugerencias que nos manda la consulta
+                $('#suggestions').fadeIn(1000).html(data);
+                //Al hacer click en algua de las sugerencias
+                $('.suggest-element').on('click', function(){
+                        //Obtenemos la id unica de la sugerencia pulsada
+                        var id = $(this).attr('id');
+                        //Editamos el valor del input con data de la sugerencia pulsada
+                        $('#key').val($('#'+id).attr('data'));
+                        //Hacemos desaparecer el resto de sugerencias
+                        $('#suggestions').fadeOut(1000);
+                        alert('Has seleccionado el '+id+' '+$('#'+id).attr('data'));
+                        return false;
+                });
+            }
+        });
+    });
+}); 
+</script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>jQuery Ajax Autocomplete Demo</h1>
+    <h2 class="lead">Escribe la palabra <strong>market</strong> para ver sugerencias</h2>
+    
+   
+    
+    <div class="row">
+        <div id="content" class="col-lg-12">
+            <form class="form-inline" method="post" action="#">
+                <div class="input-group input-group-sm">
+                    <input class="search_query form-control" type="text" name="key" id="key" placeholder="Buscar...">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-info btn-flat"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+            <div id="suggestions"></div>
+            </div>
+    </div>
+
+    
+    
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+Analista,NR,,,,,,,,,
+Fecha de inicio,09:06 a. m. 18/12/2025  GMT: 03:06 p. m. 18/12/2025,,,,,,,,,
+Hoja de trabajo,SA007264-RE_3,,,,,,,,,
+Comentario,,,,,,,,,,
+Métodos,Au,,,,,,,,,
+,,,,,,,,,,
+Peso nominal,1,Volumen nominal,1,,,,,,,
+Método: Au EFAA30 (Llama),,,,,,,,,,
+,,,,,,,,,,
+Au,PATRON,0.5,,mg/L,1,0.7,0.0176,0.0022,1,1
+Au,BLANCO,0.005,,mg/L,1,25.7,0.0002,0.0003,1,1
+Au,BLANCO REACTIVO,0,,mg/L,1,59.9,0.0004,-0.0002,1,1
+Au,SA007241-013,0.0411,,mg/L,1,2.2,0.0061,0.0015,30,7
+Au,PATRON,0.4894,,mg/L,1,0.4,0.0172,0.0014,1,1
+Au,BLANCO,0.0055,,mg/L,1,>100,0.0002,-0.0005,1,1
+Au,BLANCO REACTIVO,0,,mg/L,1,>100,0.0004,-0.0004,1,1
