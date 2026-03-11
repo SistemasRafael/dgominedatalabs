@@ -1,4 +1,4 @@
-<? include "connections/config.php"; ?>
+<?php include "connections/config.php"; ?>
 <!--<!DOCTYPE html>-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
@@ -112,9 +112,9 @@
           <a class="text-muted" href="#" target="_blank">MinaData Labs</a>
         </li>
 
-        <? if ($_SESSION['LoggedIn'] == 1) { ?>
+        <?php  if ($_SESSION['LoggedIn'] == 1) { ?>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Hola <?echo $_SESSION['nombre']?></a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Hola <?php echo $_SESSION['nombre']?></a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="logout.php">Cerra sesión</a>
           </li>
@@ -122,26 +122,26 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Cambiar de Mina</a>
             <div class="dropdown-menu">
-              <?
+              <?php 
               //0 = Todos
               if ($_SESSION['unidad_acc'] == '0') {
                 $datos_at = $mysqli->query("SELECT serie, unidad_id, nombre
-                                                      FROM arg_empr_unidades") or die(mysqli_error());
+                                                      FROM arg_empr_unidades") or die(mysqli_error($mysqli));
                 while ($row = $datos_at->fetch_assoc()) {
-              ?> <a class="dropdown-item" href="app.php?unidad_id=<? echo $row['unidad_id']; ?>"><? echo $row['nombre']; ?></a><?
+              ?> <a class="dropdown-item" href="app.php?unidad_id=<?php  echo $row['unidad_id']; ?>"><?php echo $row['nombre']; ?></a><?php 
                                                                                                                               } //Fin while
                                                                                                                             } //Fin if para todas las unidades
                                                                                                                                 ?>
-              <?
+              <?php 
               //1|2|3=Solo una unidad de mina
               if ($_SESSION['unidad_acc'] <> '0' and $_SESSION['unidad_acc'] <> '999') {
                 $datos_umina = $mysqli->query("SELECT serie, unidad_id, nombre
-                                 FROM arg_empr_unidades WHERE unidad_id = " . $_SESSION['unidad_acc']) or die(mysqli_error());
+                                 FROM arg_empr_unidades WHERE unidad_id = " . $_SESSION['unidad_acc']) or die(mysqli_error($mysqli));
                 while ($row = $datos_umina->fetch_assoc()) {
-              ?><a class="dropdown-item" id="unidad" href="app.php?&unidad_id=<? echo $row['unidad_id']; ?>"><? echo $row['nombre']; ?></a>
-              <? }
+              ?><a class="dropdown-item" id="unidad" href="app.php?&unidad_id=<?php  echo $row['unidad_id']; ?>"><?php  echo $row['nombre']; ?></a>
+              <?php  }
               } ?>
-              <?
+              <?php 
               //999=Varias unidades de mina (No Todas)
               $cadena = strlen($_SESSION['unidades']);
               $i = 0;
@@ -155,20 +155,21 @@
                     $mina_acc = $mina_acce['unidad_id'];
                     $mina_acc_nombre = $mina_acce['nombre'];
 
-              ?> <a class="dropdown-item" href="app.php?unidad_id=<? echo $mina_acc; ?>"><? echo $mina_acc_nombre; ?></a><?
+              ?> <a class="dropdown-item" href="app.php?unidad_id=<?php  echo $mina_acc; ?>"><?php  echo $mina_acc_nombre; ?></a><?php 
                                                                                                                         }
                                                                                                                         $i = $i + 1;
                                                                                                                       }
                                                                                                                     }
                                                                                                                           ?>
           </li>
-        <? } ?>
+        <?php  } ?>
       </ul>
     </div>
   </div>
   </div>
 
-  <? $unidad_mina_sel = $_GET['unidad_id'];
+  <?php  
+  $unidad_mina_sel = $_GET['unidad_id'] ??  '';
   if ($unidad_mina_sel == '') {
     $unidad_mina_sel = $_SESSION['unidad_def'];
   }
@@ -176,14 +177,14 @@
 
   <br />
   <div class="col-xl-2 col-sm-4 col-md-5 col-ld-5 ">
-    <a class="navbar-brand logos" href="seguimiento_ordenes.php?unidad_id=<? echo $unidad_mina_sel; ?>">
+    <a class="navbar-brand logos" href="seguimiento_ordenes.php?unidad_id=<?php  echo $unidad_mina_sel; ?>">
       <img src="images/minedata_lab.jpg" alt="ArgonautGold Logo">
     </a>
   </div>
 
   <div class="container" class="col-xl-3 col-sm-3 col-md-5 col-ld-5 ">
     <div class="row">
-      <? $mysqli->set_charset("utf8");
+      <?php  $mysqli->set_charset("utf8");
       $datos_menu = $mysqli->query("SELECT DISTINCT
                                     menu_id, `nombre_directiva`, clase 
                                 FROM 
@@ -198,15 +199,15 @@
           <div class="card text-white text-xl-center bg-info o-hidden h-80">
             <div class="card-body">
               <div class="card-body-icon big">
-                <i class="<? echo $row_menu['clase'] ?>"></i>
+                <i class="<?php  echo $row_menu['clase'] ?>"></i>
               </div>
             </div>
             <div class="btn-group">
               <button type="button" id="dropdownMenuButton" class="btn btn-light btn-block dropdown-toggle" data-toggle="dropdown">
-                <? echo $row_menu['nombre_directiva'] ?>
+                <?php  echo $row_menu['nombre_directiva'] ?>
               </button>
               <ul class="dropdown-menu">
-                <? $datos_transacciones = $mysqli->query("SELECT 
+                <?php  $datos_transacciones = $mysqli->query("SELECT 
                                                                 DISTINCT nombre_directiva, valor_directiva
                                                                 menu_id, accion, orden 
                                                          FROM 
@@ -221,19 +222,19 @@
                 $total_rows =  mysqli_num_rows($datos_transacciones);
                 $i = 1;
                 while ($row_transaccion = $datos_transacciones->fetch_assoc()) { ?>
-                  <li> <a href="<? echo $row_transaccion['accion'] . $unidad_mina_sel; ?>">
-                      <h5><? echo $row_transaccion['nombre_directiva'] ?></h5>
+                  <li> <a href="<?php  echo $row_transaccion['accion'] . $unidad_mina_sel; ?>">
+                      <h5><?php  echo $row_transaccion['nombre_directiva'] ?></h5>
                     </a> </li>
-                  <? if ($i < $total_rows) { ?>
+                  <?php  if ($i < $total_rows) { ?>
                     <li class="divider"></li>
-                  <? } ?>
-                  <? $i++; ?>
-                <? } ?>
+                  <?php  } ?>
+                  <?php  $i++; ?>
+                <?php  } ?>
               </ul>
             </div>
           </div>
         </div>
-      <? } ?>
+      <?php  } ?>
     </div>
   </div>
 
@@ -252,12 +253,12 @@
                         ORDENES DE TRABAJO
                      </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li> <a href="app.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Sólidos</h5></a> </li>
-                            <li> <a href="app_sln.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Solución</h5></a> </li>
+                            <li> <a href="app.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Sólidos</h5></a> </li>
+                            <li> <a href="app_sln.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Solución</h5></a> </li>
                             <li> <a href="#"><h5>Crear Orden de Trabajo Stackers</h5></a> </li>
                             <li class="divider"></li>
                           
-                            <li> <a href="seguimiento_ordenes.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Seguimiento a Ordenes</h5></a></li>
+                            <li> <a href="seguimiento_ordenes.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Seguimiento a Ordenes</h5></a></li>
                         </ul>
                    </div>
               </div>
@@ -278,7 +279,7 @@
                         <ul class="dropdown-menu" role="menu3">
                             <li> <a href="app.php"><h5>Ver Muestras</h5></a> </li>
                             <li class="divider"></li>                   
-                            <li> <a  href="app.php?tipo=1&unidad=<? echo $unidad_mina_sel; ?>"><h5>Seguimiento a Muestras</h5></a> </li>
+                            <li> <a  href="app.php?tipo=1&unidad=<?php  echo $unidad_mina_sel; ?>"><h5>Seguimiento a Muestras</h5></a> </li>
                         </ul>
                    </div>
               </div>
@@ -297,9 +298,9 @@
                      </button>
                         
                         <ul class="dropdown-menu" role="menu">
-                            <li> <a href="#"<? echo $unidad_mina_sel; ?>"><h5>Rastreador de muestras</h5></a> </li>                                              
-                            <li> <a  href="visor_ordenes.php?unidad_id=<? echo $unidad_mina_sel; ?>""<? echo $unidad_mina_sel; ?>"><h5>Ordenes de Trabajo</h5></a> </li>
-                            <li> <a  href="calendario.php?motivo=0&unidad=<? echo $unidad_mina_sel; ?>"><h5>Acumulados de Muestras</h5></a></li>
+                            <li> <a href="#"<?php  echo $unidad_mina_sel; ?>"><h5>Rastreador de muestras</h5></a> </li>                                              
+                            <li> <a  href="visor_ordenes.php?unidad_id=<?php  echo $unidad_mina_sel; ?>""<?php  echo $unidad_mina_sel; ?>"><h5>Ordenes de Trabajo</h5></a> </li>
+                            <li> <a  href="calendario.php?motivo=0&unidad=<?php  echo $unidad_mina_sel; ?>"><h5>Acumulados de Muestras</h5></a></li>
                         </ul>
                    </div>
                 
@@ -309,7 +310,7 @@
      
     
     <!--
-<a class="navbar-brand logos" href="app.php?unidad_id=<? echo $unidad_mina_sel; ?>">
+<a class="navbar-brand logos" href="app.php?unidad_id=<?php  echo $unidad_mina_sel; ?>">
       <img src="images/argonaut-logo2.jpg" alt="ArgonautGold Logo">
 </a>
   
@@ -327,14 +328,14 @@
                         CATALOGOS
                      </button>
                         <ul class="dropdown-menu">
-                           <li> <a href="catalogos.php?tipo=1&unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Bancos</h5></a> </li>
-                           <li> <a href="catalogos.php?tipo=2&unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Voladuras</h5></a> </li>
+                           <li> <a href="catalogos.php?tipo=1&unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Bancos</h5></a> </li>
+                           <li> <a href="catalogos.php?tipo=2&unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Voladuras</h5></a> </li>
                            <li class="divider"></li>
-                           <li> <a href="metodos.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Método de Análisis</h5></a> </li>
-                           <li> <a href="controles.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Controles de Calidad</h5></a>  </li>
+                           <li> <a href="metodos.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Método de Análisis</h5></a> </li>
+                           <li> <a href="controles.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Controles de Calidad</h5></a>  </li>
                            <li class="divider"></li>                    
-                           <li> <a href="fases.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Fases de los Métodos</h5></a> </li>  --!>
-                          <!-- <li> <a href="doc_vehiculos.php?unidad=<? echo $unidad_mina_sel; ?>"><h5>Etapas de fases</h5></a></li>--!>
+                           <li> <a href="fases.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Fases de los Métodos</h5></a> </li>  --!>
+                          <!-- <li> <a href="doc_vehiculos.php?unidad=<?php  echo $unidad_mina_sel; ?>"><h5>Etapas de fases</h5></a></li>--!>
                        <!-- </ul>
                    </div>
               </div>
@@ -352,12 +353,12 @@
                         ORDENES DE TRABAJO
                      </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li> <a href="app.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Sólidos</h5></a> </li>
-                            <li> <a href="app_sln.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Solución</h5></a> </li>
+                            <li> <a href="app.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Sólidos</h5></a> </li>
+                            <li> <a href="app_sln.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Crear Orden de Trabajo Solución</h5></a> </li>
                             <li> <a href="#"><h5>Crear Orden de Trabajo Stackers</h5></a> </li>
                             <li class="divider"></li>   --!>
-                            <!--<li> <a href="mpr.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Pesaje Recepción de Muestras</h5></a></li>--!>
-                        <!--    <li> <a href="seguimiento_ordenes.php?unidad_id=<? echo $unidad_mina_sel; ?>"><h5>Seguimiento a Ordenes</h5></a></li>
+                            <!--<li> <a href="mpr.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Pesaje Recepción de Muestras</h5></a></li>--!>
+                        <!--    <li> <a href="seguimiento_ordenes.php?unidad_id=<?php  echo $unidad_mina_sel; ?>"><h5>Seguimiento a Ordenes</h5></a></li>
                         </ul>
                    </div>
               </div>
@@ -378,7 +379,7 @@
   <!--  <ul class="dropdown-menu" role="menu3">
                             <li> <a href="app.php"><h5>Ver Muestras</h5></a> </li>
                             <li class="divider"></li>                   
-                            <li> <a  href="app.php?tipo=1&unidad=<? echo $unidad_mina_sel; ?>"><h5>Seguimiento a Muestras</h5></a> </li>
+                            <li> <a  href="app.php?tipo=1&unidad=<?php  echo $unidad_mina_sel; ?>"><h5>Seguimiento a Muestras</h5></a> </li>
                         </ul>
                    </div>
               </div>
@@ -397,9 +398,9 @@
                      </button>-!>
                         <!--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">-->
   <!--    <ul class="dropdown-menu" role="menu">
-                            <li> <a href="#"<? echo $unidad_mina_sel; ?>"><h5>Rastreador de muestras</h5></a> </li>                                              
-                            <li> <a  href="visor_ordenes.php?unidad_id=<? echo $unidad_mina_sel; ?>""<? echo $unidad_mina_sel; ?>"><h5>Ordenes de Trabajo</h5></a> </li>
-                            <li> <a  href="calendario.php?motivo=0&unidad=<? echo $unidad_mina_sel; ?>"><h5>Acumulados de Muestras</h5></a></li>
+                            <li> <a href="#"<?php  echo $unidad_mina_sel; ?>"><h5>Rastreador de muestras</h5></a> </li>                                              
+                            <li> <a  href="visor_ordenes.php?unidad_id=<?php  echo $unidad_mina_sel; ?>""<?php  echo $unidad_mina_sel; ?>"><h5>Ordenes de Trabajo</h5></a> </li>
+                            <li> <a  href="calendario.php?motivo=0&unidad=<?php  echo $unidad_mina_sel; ?>"><h5>Acumulados de Muestras</h5></a></li>
                         </ul>
                    </div>
                 
