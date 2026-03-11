@@ -1,26 +1,12 @@
-<?php // include "../connections/config.php";
-$unidad_id = $_GET['unidad_id'];
-$fecha_i = $_GET['fecha_i'];
-$fecha_f = $_GET['fecha_f'];
-if (is_null($fecha_i)){
-    $fecha_i = date('Y-m-d',strtotime("-30 days"));//date('d/m/y');
-}
-if (is_null($fecha_f)){
-    $fecha_f = date('Y-m-d');
-}
-
-$_SESSION['unidad_id'] = $unidad_id;
-$u_id = $_SESSION['u_id']
-//echo $trn_id;
+<?php
+    $unidad_id = $_GET['unidad_id'];
+    $fecha_i = $_GET['fecha_i'] ?? date('Y-m-d',strtotime("-30 days"));
+    $fecha_f = $_GET['fecha_f'] ?? date('Y-m-d');
+    $_SESSION['unidad_id'] = $unidad_id;
+    $u_id = $_SESSION['u_id'];
 ?>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -35,17 +21,6 @@ $u_id = $_SESSION['u_id']
     img{
       max-width: 100%;
     }
-    /*
-    table {
-  position: relative;
-  border-collapse: collapse; 
-}
-
- 
-th {  
-  position: sticky;
-  top: 0; 
-}*/
 </style>
 
 <script>
@@ -588,7 +563,7 @@ th {
      function actualizar_prep(unidad_prep)
     {
         var unidad_id = unidad_prep;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
         window.location.href = direccionar;  
     }
     
@@ -596,35 +571,35 @@ th {
     {
         var unidad_id = document.getElementById('mina_secado').value;
         var unidad_id = document.getElementById('mina').value;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
         window.location.href = direccionar;  
     }
     
      function actualizar_ree()
     {
         var unidad_id = document.getElementById('mina_que_ree').value;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
         window.location.href = direccionar;  
     }
         
      function actualizar_hum()
     {
         var unidad_hum = document.getElementById('mina_hum').value;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_hum;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_hum;                                  
         window.location.href = direccionar;  
     }
     
      function actualizar_importar()
     {
         var unidad_id = document.getElementById('mina_abs_esp').value;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
         window.location.href = direccionar;  
     }
     
      function actualizar_met()
     {
         var unidad_id = document.getElementById('mina_met').value;
-        var direccionar = '<?echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
+        var direccionar = '<?php echo "\seguimiento_ordenes.php?unidad_id="?>'+unidad_id;                                  
         window.location.href = direccionar;  
     }
     
@@ -740,6 +715,7 @@ th {
                 $('#digestion_modal').modal('show').trigger('shown');
             }            
             if (etapa == 7){//Lectura de absorcion: exportar-importar CSV
+                console.log("Importar entro aqui");
                 $('#importar_modal').modal('show');
                 $("#datos_importar").html(respuesta);
             }
@@ -1031,6 +1007,7 @@ th {
                 $('#digestion_modal').modal('show').trigger('shown');
             }            
             if (etapa == 7){//Lectura de absorcion: exportar-importar CSV
+                console.log("Exportar entro aqui");
                 $('#importar_modal').modal('show');
                 $("#datos_importar").html(respuesta);
             }
@@ -1158,7 +1135,7 @@ th {
                  var fecha_i = document.getElementById('fecha_inicial').value;
                  var fecha_f = document.getElementById('fecha_final').value;
                  //alert(fecha_i);
-                 var unid = <?echo $unidad_id;?>;
+                 var unid = <?php echo $unidad_id;?>;
                  var exportars = '<?php echo "\ seguimiento_ordenes.php?unidad_id="?>'+unid+'&fecha_i='+fecha_i+'&fecha_f='+fecha_f;                                  
                  window.location.href = exportars;
             }
@@ -1953,28 +1930,27 @@ th {
     
     //Importar satisfactoriamente
     function ver_csv(archivo, metodid_importar)
-        {         
-               var archivo_imp = archivo;
-               var unidad_id_abs =  document.getElementById("mina_absimp").value;  
-               document.getElementById("mina_abs_esp").value = unidad_id_abs;  
-               //alert(archivo_imp);
-               //$('#progress_modal').modal('show');
-               //alert('El archivo se import� satisfactoriamente: '+archivo_imp);
-               $.ajax({
-                		url: 'leer_csv.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                		data: {archivo_imp:archivo_imp},
-                	})
-                	.done(function(respuesta){                	   
-                           alert(respuesta);   
-                           actualizar_importar();                        
-                })
-        }
+    {
+        var archivo_imp = archivo;
+        var unidad_id_abs =  document.getElementById("mina_absimp").value;  
+        document.getElementById("mina_abs_esp").value = unidad_id_abs;
+
+        $.ajax({
+            url: 'leer_csv.php' ,
+            type: 'POST' ,
+            dataType: 'html',
+            data: { archivo_imp : archivo_imp },
+        })
+        .done(function(respuesta) {                	   
+            alert(respuesta);   
+            actualizar_importar();                        
+        });
+    }
 
     //Importar satisfactoriamente
     function ver_csv_quebr(archivo, metodid_importar)
         {         
+            cosole.log("ver_csv_quebr");
                var archivo_imp = archivo;
                var unidad_id_abs =  document.getElementById("mina_absimp").value;  
                document.getElementById("mina_abs_esp").value = unidad_id_abs; 
@@ -2440,50 +2416,59 @@ th {
 
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="importar_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-              <div class="modal-header" >
+        <div class="modal-content">
+            <div class="modal-header" >
                 <h5 class="modal-title" id="nombre_etapa">METODOS</h5>                             
                 <div class="col-md-1 col-lg-1">                
                     <input type="date" id="fecha_metodo"  value="<?php echo date("Y-m-d");?>" min="<?php echo date("Y-m-d");?>" disabled />                    
                     <input type="hidden" id="mina_absimp" values="mina_absimp" size=20 style="width:125px; color:#996633" value="<?php echo $unidad_id;?>" disabled /> 
                 </div>
-              </div> 
-              <div class="modal-body"  style="font-size:4px;" class="col-md-12 col-lg-12" id="datos_importar">
-              </div>
-              <?
-              extract($_POST);        
-              if ($action == "upload") //si action tiene como valor UPLOAD haga algo (el value de este hidden es es UPLOAD iniciado desde el value
+            </div> 
+            <div class="modal-body"  style="font-size:4px;" class="col-md-12 col-lg-12" id="datos_importar"></div>
+            <?php
+                $action = $_POST["action"] ?? '';
+                $action_quebr = $_POST["upload_quebr"] ?? '';
+                var_dump($action);
+                var_dump(dirname(__DIR__)); 
+                if ($action == "upload") //si action tiene como valor UPLOAD haga algo (el value de este hidden es es UPLOAD iniciado desde el value
                 {
-                //cargamos el archivo al servidor con el mismo nombre(solo le agregue el sufijo bak_)            
+                    extract($_POST);  
+                    //cargamos el archivo al servidor con el mismo nombre(solo le agregue el sufijo bak_)   
+                            
                     $archivo = $_FILES['excel']['name']; //captura el nombre del archivo
                     $archivo = strtoupper($archivo);
                     $tipo  = $_FILES['excel']['type']; //captura el tipo de archivo (2003 o 2007)
                     ///$dest  = 'c:\\xampp\\htdocs\\__pro\\argonaut\\VinculosKpi'.'\\ '; //lugar donde se copiara el archivo
-                    //$dest  = '\\absorcion'.'\\ '; //lugar donde se copiara el archivo
-                   // $dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
-                     $dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
-                     $desti = rtrim($dest).$archivo;                        
+                    $dest  = dirname(__DIR__).'\\absorcion'.'\\ '; //lugar donde se copiara el archivo
+                    // $dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
+                        //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
+                        $desti = rtrim($dest).$archivo;   
+                        var_dump($desti);                     
                     copy($_FILES['excel']['tmp_name'],$desti);
-                   /// echo $archivo_corto;
-                    $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error());             
+                    /// echo $archivo_corto;
+                    $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
                     $archivo_exist = $archivo_exis->fetch_assoc();
-                    $archivo_ex = $archivo_exist['folio'];                   
-                    if($archivo_ex == $archivo){
+                    $archivo_ex = $archivo_exist['folio']; 
+                    var_dump($archivo.'     =====      '.$archivo_ex);                  
+                    if($archivo_ex == $archivo) {
                         mysqli_multi_query ($mysqli, "UPDATE arg_ordenes_csv SET archivo_csv = '".$archivo."' WHERE folio = '".$archivo."'") OR DIE (mysqli_error($mysqli));
                         
-                        echo "<script> ver_csv('$archivo');
-                        $('#progress_modal').modal('show');
-                        </script>";
+                        echo "<script> 
+                                ver_csv('$archivo');
+                                $('#progress_modal').modal('show');
+                            </script>";
                     }              
-                    else{
+                    else {
                         echo "<script> error_csv('$archivo');</script>";
                     }
-                    
+
                     ///mysqli_multi_query ($mysqli, "CALL arg_prc_ordenPulverizado(".$trn_id.", ".$trn_id_rel.", ".$peso.", ".$peso_malla.", ".$porc_que.", ".$u_id.",".$final.", '".$coment."')") OR DIE (mysqli_error($mysqli)); 
-                   $action = '';
+                    $action = '';
                 }
+
                 if ($action_quebr == "upload_quebr") 
-                {       
+                {    
+                    extract($_POST);     
                     $archivo = $_FILES['excel']['name']; //captura el nombre del archivo
                     $archivo = strtoupper($archivo);
                     $tipo  = $_FILES['excel']['type'];
@@ -2491,7 +2476,7 @@ th {
                     //$dest  = '/var/www/html/lcminedatalabs/absorcion'.'/ '; 
                     $desti = rtrim($dest).$archivo;                        
                     copy($_FILES['excel']['tmp_name'],$desti);
-                    $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error());             
+                    $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
                     $archivo_exist = $archivo_exis->fetch_assoc();
                     $archivo_ex = $archivo_exist['folio'];                   
                     if($archivo_ex == $archivo){
@@ -2506,11 +2491,11 @@ th {
                     }
                     $action = '';
                 }
-                ?>
-              <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="actualizar_met();" data-dismiss="modal">Cerrar</button>
-              </div>
+            ?>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="actualizar_met();" data-dismiss="modal">Cerrar</button>
             </div>
+        </div>
     </div>              
 </div>
 
@@ -2571,77 +2556,70 @@ th {
               </div>
             </div>
     </div>              
-</div>
+</div>     
 <?php 
-if (isset($_GET['unidad_id'])){
-    $mysqli -> set_charset("utf8");
-   /* echo $fecha_i; 
-    echo $fecha_f; */
-             $datos_orden_detalle = $mysqli->query("SELECT 
-                                                        ord.folio, DATE_FORMAT(ord.fecha, '%d-%m-%Y') AS fecha, ord.hora, us.nombre AS usuario, ord.trn_id
-                                                       ,om.trn_id AS trn_id_batch, om.folio_interno, om.folio_inicial
-                                                       ,om.folio_final, om.cantidad, om.estado as estado_id
-                                                       ,(CASE om.estado WHEN 0 THEN 'Pendiente' WHEN 1 THEN 'Iniciada' WHEN 2 THEN 'Finalizada' END) AS estado
-                                                       ,buscar_fase(om.trn_id,0) AS fase_id
-                                                       ,buscar_etapa(om.trn_id,0) AS etapa_id
-                                                       ,buscar_etapa_acceso (om.trn_id,0,".$u_id.") AS boton_acceso
-                                                       ,buscar_etapa_nombre(om.trn_id,0) AS etapa
-                                                       ,buscar_metodo(om.trn_id) AS metodo_id                                                                                                 
-                                                       ,(CASE WHEN met1 = 1 THEN 'X' ELSE '' END) AS met1
-                                                       ,(CASE WHEN met2 = 2 THEN 'X' ELSE '' END) AS met2
-                                                       ,(CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
-                                                       ,(CASE WHEN ord.tipo = 5 THEN 1 ELSE 0 END) AS orden_sobrelim
-                                                       ,(CASE WHEN ord.tipo = 6 THEN 6 ELSE 0 END) AS recheck
-                                                       ,(CASE WHEN ord.tipo = 2 THEN 2 ELSE 0 END) AS soluciones
-                                                       ,(CASE ord.tipo WHEN 3 THEN 3 WHEN 4 THEN 3
-                                                              WHEN 7 THEN 3 WHEN 8 THEN 3 WHEN 9 THEN 3 END) AS metalurgia
-                                                       ,buscar_humedad(om.trn_id) AS humedad
-                                                       ,acceso_preparacion(".$u_id.") AS prepara
-                                                       ,(CASE WHEN om.estado = 0 AND ord.trn_id_rel <> 0 THEN iniciar_reensayeOrden(ord.trn_id) ELSE 0 END) AS iniciar_reen
-                                                    FROM
-                                                     `ordenes_metodos` om
-                                                    LEFT JOIN `arg_ordenes` ord
-                                                        ON ord.trn_id = om.trn_id_rel
-                                                    LEFT JOIN arg_usuarios us
-                                            	       ON us.u_id = ord.usuario_id                                              
-                                                    WHERE estado <> 99 AND ord.unidad_id = ".$unidad_id." 
-                                                    AND DATE_FORMAT(ord.fecha, '%Y-%m-%d') BETWEEN '$fecha_i' AND '$fecha_f'
-                                                    ORDER BY ord.fecha DESC, om.folio_interno DESC"
-                                            ) or die(mysqli_error()); 
-                                            
-             $datos_metodos = $mysqli->query("SELECT nombre FROM arg_metodos WHERE tipo_id = 1") or die(mysqli_error());             
-             $total_metodos = (mysqli_num_rows($datos_metodos));
-             
-             $unidad_mi = $mysqli->query("SELECT nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());             
-             $unidad_min = $unidad_mi->fetch_assoc();
-             $unidad_mina = $unidad_min['nombre'];
-             
-             $imprime_etiq = $mysqli->query("SELECT acceso_preparacion(".$u_id.") AS etiquetas") or die(mysqli_error());             
-             $imprime_etiqu = $imprime_etiq->fetch_assoc();
-             $imprime_etiquetas = $imprime_etiqu['etiquetas'];
-             
-            ?>
-             <div class="container-fluid">
-             <br/><br/><br/><br/><br/>
-              
-                <div class="col-md-2 col-lg-2">                     
-                      <label for="fecha_inicial"><b>DESDE:</b></label>
-                      <input type="date" name="fecha_inicial" class="form-control" id="fecha_inicial" value="<?echo $fecha_i;?>" />
-                </div>
-                <div class="col-md-2 col-lg-2">
-                      <label for="fecha_final"><b>HASTA:</b></label><br/>
-                      <input type="date" name="fecha_final" class="form-control" id="fecha_final" value="<?echo $fecha_f;?>" />                                
-                </div>                
-                <div class="col-md-2 col-lg-4">
-                    <label for="print"></label><br/><br/>
-                    <button type='button' class='btn btn-success' onclick='actualizar_fechas();' name='print' id='print' >VER</button>                      
-                </div>
+    if (isset($_GET['unidad_id'])) {
+        $mysqli -> set_charset("utf8");
+        $datos_orden_detalle = $mysqli->query("SELECT 
+                                                ord.folio, DATE_FORMAT(ord.fecha, '%d-%m-%Y') AS fecha, ord.hora, us.nombre AS usuario, ord.trn_id
+                                                ,om.trn_id AS trn_id_batch, om.folio_interno, om.folio_inicial
+                                                ,om.folio_final, om.cantidad, om.estado as estado_id
+                                                ,(CASE om.estado WHEN 0 THEN 'Pendiente' WHEN 1 THEN 'Iniciada' WHEN 2 THEN 'Finalizada' END) AS estado
+                                                ,buscar_fase(om.trn_id,0) AS fase_id
+                                                ,buscar_etapa(om.trn_id,0) AS etapa_id
+                                                ,buscar_etapa_acceso (om.trn_id,0,".$u_id.") AS boton_acceso
+                                                ,buscar_etapa_nombre(om.trn_id,0) AS etapa
+                                                ,buscar_metodo(om.trn_id) AS metodo_id                                                                                                 
+                                                ,(CASE WHEN met1 = 1 THEN 'X' ELSE '' END) AS met1
+                                                ,(CASE WHEN met2 = 2 THEN 'X' ELSE '' END) AS met2
+                                                ,(CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
+                                                ,(CASE WHEN ord.tipo = 5 THEN 1 ELSE 0 END) AS orden_sobrelim
+                                                ,(CASE WHEN ord.tipo = 6 THEN 6 ELSE 0 END) AS recheck
+                                                ,(CASE WHEN ord.tipo = 2 THEN 2 ELSE 0 END) AS soluciones
+                                                ,(CASE ord.tipo WHEN 3 THEN 3 WHEN 4 THEN 3
+                                                        WHEN 7 THEN 3 WHEN 8 THEN 3 WHEN 9 THEN 3 END) AS metalurgia
+                                                ,buscar_humedad(om.trn_id) AS humedad
+                                                ,acceso_preparacion(".$u_id.") AS prepara
+                                                ,(CASE WHEN om.estado = 0 AND ord.trn_id_rel <> 0 THEN iniciar_reensayeOrden(ord.trn_id) ELSE 0 END) AS iniciar_reen
+                                            FROM
+                                                `ordenes_metodos` om
+                                            LEFT JOIN `arg_ordenes` ord
+                                                ON ord.trn_id = om.trn_id_rel
+                                            LEFT JOIN arg_usuarios us
+                                                ON us.u_id = ord.usuario_id                                              
+                                            WHERE estado <> 99 AND ord.unidad_id = ".$unidad_id." 
+                                            AND DATE_FORMAT(ord.fecha, '%Y-%m-%d') BETWEEN '$fecha_i' AND '$fecha_f'
+                                            ORDER BY ord.fecha DESC, om.folio_interno DESC"
+                                    ) or die(mysqli_error($mysqli)); 
+                                    
+        $datos_metodos = $mysqli->query("SELECT nombre FROM arg_metodos WHERE tipo_id = 1") or die(mysqli_error($mysqli));             
+        $total_metodos = (mysqli_num_rows($datos_metodos));
+        
+        $unidad_mi = $mysqli->query("SELECT nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));             
+        $unidad_min = $unidad_mi->fetch_assoc();
+        $unidad_mina = $unidad_min['nombre'];
+        
+        $imprime_etiq = $mysqli->query("SELECT acceso_preparacion(".$u_id.") AS etiquetas") or die(mysqli_error($mysqli));             
+        $imprime_etiqu = $imprime_etiq->fetch_assoc();
+        $imprime_etiquetas = $imprime_etiqu['etiquetas'];
+    ?>
+    <div class="container-fluid">
+    <br/><br/><br/><br/><br/>
 
-                
-                
-                <br/><br/><br/><br/><br/>
-                
-                 <? 
+    <div class="col-md-2 col-lg-2">                     
+            <label for="fecha_inicial"><b>DESDE:</b></label>
+            <input type="date" name="fecha_inicial" class="form-control" id="fecha_inicial" value="<?php echo $fecha_i;?>" />
+    </div>
+    <div class="col-md-2 col-lg-2">
+            <label for="fecha_final"><b>HASTA:</b></label><br/>
+            <input type="date" name="fecha_final" class="form-control" id="fecha_final" value="<?php echo $fecha_f;?>" />                                
+    </div>                
+    <div class="col-md-2 col-lg-4">
+        <label for="print"></label><br/><br/>
+        <button type='button' class='btn btn-success' onclick='actualizar_fechas();' name='print' id='print' >VER</button>                      
+    </div>
+    <br/><br/><br/><br/><br/>
+    <?php  
                   $html_det = "<table class='table table-striped' id='motivos'>
                                 <thead>                                
                                      <tr class='table-info'>      
@@ -2677,7 +2655,7 @@ if (isset($_GET['unidad_id'])){
                                
                                while ($fila = $datos_orden_detalle->fetch_assoc()) {
                                    $num = 1;
-                                   $variable_img = $fila['etapa_img'];
+                                   //$variable_img = $fila['etapa_img'];
                                    $html_det.="<tr>";
                                       $html_det.="<td> <a href='orden_trabajo_rep.php?trn_id=".$fila['trn_id']."' target='_blank'>".$fila['folio']."</td>";
                                       if ($fila['estado_id'] == 0 and $fila['reensaye'] == 1 and $fila['prepara'] > 0 ){
@@ -2762,7 +2740,7 @@ if (isset($_GET['unidad_id'])){
                                                                                    FROM arg_metodos m
                                                                                    LEFT JOIN arg_ordenes_metodos om
                                                                                     ON m.metodo_id = om.metodo_id
-                                                                                   WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error());
+                                                                                   WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error($mysqli));
                                                   while ($fila_met = $metodos_lista->fetch_assoc()) {
                                                         
                                                         if ($fila['estado_id'] == 2){
@@ -2775,14 +2753,14 @@ if (isset($_GET['unidad_id'])){
                                                         $html_det.="<button type='button' class='".$variable_color."'";
                                                                     if ($fila_met['boton_acceso'] <> 0){                                                                        
                                                                         if($fila['orden_sobrelim'] == 1 || $fila_met['metodo_id'] == 1){
-                                                                            $html_det.="onclick = iniciar_metodo_sobrelim(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.",".$reensaye.")";
+                                                                            $html_det.="onclick = iniciar_metodo_sobrelim(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
                                                                         }
                                                                         elseif ($fila_met['metodo_id'] == 30 || $fila_met['metodo_id'] == 31 || $fila_met['metodo_id'] == 5 || $fila_met['metodo_id'] == 28 || $fila_met['metodo_id'] == 29 || $fila_met['metodo_id'] == 33 || $fila_met['metodo_id'] == 27 || $fila_met['metodo_id'] == 2 || $fila_met['metodo_id'] == 9 || $fila_met['metodo_id'] == 35){
                                                                             $html_det.="onclick = iniciar_metodo_quebr(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
                                                                       
                                                                       }
                                                                         else{
-                                                                            $html_det.="onclick = iniciar_metodo(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.",".$reensaye.")";
+                                                                            $html_det.="onclick = iniciar_metodo(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
                                                                         }
                                                                      }
                                                                     $html_det.="><span class='".$variable_img."'>".$fila_met['nombre']."  ".$fila_met['etapa']." </span>
@@ -2840,11 +2818,10 @@ if (isset($_GET['unidad_id'])){
                                }                              
                   $html_det.="</tbody></table>";
                   
-                 echo ("$html_en");
                  echo ("$html_det");
                 ?>
         </div>
-            <?
+            <?php 
     }
 ?>                    
  

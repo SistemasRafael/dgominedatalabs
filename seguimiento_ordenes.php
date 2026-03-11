@@ -2,8 +2,8 @@
 <head>
 	</head>
 		<body>		
-            <?include('partials/header.php'); ?>
-            <?include('partials/seguimiento_ordenes.php');?>
-            <?include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/seguimiento_ordenes.php');?>
+            <?php include('partials/footer.php'); ?>
 		</body>
 	</html>
