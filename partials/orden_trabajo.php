@@ -216,7 +216,7 @@ if (isset($_GET["unidad_id"])) {
                               
                               <div class="col-md-2 col-lg-2">                                
                                         <?php                            
-                                        $unidad_id = $_GET['unidad_id'];
+                                        $unidad_id = $_GET['unidad_id'] ?? "";
                                         if ($unidad_id == ""){
                                             $nombretop = "Seleccione Mina";
                                         }
@@ -257,8 +257,6 @@ if (isset($_GET["unidad_id"])) {
                                   <thead class="thead-light" align='center'>
                                     <tr>
                                       <th colspan='1'>PRE-ORDEN</th>
-                                      <!--<th colspan='1'>Banco</th>
-                                      <th colspan='1'>Voladura</th>--!>
                                       <th colspan='1'>Siguiente Muestra</th>
                                       <th colspan='1'>Cantidad</th>
                                       <th colspan='1'>Métodos</th>
@@ -268,7 +266,7 @@ if (isset($_GET["unidad_id"])) {
                                    <div class="col-md-1 col-lg-1">
                                     <td>                                
                                         <?php                            
-                                        $preord = $_GET['preorden'];
+                                        $preord = $_GET['preorden'] ?? "";
                                         if ($preord == ""){
                                             $nombretop = "Seleccione";
                                             $nomtop = 0;

@@ -1,25 +1,17 @@
-<!-- jQuery 
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
-<!-- BS JavaScript 
-<script type="text/javascript" src="js/bootstrap.js"></script>-->
-<!-- Have fun using Bootstrap JS -->
-
 <?php
-//include "../connections/config.php";
-$tipo = $_GET['tipo'];
-$unidad_id = $_GET['unidad_id'];
-$_SESSION['unidad_id'] = $unidad_id;
- 
-$unidad = $mysqli->query("SELECT
-                            nombre
-                          FROM
-                            `arg_empr_unidades`
-                          WHERE
-                            unidad_id = ".$unidad_id
-                         ) or die(mysqli_error());
-$unidad_sele = $unidad->fetch_assoc();
-$unidad_mina = $unidad_sele['nombre'];
-
+  $tipo = $_GET['tipo'];
+  $unidad_id = $_GET['unidad_id'];
+  $_SESSION['unidad_id'] = $unidad_id;
+  
+  $unidad = $mysqli->query("SELECT
+                              nombre
+                            FROM
+                              `arg_empr_unidades`
+                            WHERE
+                              unidad_id = ".$unidad_id
+                          ) or die(mysqli_error($mysqli));
+  $unidad_sele = $unidad->fetch_assoc();
+  $unidad_mina = $unidad_sele['nombre'];
 ?>
  <script>
         function exportar_voladura(unidad_id)
@@ -46,50 +38,40 @@ $unidad_mina = $unidad_sele['nombre'];
             		data: {unidad_id: unidad_id, banco:banco, nombre:nombre},
             	})
             	.done(function(respuesta){
-            		///$("#placas_dat").html(respuesta);                                       
-                    console.log(respuesta);
-                    if (respuesta == 'Se registro exitosamente.'){
-                       alert('Se guardó con éxito');
-                       var direccionar = '<?php echo "\ catalogos.php?tipo=1&unidad_id="?>'+unidad_id;                                  
-                      window.location.href = direccionar;                      
-                    }
+                  if (respuesta.includes("Se registro exitosamente.")){
+                    alert('Se guardó con éxito');
+                    var direccionar = '<?php echo "\ catalogos.php?tipo=1&unidad_id="?>'+unidad_id;                                  
+                    window.location.href = direccionar;                      
+                  }
               })
       }
       
   //Crear Voladuras
-    function GuardarVoladuras(unidad_id)
-        {                     
-            var unidad_id = unidad_id
-            var banco_id = document.getElementById("banco_ori").value; 
-            //var banco = document.getElementById("banco_num").value;
-            var voladura_id = document.getElementById("voladura_id").value;
-            var folio_ini = document.getElementById("folio_inicial").value;
-            var folio_act = document.getElementById("folio_actual").value;  
-            //alert(banco_id);
-            //alert(folio_ini);
-            /*alert(nombre);**/
-            $.ajax({
-            		url: 'datos_voladuras.php' ,
-            		type: 'POST' ,
-            		dataType: 'html',
-            		data: {unidad_id: unidad_id, banco_id:banco_id, voladura_id:voladura_id, folio_ini:folio_ini, folio_act:folio_act},
-            	})
-            	.done(function(respuesta){
-            		///$("#placas_dat").html(respuesta);
-                    alert(respuesta);                                    
-                    //console.log(respuesta);
-                    if (respuesta == 'Se registró exitosamente.'){
-                       //alert('Se guardó con éxito');
-                       var direccionar = '<?php echo "\ catalogos.php?tipo=2&unidad_id="?>'+unidad_id;                                  
-                      window.location.href = direccionar;                      
-                    }
-              })
-      }
+  function GuardarVoladuras(unidad_id) {                     
+    var unidad_id = unidad_id
+    var banco_id = document.getElementById("banco_ori").value;
+    var voladura_id = document.getElementById("voladura_id").value;
+    var folio_ini = document.getElementById("folio_inicial").value;
+    var folio_act = document.getElementById("folio_actual").value;
+    $.ajax({
+        url: 'datos_voladuras.php' ,
+        type: 'POST' ,
+        dataType: 'html',
+        data: {unidad_id: unidad_id, banco_id:banco_id, voladura_id:voladura_id, folio_ini:folio_ini, folio_act:folio_act},
+      })
+      .done(function(respuesta){
+        alert(respuesta);
+        if (respuesta.includes("Se registro exitosamente.")) {
+          var direccionar = '<?php echo "\ catalogos.php?tipo=2&unidad_id="?>'+unidad_id;                                  
+          window.location.href = direccionar;                      
+        }
+      });
+    }
       
       function actualizar_met()
         {
             var unidad_id = document.getElementById('unidad_mina').value;
-            var direccionar = '<?echo "\catalogos.php?tipo=2&unidad_id="?>'+unidad_id;                                  
+            var direccionar = '<?php echo "\catalogos.php?tipo=2&unidad_id="?>'+unidad_id;                                  
             window.location.href = direccionar;  
         }
  </script>
@@ -106,14 +88,14 @@ $unidad_mina = $unidad_sele['nombre'];
               </div>
               <div class="modal-body">
                     <label for="unidad_mina" class="col-form-label">Unidad de Mina:</label>
-                    <input name="unidad_mina" id="unidad_mina" size=40 style="width:470px; color:#996633"  value="<?echo $unidad_mina;?>" disabled />                   
+                    <input name="unidad_mina" id="unidad_mina" size=40 style="width:470px; color:#996633"  value="<?php echo $unidad_mina;?>" disabled />                   
                     <label for="banco" class="col-form-label">Banco:</label>
                     <input name="banco" id="banco" size=40 style="width:470px; color:#996633"  value="" enabled />
                     <label for="nombre_banco" class="col-form-label">Descripción:</label>
                     <input name="nombre_banco" id="nombre_banco" size=40 style="width:470px; color:#996633"  value="" enabled />                    
               </div>
               <div class="modal-footer">
-                 <button type="button" class="btn btn-primary" onclick="GuardarBancos(<?echo $unidad_id;?>)">Guardar</button>
+                 <button type="button" class="btn btn-primary" onclick="GuardarBancos(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -132,27 +114,26 @@ $unidad_mina = $unidad_sele['nombre'];
               </div>
               <div class="modal-body">
                     <label for="unidad_mina" class="col-form-label">Unidad de Mina:</label>
-                    <input name="unidad_mina" id="unidad_mina" size=40 style="width:470px; color:#996633"  value="<?echo $unidad_mina;?>" disabled /> 
+                    <input name="unidad_mina" id="unidad_mina" size=40 style="width:470px; color:#996633"  value="<?php echo $unidad_mina;?>" disabled /> 
                     <label for="banco_ori" class="col-form-label">Banco:</label>
                     <select name="banco_ori" id="banco_ori" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT banco_id, banco, nombre FROM `arg_bancos` WHERE unidad_id = ".$unidad_id) or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT banco_id, banco, nombre FROM `arg_bancos` WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $banco_sele = $row2['banco']; 
                                                 $banco_nombre = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['banco_id']?>"><?echo $banco_sele.' - '.$banco_nombre?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['banco_id']?>"><?php echo $banco_sele.' - '.$banco_nombre?></option>
+                        <?php }?>
                         </select>
                     
                     <label for="voladura_id" class="col-form-label">Voladura:</label>
                     <input name="voladura_id" id="voladura_id" size=40 style="width:470px; color:#996633"  value="" enabled />
-                   <!-- <label for="folio_inicial" class="col-form-label">Folio Inicial:</label>--!>
                     <input type="hidden" name="folio_inicial" id="folio_inicial" size=40 style="width:470px; color:#996633"  value="0" enabled />
                      <label for="folio_actual" class="col-form-label">Folio actual:</label>
                     <input name="folio_actual" id="folio_actual" size=40 style="width:470px; color:#996633"  value="" enabled />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="GuardarVoladuras(<?echo $unidad_id;?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarVoladuras(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" onclick="actualizar_vol();" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
@@ -160,13 +141,6 @@ $unidad_mina = $unidad_sele['nombre'];
    </div> 
 
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
-
 	.btnSubmit
     {
         width: 50%;
@@ -197,18 +171,16 @@ $unidad_mina = $unidad_sele['nombre'];
                                                     	       ON un.unidad_id = ba.unidad_id
                                                          WHERE
         	                                               ba.unidad_id = ".$unidad_id
-                                            ) or die(mysqli_error()); 
+                                            ) or die(mysqli_error($mysqli)); 
         
                 ?>
                 <br />
                 <div class="container" class="col-md-2 col-lg-4">
                             <button type='button' class='btn btn-primary' name='agregar_banco' id='agregar_banco' data-toggle="modal" data-target="#ModalBan" >+ AGREGAR</button>
-                        <!--    <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar(1, <?echo $unidad_id?>)">EXPORTAR
-                                <span class='fa fa-file-excel-o fa-1x'></span>
-                            </button>    --!>       
+                               
                 </div>
                 <br/><br/>
-                <?
+                <?php 
                 $html_det = "<div class='container'>
                         <table class='table table-striped' id='motivos'>
                                 <thead>
@@ -258,18 +230,18 @@ $unidad_mina = $unidad_sele['nombre'];
                                                             	ON uvol.u_id = vol.u_id
                                                          WHERE
         	                                               b.unidad_id = ".$unidad_id
-                                            ) or die(mysqli_error()); 
+                                            ) or die(mysqli_error($mysqli)); 
         
                 ?>
                 <br />
                 <div class="container" class="col-md-2 col-lg-4">
                             <button type='button' class='btn btn-primary' name='agregar_voladura' id='agregar_voladura' data-toggle="modal" data-target="#ModalVol" >+ AGREGAR</button>
-                            <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar_voladura(<?echo $unidad_id?>)">EXPORTAR
+                            <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar_voladura(<?php echo $unidad_id?>)">EXPORTAR
                                 <span class='fa fa-file-excel-o fa-1x'></span>
                             </button>           
                 </div>
                 <br/><br/>
-                <?
+                <?php 
                 $html_det = "<div class='container'>
                         <table class='table table-striped' id='motivos'>
                                 <thead>

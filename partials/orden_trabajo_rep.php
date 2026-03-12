@@ -1,16 +1,9 @@
-<?// include "../connections/config.php"; 
-$trn_id = $_GET['trn_id'];
-$unidad_id = $_GET['unidad_id'];
-//echo $trn_id;
+<?php
+    $trn_id = $_GET['trn_id'];
+    $unidad_id = $_GET['unidad_id'] ?? 0;
 ?>
   
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -38,7 +31,7 @@ if (isset($_GET['trn_id'])){
                                            LEFT JOIN arg_usuarios us
                                             	ON us.u_id = ord.usuario_id
                                            WHERE ord.trn_id = ".$trn_id
-                                        ) or die(mysqli_error());
+                                        ) or die(mysqli_error($mysqli));
             $orden_encabezado = $datos_orden->fetch_assoc();
                                                 
             $datos_orden_metodos = $mysqli->query("SELECT 
@@ -48,7 +41,7 @@ if (isset($_GET['trn_id'])){
                                                      LEFT JOIN arg_metodos me
                                                         ON me.metodo_id = om.metodo_id                                          
                                                     WHERE om.trn_id_orden = ".$trn_id." ORDER BY om.metodo_id"
-                                            ) or die(mysqli_error()); 
+                                            ) or die(mysqli_error($mysqli)); 
                                                
             $datos_orden_encab = $mysqli->query(" SELECT
                                                 	 od.trn_id, od.trn_id_rel, folio_interno, od.folio_inicial, od.folio_final, od.cantidad
@@ -56,7 +49,7 @@ if (isset($_GET['trn_id'])){
                                                     arg_ordenes_detalle od
                                                   WHERE od.trn_id_rel = ".$trn_id."
                                                   ORDER BY
-                                                	trn_id_rel")or die(mysqli_error());
+                                                	trn_id_rel")or die(mysqli_error($mysqli));
                                                     
             $datos_metodos = $mysqli->query("SELECT 
                                                         DISTINCT me.nombre AS metodo, om.metodo_id                                                 
@@ -65,19 +58,19 @@ if (isset($_GET['trn_id'])){
                                                      LEFT JOIN arg_metodos me
                                                         ON me.metodo_id = om.metodo_id                                          
                                                     WHERE om.trn_id_orden = ".$trn_id
-                                            ) or die(mysqli_error()); 
+                                            ) or die(mysqli_error($mysqli)); 
              
              $count_metodos = (mysqli_num_rows($datos_metodos));
                        
-             $total_mues = $mysqli->query("SELECT SUM(cantidad) AS total_muestras FROM arg_ordenes_detalle WHERE trn_id_rel = ".$trn_id) or die(mysqli_error());
+             $total_mues = $mysqli->query("SELECT SUM(cantidad) AS total_muestras FROM arg_ordenes_detalle WHERE trn_id_rel = ".$trn_id) or die(mysqli_error($mysqli));
              $total_muest = $total_mues->fetch_assoc();
              $total_muestras = $total_muest['total_muestras'];             
             
             ?>
              <div class="container-fluid">
                   <br /> <br /><br /> <br /><br /> <br />
-                  <h3><? echo ("Orden de Trabajo: ".$orden_encabezado['folio']); ?></h3>
-                 <?
+                  <h3><?php  echo ("Orden de Trabajo: ".$orden_encabezado['folio']); ?></h3>
+                 <?php 
                  $html_en = "<table class='table table-bordered' id='encabezado'>
                              <thead>
                                  <tr class='table-info'>   
@@ -106,7 +99,7 @@ if (isset($_GET['trn_id'])){
                                         <th scope='col1'>Total muestras</th>";                          
                                         while ($fila_met = $datos_metodos->fetch_assoc()) {
                                             $html_det.="<th align='center'>".$fila_met['metodo']."</th>";
-                                            $fila[$pos] = $fila_met['metodo'];
+                                            // $fila[$pos] = $fila_met['metodo'];
                                        }                                                                
                                     $html_det.="</tr>
                                </thead>
@@ -129,7 +122,7 @@ if (isset($_GET['trn_id'])){
                                                      LEFT JOIN arg_metodos me
                                                         ON me.metodo_id = om.metodo_id                                          
                                                     WHERE om.trn_id_orden = ".$trn_id
-                                            ) or die(mysqli_error());            
+                                            ) or die(mysqli_error($mysqli));            
                                       
                                       while ($fila_metodo = $datos_metodos->fetch_assoc()) {  
                                             $met = $fila_metodo['metodo_id'];
@@ -140,7 +133,7 @@ if (isset($_GET['trn_id'])){
                                                                            WHERE om.trn_id_orden = ".$trn_id." 
                                                                             AND om.trn_id_rel = ".$fila['trn_id']." 
                                                                             AND metodo_id = ".$met
-                                                                        ) or die(mysqli_error());
+                                                                        ) or die(mysqli_error($mysqli));
                                                               
                                            $detalle_met = $detalle_metodos->fetch_assoc();
                                            $existe = $detalle_met['existe'];
@@ -164,7 +157,7 @@ if (isset($_GET['trn_id'])){
            <div class="container">
            <div class="col-4 col-md-12 col-lg-12">
                 <div class="col-2 col-md-2 col-lg-2">
-                     <form method="post" action="orden_trabajo_pdf.php?trn_id=<?echo $trn_id;?>" name="Printform" id="Printform">  
+                     <form method="post" action="orden_trabajo_pdf.php?trn_id=<?php echo $trn_id;?>" name="Printform" id="Printform">  
                         <fieldset>  
                             <input type="submit" class="btn btn-info" name="print" id="print" value="IMPRIMIR ORDEN" />                
                        </fieldset>  
@@ -172,7 +165,7 @@ if (isset($_GET['trn_id'])){
                 </div>
                 
                 <div class="col-2 col-md-2 col-lg-2">
-                      <form method="post" action="app.php?unidad_id=<?echo $unidad_id;?>" name="newform" id="newform">  
+                      <form method="post" action="app.php?unidad_id=<?php echo $unidad_id;?>" name="newform" id="newform">  
                             <fieldset>  
                                 <input type="submit" class="btn btn-primary" name="nueva_orden" id="nueva_orden" value="NUEVA ORDEN" />                
                            </fieldset>  
@@ -182,7 +175,7 @@ if (isset($_GET['trn_id'])){
              </div>
           
     </div>
-            <?
+            <?php 
     }
 ?>                    
     

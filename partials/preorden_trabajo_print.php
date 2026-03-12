@@ -1,7 +1,7 @@
-<? include "../connections/config.php";
-$trn_id = $_GET['trn_id'];
-$unidad_id = $_GET['unidad_id'];
-//echo $trn_id;
+<?php
+    // include "../connections/config.php";
+    $trn_id = $_GET['trn_id'];
+    $unidad_id = $_GET['unidad_id'];
 ?>
 
 <script>
@@ -10,14 +10,6 @@ $unidad_id = $_GET['unidad_id'];
 </script>
 
 <style type="text/css">
-    .izq {
-        background-color: ;
-    }
-
-    .derecha {
-        background-color: ;
-    }
-
     .btnSubmit {
         width: 50%;
         border-radius: 1rem;
@@ -59,7 +51,7 @@ if (isset($_GET['trn_id'])) {
 ?>
     <div class="container">
         <br /> <br /><br /> <br /><br /> <br />
-        <?
+        <?php 
         $html_en = "<table class='table table-bordered' id='encabezado'>
                              <thead>
                                  <tr class='table-info'>
@@ -95,7 +87,7 @@ if (isset($_GET['trn_id'])) {
             <div class="col-6 col-md-12 col-lg-12">
 
                 <div class="col-2 col-md-2 col-lg-2">
-                    <form method="post" action="preorden_trabajo.php?unidad_id=<? echo $unidad_id; ?>" name="newpre" id="newpre">
+                    <form method="post" action="preorden_trabajo.php?unidad_id=<?php  echo $unidad_id; ?>" name="newpre" id="newpre">
                         <fieldset>
                             <input type="submit" class="btn btn-success" name="nueva_preorden" id="nueva_preorden" value="NUEVA PRE-ORDEN" />
                         </fieldset>
@@ -103,7 +95,7 @@ if (isset($_GET['trn_id'])) {
                 </div>
 
                 <div class="col-2 col-md-2 col-lg-2">
-                    <form method="post" action="app.php?unidad_id=<? echo $unidad_id; ?>" name="newform" id="newform">
+                    <form method="post" action="app.php?unidad_id=<?php  echo $unidad_id; ?>" name="newform" id="newform">
                         <fieldset>
                             <input type="submit" class="btn btn-primary" name="nueva_orden" id="nueva_orden" value="NUEVA ORDEN" />
                         </fieldset>
@@ -111,7 +103,7 @@ if (isset($_GET['trn_id'])) {
                 </div>
 
                 <div class="col-2 col-md-2 col-lg-2">
-                    <form method="post" action="preorden_trabajo_pdf.php?trn_id=<? echo $trn_id; ?>&unidad_id=<? echo $unidad_id; ?>" name="imprim" id="imprim">
+                    <form method="post" action="preorden_trabajo_pdf.php?trn_id=<?php  echo $trn_id; ?>&unidad_id=<?php  echo $unidad_id; ?>" name="imprim" id="imprim">
                         <fieldset>
                             <input type="submit" class="btn btn-secondary" name="imprimir" id="imprimir" value="IMPRIMIR" />
                         </fieldset>
@@ -121,6 +113,6 @@ if (isset($_GET['trn_id'])) {
         </div>
 
     </div>
-<?
+<?php 
 }
 ?>

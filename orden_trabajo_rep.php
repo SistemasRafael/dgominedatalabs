@@ -5,8 +5,7 @@
 		</head>
 		<body>
 		
-            <?include('partials/header.php'); ?>
-            <?include('partials/orden_trabajo_rep.php'); ?>
-            <?//include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/orden_trabajo_rep.php'); ?>
 		</body>
 		</html>
