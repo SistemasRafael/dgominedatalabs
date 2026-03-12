@@ -1,8 +1,6 @@
-<? //include "../connections/config.php"; 
-$unidad_id = $_GET['unidad_id'];
-//$trn_id = $_GET['trn_id'];
-$_SESSION['unidad_id'] = $unidad_id;
-//echo $unidad_id;
+<?php
+  $unidad_id = $_GET['unidad_id'];
+  $_SESSION['unidad_id'] = $unidad_id;
 ?> 
 
 <script>
@@ -50,7 +48,8 @@ $_SESSION['unidad_id'] = $unidad_id;
                     	  // alert(respuesta);
                          if (respuesta != ''){
                               alert('La preorden se guardó con éxito'); 
-                              var print_d = '<?php echo "\preorden_trabajo_print.php?trn_id="?>'+respuesta+'&unidad_id='+unidad_id_s;            
+                              var print_d = '<?php echo "\preorden_trabajo_print.php?trn_id="?>'+respuesta+'&unidad_id='+unidad_id_s;
+                              console.log(print_d);           
                               window.location.href = print_d;
                          }
                          else{
@@ -122,7 +121,7 @@ $_SESSION['unidad_id'] = $unidad_id;
     
 </script>
     <br/><br/>
-     <?  
+     <?php   
         if(($_SESSION['LoggedIn']) <> '')
         {
             if (isset($_GET['trn_id'])){
@@ -132,15 +131,15 @@ $_SESSION['unidad_id'] = $unidad_id;
                  //Tomar caracter de la unidad de mina
                 $caracter_mina = $mysqli->query("SELECT caracter_folio, nombre, serie
                                                       FROM `arg_empr_unidades`                                        
-                                                        WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                                        WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                 $caracter_fol = $caracter_mina ->fetch_array(MYSQLI_ASSOC);
                 $caracter_folio = $caracter_fol['caracter_folio'];
                 $serie_mina = $caracter_fol['serie'];
                 
                 //Click en Generar Orden
                 if (isset($_POST['generar_preorden'])){        
-                     $fecha             = $_POST['fecha'];
-                     $mina_seleccionada = $_POST['mina_seleccionada'];
+                     //$fecha             = $_POST['fecha'];
+                     //$mina_seleccionada = $_POST['mina_seleccionada'];
                      $u_id              = $_SESSION['u_id'];
                                    
                      $banco_sel    = $_POST['banco1'];
@@ -162,7 +161,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                 }                
                 else{            
                     ?>                             
-                    <form method="post" action="preorden_trabajo.php?unidad_id=<?echo $unidad_id;?>" name="Preordenform" id="Preordenform">  
+                    <form method="post" action="preorden_trabajo.php?unidad_id=<?php echo $unidad_id;?>" name="Preordenform" id="Preordenform">  
                     <fieldset>    
                     
                     <div class="container">                     
@@ -175,21 +174,21 @@ $_SESSION['unidad_id'] = $unidad_id;
                             <div class="col-md-10 col-lg-10">
                                       
                                     <div class="col-md-1 col-lg-1">               
-                                        <h5><?echo 'Fecha:'?></h5>
+                                        <h5><?php echo 'Fecha:'?></h5>
                                     </div> 
                                     <div class="col-md-2 col-lg-2">
                                          <input type="date" name="fecha" class="form-control" id="fecha"  disabled="1" value="<?php echo date("Y-m-d");?>"/>
                                     </div>                            
                                       
                               <div class="col-md-2 col-lg-2">                                
-                                        <?                           
+                                        <?php                            
                                         $unidad_id = $_GET['unidad_id'];
                                         if ($unidad_id == ""){
                                             $nombretop = "Seleccione Mina";
                                         }
                                         else{
                                             $nomtop = $unidad_id;
-                                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                                 while( $row = $result ->fetch_array(MYSQLI_ASSOC)){
                                                    $nombretop = $row['Nombre']; 
                                                 }
@@ -197,7 +196,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                         echo ("<form name=\"Busqueda\" id=\"Busqueda\">");                                   
                                         echo ("<select name=\"mina_seleccionada\" id=\"mina_seleccionada\" disabled class=\"form-control\" > ");        
                                         echo ("<option value=$nomtop>$nombretop</option>");
-                                        $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error());
+                                        $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error($mysqli));
                                         while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                                           {
                                               $nombre =($row["Nombre"]);
@@ -228,8 +227,8 @@ $_SESSION['unidad_id'] = $unidad_id;
                                   <tbody>
                                   <div class="col-md-2 col-lg-2">
                                     <td>                                
-                                        <?                           
-                                        $organizaciontop = $_GET['bancos'];
+                                        <?php                            
+                                        $organizaciontop = $_GET['bancos'] ?? "";
                                         if ($organizaciontop == ""){
                                             $nombretop = "Seleccione";
                                             $nomtop = 0;
@@ -237,7 +236,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                         echo ("<form name=\"banco1\" id=\"banco1\">");                                   
                                         echo ("<select name=\"banco1\" id=\"banco1\" onchange=actualiza_vol(1) class=\"form-control\" > ");        
                                         echo ("<option value=$nomtop>$nombretop</option>");
-                                        $result = $mysqli->query("SELECT banco_id, banco FROM arg_bancos WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                        $result = $mysqli->query("SELECT banco_id, banco FROM arg_bancos WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                         while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                       
                                           {
                                               $nombre =($row["banco"]);
@@ -251,14 +250,14 @@ $_SESSION['unidad_id'] = $unidad_id;
                                     
                                     <div class="col-md-1 col-lg-1">
                                         <td>
-                                        <?
-                                        $organizaciontop = $_GET['bancos'];
+                                        <?php 
+                                        $organizaciontop = $_GET['bancos'] ?? "";
                                         if ($organizaciontop == "")
                                         $nombretop = "Seleccione";                                  
                                         echo ("<form name=\"voladura1\" id=\"voladura1\">");                                   
                                         echo ("<select name=\"voladura1\" id=\"voladura1\" onchange=actualiza_ultimofol(1) class=\"form-control\" > ");        
                                         echo ("<option value=$nomtop>$nombretop</option>");
-                                        $result = $mysqli->query("SELECT voladura_id FROM arg_bancos_voladuras") or die(mysqli_error());
+                                        $result = $mysqli->query("SELECT voladura_id FROM arg_bancos_voladuras") or die(mysqli_error($mysqli));
                                         while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                       
                                           {
                                               $nombre =($row["voladura_id"]);
@@ -306,7 +305,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                     </div>
                   </div>
                 </div>
-       <?}
+       <?php }
     }
 }?>           
 <br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />

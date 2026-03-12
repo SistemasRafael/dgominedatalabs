@@ -1,16 +1,14 @@
-<?php //include "../connections/config.php"; 
-$unidad_id = $_GET['unidad_id'];
-$area_muestras = $_GET['area_id'];
-$ricos = $_GET['r_id'];
-$fecha = $_GET['fecha'];
-$turno = $_GET['turno'];
-$_SESSION['unidad_id'] = $unidad_id;
+<?php
+    $unidad_id = $_GET['unidad_id'];
+    $area_muestras = $_GET['area_id'] ?? "";
+    $ricos = $_GET['r_id'] ?? null;
+    $fecha = $_GET['fecha'] ?? '';
+    $turno = $_GET['turno'] ?? null;
+    $_SESSION['unidad_id'] = $unidad_id;
 
 if ($fecha == ''){    
     $fecha = date('Y-m-d');
     $fecha_eti = str_replace('-', '', $fecha);
-    //echo $fecha;
-    //echo $fecha_eti;
 }
 else{
     $fecha_eti = str_replace('-', '', $fecha);
@@ -204,7 +202,7 @@ else{
                  alert('Se generó la orden de trabajo satisfactoriamente');
                  var trn_id = $trn_id;
                  var unidad_id = $unidad_id 
-                 var print_d = '<?php echo "\orden_trabajo_rep.php?trn_id="?>'+trn_id;
+                 var print_d = '<?php echo "\orden_trabajo_rep.php?trn_id="?>' + trn_id + '&unidad_id=' + unidad_id;
                  window.location.href = print_d;
             }
             
@@ -236,12 +234,12 @@ else{
         {
             $user_fir       = $mysqli->query("SELECT nombre
                                               FROM `arg_usuarios`                                        
-                                              WHERE u_id = ".$_SESSION['u_id']) or die(mysqli_error());
+                                              WHERE u_id = ".$_SESSION['u_id']) or die(mysqli_error($mysqli));
             $user_firmado   = $user_fir ->fetch_array(MYSQLI_ASSOC);
             $nombre_usuario = $user_firmado['nombre'];
                         
      ?>                             
-         <form method="post" action="app_barr_dgo.php?unidad_id=<?echo $unidad_id."&area_id=".$area_muestras;?>" name="Visitaform" id="Visitaform">  
+         <form method="post" action="app_barr_dgo.php?unidad_id=<?php echo $unidad_id."&area_id=".$area_muestras;?>" name="Visitaform" id="Visitaform">  
          <fieldset>                       
             <div class="col-md-12 col-lg-12 bg-info text-black text-center">
                 <br />
@@ -252,9 +250,10 @@ else{
                 <div class="col-md-11 col-lg-11">
                     <div class="col-md-3 col-lg-3">  
                         <?php     
-                        $area_muestras = $_GET['area_id'];  
+                        $area_muestras = $_GET['area_id'] ?? "";  
                         if ($area_muestras == ""){
                             $nombretop = "Seleccione Tipo de Orden";
+                            $area_id = 0;
                         }
                         else{
                             switch ($area_muestras){
@@ -314,7 +313,7 @@ else{
                                                                   SELECT 5 as tipo_orden, 'Barras' as nombre_orden
                                                                     UNION ALL
                                                                   SELECT 6 as tipo_orden, 'Escorias' as nombre_orden                                                                  
-                                                                  ") or die(mysqli_error());
+                                                                  ") or die(mysqli_error($mysqli));
                                     while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                                         {
                                             $nombre =($row["nombre_orden"]);
@@ -326,7 +325,7 @@ else{
                     </div>
                                                     
                     <div class="col-md-1 col-lg-1">               
-                        <h5><?echo 'Fecha:'?></h5>
+                        <h5><?php echo 'Fecha:'?></h5>
                     </div>
                     
                     <div class="col-md-2 col-lg-2">
@@ -346,7 +345,7 @@ else{
                         $result = $mysqli->query("SELECT '07:00' AS turno, '1T' AS etiqueta 
                                                   UNION ALL 
                                                   SELECT '19:00' AS turno, '2T' AS etiqueta"
-                                                  ) or die(mysqli_error());
+                                                  ) or die(mysqli_error($mysqli));
                             while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                             {
                                 $nombre =($row["etiqueta"]);
@@ -365,7 +364,7 @@ else{
                         }
                         else{
                             $nomtop = $unidad_id;
-                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                 while( $row = $result ->fetch_array(MYSQLI_ASSOC)){
                                     $nombretop = $row['Nombre']; 
                                 }
@@ -373,7 +372,7 @@ else{
                             echo ("<form name=\"Busqueda\" id=\"Busqueda\">");                                   
                             echo ("<select name=\"mina_seleccionada\" id=\"mina_seleccionada\" disabled class=\"form-control\" > ");        
                             echo ("<option value=$nomtop>$nombretop</option>");
-                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error());
+                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error($mysqli));
                             while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                                 {
                                     $nombre =($row["Nombre"]);
@@ -408,7 +407,7 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(29, 30, 5, 27, 33)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                  elseif ($area_id == 2) {$datos_res = $mysqli->query("SELECT 
                                                                                     metodo_id, nombre 
@@ -417,7 +416,7 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(27, 33)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                  elseif ($area_id == 3) {$datos_res = $mysqli->query("SELECT 
                                                                                     metodo_id, nombre 
@@ -426,7 +425,7 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(2, 9, 30, 35)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                  elseif ($area_id == 4) {$datos_res = $mysqli->query("SELECT 
                                                                                     metodo_id, nombre 
@@ -435,7 +434,7 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(2, 28, 30)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                  elseif ($area_id == 5) {$datos_res = $mysqli->query("SELECT 
                                                                                     metodo_id, nombre 
@@ -444,7 +443,7 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(2, 28)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                  elseif ($area_id == 6) {$datos_res = $mysqli->query("SELECT 
                                                                                     metodo_id, nombre 
@@ -453,23 +452,26 @@ else{
                                                                               WHERE 
                                                                                     metodo_id IN(28, 30, 31)
                                                                               ORDER BY 
-                                                                                    nombre") or die(mysqli_error());
+                                                                                    nombre") or die(mysqli_error($mysqli));
                                                  }
                                                 
                                                  ?>
                                                  <div class="[ form-group ] ">   
-                                                    <?php while ($fila = $datos_res->fetch_assoc()) {?>
-                                                            <input type="checkbox" name="<?echo 'fila2_'.$fila['metodo_id']?>" id="<?echo 'fila2_'.$fila['metodo_id']?>" autocomplete="off" />
-                                                            <div class="[ btn-group ]">                                                                
-                                                                <label for="<?echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-info ]">
-                                                                    <span class="[ glyphicon glyphicon-ok ]"></span>                            
-                                                                    <span></span>
-                                                                </label>                                                    
-                                                                <label for="<?echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-info active ]">
-                                                                    <?echo $fila['nombre']?>
-                                                                </label>                              
-                                                            </div>                                            
-                                                    <?}?>                                        
+                                                    <?php  
+                                                        if(isset($datos_res)){
+                                                            while ($fila = $datos_res->fetch_assoc()) {?>
+                                                                    <input type="checkbox" name="<?php echo 'fila2_'.$fila['metodo_id']?>" id="<?php echo 'fila2_'.$fila['metodo_id']?>" autocomplete="off" />
+                                                                    <div class="[ btn-group ]">                                                                
+                                                                        <label for="<?php echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-info ]">
+                                                                            <span class="[ glyphicon glyphicon-ok ]"></span>                            
+                                                                            <span></span>
+                                                                        </label>                                                    
+                                                                        <label for="<?php echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-info active ]">
+                                                                            <?php echo $fila['nombre']?>
+                                                                        </label>                              
+                                                                    </div>                                            
+                                                        <?php }
+                                                        }?>                                        
                                                  </div>   
                                          </th>
                                     </tr>
@@ -482,7 +484,7 @@ else{
                                                                        FROM
                                                                             `arg_empr_unidades` 
                                                                        WHERE unidad_id = ".$unidad_id
-                                                                ) or die(mysqli_error());
+                                                                ) or die(mysqli_error($mysqli));
                                              $i = 3;                                       
                                              $muestra = 'muestra'.$i;
                                              $posicion_nombre = 'p'.$muestra;
@@ -512,7 +514,7 @@ else{
                                             <th colspan='1'>No.</th>
                                             <th colspan='1'>MUESTRA
                                             
-                                            <?                                      
+                                            <?php                                       
                                              $i = 3;
                                              $fr = 1;
                                              $reng = 1;
@@ -523,9 +525,9 @@ else{
                                                 
                                       <?php while ($fr <= $max_renglones_c){?>
                                          <tr>
-                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?echo $fr;?>" />  </td>  
+                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?php echo $fr;?>" />  </td>  
                                                                                     
-                                            <td> <input type="text" name="<?echo 'sig_muestra'.$fr;?>" id="<?echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?echo $fr;?>);" /> </td>
+                                            <td> <input type="text" name="<?php echo 'sig_muestra'.$fr;?>" id="<?php echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?php echo $fr;?>);" /> </td>
                                         </tr>
                                      <?php $fr++;
                                      }?>
@@ -566,7 +568,7 @@ else{
                                                 $result = $mysqli->query("SELECT 0 AS ric_id, 'Ricos' AS etiqueta
                                                                           UNION ALL 
                                                                           SELECT 1 AS ric_id, 'Pobres' AS etiqueta"
-                                                                          ) or die(mysqli_error());
+                                                                          ) or die(mysqli_error($mysqli));
                                                 while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                                                     {
                                                         $nom_id =($row["ric_id"]);
@@ -597,7 +599,7 @@ else{
                                              $muestra = 'muestra'.$i;
                                              $posicion_nombre = 'p'.$muestra;
                                              ?>
-                                                <td> <input type="text" name="<?echo 'muestra'.$i;?>" id="<?echo 'muestra'.$i;?>" class="form-control" onchange="calculatotal(<?echo $i;?>);" /> </td>
+                                                <td> <input type="text" name="<?php echo 'muestra'.$i;?>" id="<?php echo 'muestra'.$i;?>" class="form-control" onchange="calculatotal(<?php echo $i;?>);" /> </td>
                                              <?php
                                              /*echo ("<td>"); 
                                                 echo ("<form name=\"muestra\" id=\"muestra\">");                               
@@ -633,9 +635,9 @@ else{
                                      <div class="col-md-1 col-lg-1">
                                       <?php while ($fr <= $max_renglones){?>
                                          <tr>
-                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?echo $fr;?>" />  </td>  
+                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?php echo $fr;?>" />  </td>  
                                                                                     
-                                            <td> <input type="text" name="<?echo 'sig_muestra'.$fr;?>" id="<?echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?echo $fr;?>);" /> </td>
+                                            <td> <input type="text" name="<?php echo 'sig_muestra'.$fr;?>" id="<?php echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?php echo $fr;?>);" /> </td>
                                         </tr>
                                      <?php $fr++;
                                      }?>
@@ -653,9 +655,9 @@ else{
                                      <div class="col-md-1 col-lg-1">
                                       <?php while ($fr <= $max_renglones){?>
                                          <tr>
-                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?echo $fr;?>" />  </td>  
+                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?php echo $fr;?>" />  </td>  
                                                                                     
-                                            <td> <input type="text" name="<?echo 'sig_muestra'.$fr;?>" id="<?echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?echo $fr;?>);" /> </td>
+                                            <td> <input type="text" name="<?php echo 'sig_muestra'.$fr;?>" id="<?php echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?php echo $fr;?>);" /> </td>
                                         </tr>
                                      <?php $fr++;
                                      }?>
@@ -683,9 +685,9 @@ else{
                                      <div class="col-md-1 col-lg-1">
                                       <?php while ($fr <= $max_renglones){?>
                                          <tr>
-                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?echo $fr;?>" />  </td>  
+                                            <td> <input type="text" name="id" id="sig1" disabled="" class="form-control" value="<?php echo $fr;?>" />  </td>  
                                                                                     
-                                            <td> <input type="text" name="<?echo 'sig_muestra'.$fr;?>" id="<?echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?echo $fr;?>);" /> </td>
+                                            <td> <input type="text" name="<?php echo 'sig_muestra'.$fr;?>" id="<?php echo 'sig_muestra'.$fr;?>" class="form-control" onchange="calculatotal(<?php echo $fr;?>);" /> </td>
                                         </tr>   
                                     
                                      <?php $fr++;
@@ -706,7 +708,7 @@ else{
                         <td style="width:1%"></td>                               
                         <td style="width:5%"><input type="input" name="total_muestras_1" id="total_muestras_1" disabled="1" value="" class="form-control" /></td> 
                         <input type="hidden" name="total_muestras1" id="total_muestras1" value="" class="form-control" />
-                        <input type="hidden" name="total_muestras_lista" id="total_muestras_lista" value="<?echo  $total_muestras;?>" class="form-control" />
+                        <input type="hidden" name="total_muestras_lista" id="total_muestras_lista" value="<?php echo  $total_muestras;?>" class="form-control" />
                         <td style="width:20%"></td>     
                     </tr>                                    
                 </tbody>                                      
@@ -736,12 +738,12 @@ else{
                     </div>
          </div>
          </div> 
-       <?
+       <?php 
        //Click en Generar Orden
        if (isset($_POST['generar_ordenBarra'])){
                      $caracter_mina  = $mysqli->query("SELECT caracter_folio, nombre, serie
                                                       FROM `arg_empr_unidades`                                        
-                                                        WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                                        WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                      $caracter_fol   = $caracter_mina ->fetch_array(MYSQLI_ASSOC);
                      $caracter_folio = $caracter_fol['caracter_folio'];
                      $serie_mina     = $caracter_fol['serie'];
@@ -800,7 +802,7 @@ else{
                                 
                      //Métodos
                      $val_met = 0;
-                     $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(2, 5, 9, 27, 28, 29, 30, 31, 33,35) ") or die(mysqli_error());
+                     $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(2, 5, 9, 27, 28, 29, 30, 31, 33,35) ") or die(mysqli_error($mysqli));
                      while ($metodos = $metodos_validar->fetch_assoc()) {
                         $metodo_id = $metodos['metodo_id'];
                         $fila1 = 'fila2_'.$metodo_id;
@@ -818,12 +820,12 @@ else{
                      }     
                      else{
                         if ($crear == 1 & $val_met > 0 & $area_id <> 2){
-                            $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error());
+                            $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error($mysqli));
                             $ma_trn_id = $max_trn_id ->fetch_array(MYSQLI_ASSOC);
                             $trn_id = $ma_trn_id['trn_id'];
                             $trn_id = $trn_id + 1;
                         
-                            $max_fol = $mysqli->query("SELECT IFNULL(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                            $max_fol = $mysqli->query("SELECT IFNULL(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                             $max_foli = $max_fol ->fetch_array(MYSQLI_ASSOC);
                             $max_folio = $max_foli['folio'];
                             $folio_orden = $max_folio + 1;
@@ -834,7 +836,7 @@ else{
                             $mysqli->query($query) ;
                            // echo $query;
                             //Ordenes_detalle
-                            $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error());
+                            $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error($mysqli));
                             $max_trn = $max_trn_det ->fetch_array(MYSQLI_ASSOC);
                             $tr_id_det = $max_trn['trn_id'];
                             $tr_id_det = $tr_id_det + 1;
@@ -844,7 +846,7 @@ else{
                                                                             LEFT JOIN arg_ordenes AS o
                                                                                     ON od.trn_id_rel = o.trn_id
                                                                             WHERE
-                                                                                    o.unidad_id = ".$unidad_id) or die(mysqli_error());
+                                                                                    o.unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                             $max_fol = $max_folio_det ->fetch_array(MYSQLI_ASSOC);
                             $folio_det = $max_fol['folio_ord'];
                             $folio_det = $folio_det + 1;
@@ -864,13 +866,13 @@ else{
                     
                                      
                             //MUESTRAS METODOS   
-                            $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos ") or die(mysqli_error());
+                            $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos ") or die(mysqli_error($mysqli));
                             $ma_trn_id_m = $max_trn_id_met ->fetch_array(MYSQLI_ASSOC);
                             $trn_id_met = $ma_trn_id_m['trn_id'];
                             $trn_id_met = $trn_id_met+1;   
                             $unic = 1;
                             
-                            $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error());
+                            $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error($mysqli));
                                         $max_trn_id_mue = $max_trn_id_mu ->fetch_array(MYSQLI_ASSOC);
                                         $max_trn_id_mues = $max_trn_id_mue['trn_id'];
                                         $max_trn_id_mues = $max_trn_id_mues+1; 
@@ -896,7 +898,7 @@ else{
                             $mysqli->query($query);  
                             //echo $query.'</br>'; 
                                                     
-                            $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE metodo_id IN(2, 5, 9, 27, 28, 29, 30, 31, 33, 35)") or die(mysqli_error());
+                            $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE metodo_id IN(2, 5, 9, 27, 28, 29, 30, 31, 33, 35)") or die(mysqli_error($mysqli));
                             while ($metodos = $metodos_validar->fetch_assoc()) {
                                 
                                 $metodo_id = $metodos['metodo_id'];
@@ -1039,7 +1041,7 @@ else{
                      //}
                      
                      elseif ($area_id == 2){
-                        $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE metodo_id IN( 27, 33)") or die(mysqli_error());
+                        $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE metodo_id IN( 27, 33)") or die(mysqli_error( $mysqli));
                         while ($metodos = $metodos_validar->fetch_assoc()) {
                             
                             $metodo_id = $metodos['metodo_id'];
@@ -1051,12 +1053,12 @@ else{
                             if ($metodo_sel == 'on'){
                                 echo 'entro metodaparteE'.$metodo_id;
                                 
-                                $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error());
+                                $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error($mysqli));
                                 $ma_trn_id = $max_trn_id ->fetch_array(MYSQLI_ASSOC);
                                 $trn_id = $ma_trn_id['trn_id'];
                                 $trn_id = $trn_id + 1;
                         
-                                $max_fol = $mysqli->query("SELECT IFNULL(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                $max_fol = $mysqli->query("SELECT IFNULL(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                 $max_foli = $max_fol ->fetch_array(MYSQLI_ASSOC);
                                 $max_folio = $max_foli['folio'];
                                 $folio_orden = $max_folio + 1;
@@ -1067,7 +1069,7 @@ else{
                                 $mysqli->query($query) ;
                                 //echo $query;
                                 //Ordenes_detalle
-                                $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error());
+                                $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error($mysqli));
                                 $max_trn = $max_trn_det ->fetch_array(MYSQLI_ASSOC);
                                 $tr_id_det = $max_trn['trn_id'];
                                 $tr_id_det = $tr_id_det + 1;
@@ -1077,13 +1079,13 @@ else{
                                                                                    LEFT JOIN arg_ordenes AS o
                                                                                         ON od.trn_id_rel = o.trn_id
                                                                                    WHERE
-                                                                                        o.unidad_id = ".$unidad_id) or die(mysqli_error());
+                                                                                        o.unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                 $max_fol = $max_folio_det ->fetch_array(MYSQLI_ASSOC);
                                 $folio_det = $max_fol['folio_ord'];
                                 $folio_det = $folio_det + 1;
                                 
                                               //MUESTRAS METODOS   
-                                 $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos ") or die(mysqli_error());
+                                 $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos ") or die(mysqli_error($mysqli));
                                  $ma_trn_id_m = $max_trn_id_met ->fetch_array(MYSQLI_ASSOC);
                                  $trn_id_met = $ma_trn_id_m['trn_id'];
                                  $trn_id_met = $trn_id_met+1;   
@@ -1130,7 +1132,7 @@ else{
                                     echo     $query;  
                                     
                                     
-                                    $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error());
+                                    $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error($mysqli));
                                     $max_trn_id_mue = $max_trn_id_mu ->fetch_array(MYSQLI_ASSOC);
                                     $max_trn_id_mues = $max_trn_id_mue['trn_id'];
                                     $max_trn_id_mues = $max_trn_id_mues+1;  
@@ -1205,7 +1207,7 @@ else{
                                                   "VALUES ($trn_id_met, $tr_id_det, $metodo_id)";
                                          $mysqli->query($query) ;                                         
                                          
-                                         $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error());
+                                         $max_trn_id_mu = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_muestrasMetalurgia ") or die(mysqli_error($mysqli));
                                          $max_trn_id_mue = $max_trn_id_mu ->fetch_array(MYSQLI_ASSOC);
                                          $max_trn_id_mues = $max_trn_id_mue['trn_id'];
                                          $max_trn_id_mues = $max_trn_id_mues+1;
@@ -1252,7 +1254,7 @@ else{
                         }
                    }// Fin de creación de orden
                 }//Fin del post
-                   if ($trn_id <> 0){
+                   if (isset($trn_id) && $trn_id <> 0){
                         echo "<script>";
                         echo "imprimir(".$unidad_id.", ".$trn_id.")";
                         echo "</script>"; 

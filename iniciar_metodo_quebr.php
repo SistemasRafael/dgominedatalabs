@@ -1,7 +1,7 @@
 
 <meta charset="UTF-8" >
 
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 
 <?php
 $html = '';
@@ -47,7 +47,7 @@ if (isset($trn_id)){
                                         AND ob.fase_id = ".$fase_id."
                                         AND ob.etapa_id = ".$etapa_id."
                                     ORDER BY ob.fecha DESC
-                                    LIMIT 1") or die(mysqli_error());
+                                    LIMIT 1") or die(mysqli_error($mysqli));
                                     
    $tipo_orden = $mysqli->query("SELECT 
                                     (CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
@@ -55,7 +55,7 @@ if (isset($trn_id)){
                                 FROM arg_ordenes ord
                                 LEFT JOIN arg_ordenes_detalle odet
                                     ON ord.trn_id =  odet.trn_id_rel
-                                WHERE odet.trn_id = ".$trn_id) or die(mysqli_error());             
+                                WHERE odet.trn_id = ".$trn_id) or die(mysqli_error($mysqli));             
    $tipo_ord = $tipo_orden->fetch_assoc();
    $reensaye = $tipo_ord['reensaye'];
    $orden_trabajo = $tipo_ord['folio_interno']; 
@@ -74,7 +74,7 @@ if (isset($trn_id)){
                                     WHERE 
                                         up.perfil_id = 5
                                         AND up.activo = 1
-                                    	AND up.u_id = ".$u_id) or die(mysqli_error());             
+                                    	AND up.u_id = ".$u_id) or die(mysqli_error($mysqli));             
    $validar_supervi = $validar_superv->fetch_assoc();
    $supervisor = $validar_supervi['perfil_id'];   
         
@@ -114,7 +114,7 @@ if (isset($trn_id)){
                                                         arg_ordenes_humedad hum
                                                    WHERE
                                                         hum.trn_id_batch = ".$trn_id
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT
@@ -128,7 +128,7 @@ if (isset($trn_id)){
                                                             AND hum.trn_id_rel = mm.trn_id
                                                         WHERE 
                                                             hum.trn_id_batch = ".$trn_id) 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                                     
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -171,7 +171,7 @@ if (isset($trn_id)){
                                                         WHERE
                                                         	mq.trn_id_batch  = ".$trn_id."  
                                                             AND mq.metodo_id = ".$metodo_id
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -244,7 +244,7 @@ if (isset($trn_id)){
                                                 hum.trn_id_batch = ".$trn_id."
                                                 AND mm.metodo_id = ".$metodo_id."
                                                 AND hum.peso_humedo = 0") 
-                                            or die(mysqli_error());                                    
+                                            or die(mysqli_error($mysqli));                                    
                 
                 if ($peso_det->num_rows > 0) {         
                   while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -282,7 +282,7 @@ if (isset($trn_id)){
                                                         WHERE
                                                         	mq.trn_id_batch  = ".$trn_id."  
                                                             AND mq.metodo_id = ".$metodo_id
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -351,7 +351,7 @@ if (isset($trn_id)){
                                              WHERE 
                                                   hum.trn_id_batch = ".$trn_id."
                                                   AND hum.peso_seco = 0") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                                     
                         
                   while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -411,7 +411,7 @@ if (isset($trn_id)){
                                                         arg_ordenes_densidad den
                                                    WHERE
                                                         den.trn_id_batch = ".$trn_id
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT
@@ -425,7 +425,7 @@ if (isset($trn_id)){
                                                             AND hum.trn_id_rel  = mm.trn_id
                                                         WHERE 
                                                             hum.trn_id_batch = ".$trn_id) 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                                     
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -467,7 +467,7 @@ if (isset($trn_id)){
                                                         WHERE
                                                         	mq.trn_id_batch  = ".$trn_id."  
                                                             AND mq.metodo_id = ".$metodo_id
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error( $mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -527,7 +527,7 @@ if (isset($trn_id)){
                                                 ON hum.trn_id_batch = mm.trn_id_rel
                                                 AND hum.trn_id_rel = mm.trn_id
                                         WHERE 
-                                            hum.trn_id_batch  = ".$trn_id) or die(mysqli_error());             
+                                            hum.trn_id_batch  = ".$trn_id) or die(mysqli_error($mysqli));             
                             $elpeso = $peso_all_act->fetch_assoc();
                             $elpeso1 = $elpeso['peso_malla'];   
                   
@@ -572,7 +572,7 @@ if (isset($trn_id)){
                                                         arg_ordenes_granulometria den
                                                    WHERE
                                                         den.trn_id_batch = ".$trn_id
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                  // echo   $peso_tomar;
                   
                   if ($existen_peso->num_rows > 0) { 
@@ -589,7 +589,7 @@ if (isset($trn_id)){
                                                         WHERE 
                                                             hum.trn_id_batch  = ".$trn_id."
                                                             AND ".$elpeso1) 
-                                                                or die(mysqli_error());                                    
+                                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -628,7 +628,7 @@ if (isset($trn_id)){
                                                         WHERE
                                                         	mq.trn_id_batch  = ".$trn_id."  
                                                             AND mq.metodo_id = ".$metodo_id
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -695,7 +695,7 @@ if (isset($trn_id)){
                                                    WHERE
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {
                         if($reensaye == 0){
@@ -717,7 +717,7 @@ if (isset($trn_id)){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                          }
                          else{
                             $peso_det = $mysqli->query("SELECT 
@@ -738,7 +738,7 @@ if (isset($trn_id)){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                             
                          }                                  
                         
@@ -781,7 +781,7 @@ if (isset($trn_id)){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         }
                         else{
                              $resultado_mues = $mysqli->query("SELECT 
@@ -798,7 +798,7 @@ if (isset($trn_id)){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         }
                         
                         
@@ -867,7 +867,7 @@ if (isset($trn_id)){
                                                     mc.trn_id = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND mc.peso = 0"
-                                               ) or die(mysqli_error());
+                                               ) or die(mysqli_error($mysqli));
                 
               if ($existen_peso->num_rows > 0) {                        
                     $peso_det = $mysqli->query("SELECT
@@ -883,7 +883,7 @@ if (isset($trn_id)){
                                                         hum.trn_id = ".$trn_id."
                                                         AND hum.metodo_id = ".$metodo_id."
                                                         AND peso = 0")
-                                            or die(mysqli_error()); 
+                                            or die(mysqli_error($mysqli)); 
                                 
                     
                     while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -924,7 +924,7 @@ if (isset($trn_id)){
                                                     WHERE
                                                         mq.trn_id_batch  = ".$trn_id."  
                                                         AND mq.metodo_id = ".$metodo_id
-                                                     ) or die(mysqli_error());
+                                                     ) or die(mysqli_error($mysqli));
                     
                     while ($res_muestras = $resultado_mues->fetch_assoc()) {
                         //$con = $res_muestras['posicion'];
@@ -1009,7 +1009,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                 AND mq.metodo_id = ".$metodo_id."
                                                 AND mq.fase_id = ".$fase_id."
                                                 AND mq.etapa_id = 30"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
                                             
     $fechaInicio_fil = $inicio_filtrmuestras->fetch_assoc();
     $fecha_hora_ini = $fechaInicio_fil['fecha'];
@@ -1021,7 +1021,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                     arg_usuarios u                                                           
                                   WHERE
                                     u.u_id = $u_id"
-                                ) or die(mysqli_error());
+                                ) or die(mysqli_error($mysqli));
                                             
     $userFiltraC = $userFiltra->fetch_assoc();
     $userFiltraNombre = $userFiltraC['userFiltra'];                                        
@@ -1091,7 +1091,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                    WHERE
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {
                         if($reensaye == 0){
@@ -1113,7 +1113,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                          }
                          else{
                             $peso_det = $mysqli->query("SELECT 
@@ -1134,7 +1134,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                             
                          }                                  
                         
@@ -1177,7 +1177,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         }
                         else{
                              $resultado_mues = $mysqli->query("SELECT 
@@ -1194,7 +1194,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         }
                         
                         
@@ -1456,7 +1456,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                     mc.trn_id  = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND ol.tipo_id IN (0, 4)
-                                                    AND mc.peso = 0") or die(mysqli_error());             
+                                                    AND mc.peso = 0") or die(mysqli_error($mysqli));             
                                 $elpeso = $peso_all_act->fetch_assoc();
                                 $peso_sig = $elpeso['peso'];  
                                 
@@ -1471,7 +1471,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                     mc.trn_id  = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND ol.tipo_id = 0
-                                                    AND mc.peso_original = 0") or die(mysqli_error());             
+                                                    AND mc.peso_original = 0") or die(mysqli_error($mysqli));             
                                 $elpeso_orig = $peso_all_ori->fetch_assoc();
                                 $peso_or = $elpeso_orig['peso_ori'];         
                                       
@@ -1495,7 +1495,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                     mc.trn_id  = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND ol.tipo_id = 200
-                                                    AND peso_malla200 is null") or die(mysqli_error());             
+                                                    AND peso_malla200 is null") or die(mysqli_error($mysqli));             
                                 $elpeso = $peso_all_actu->fetch_assoc();
                                 $peso_sig2 = $elpeso['peso200'];
                                 
@@ -1539,7 +1539,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         mc.trn_id = ".$trn_id."
                                                         AND mc.metodo_id = ".$metodo_id."
                                                         AND ".$peso_sig_fil
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -1559,7 +1559,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND ".$peso_sig_fil."
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -1600,7 +1600,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY 
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -1673,7 +1673,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.incuarte = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -1693,7 +1693,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.incuarte = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -1745,7 +1745,7 @@ if($fase_id == 24 && $etapa_id == 31){
                             </thead>
                             <tbody>
                             <tr>";                             
-                                $result_h = $mysqli->query("SELECT  ins_id, nombre FROM arg_instrumentos WHERE fase_id = 11 AND etapa_id = 8") or die(mysqli_error());   
+                                $result_h = $mysqli->query("SELECT  ins_id, nombre FROM arg_instrumentos WHERE fase_id = 11 AND etapa_id = 8") or die(mysqli_error( $mysqli));   
                                 $html.="<td><select name='ins_id' id='ins_id' class='form-control'>";                          
                                 while ( $row2 = $result_h ->fetch_assoc()) {
                                     $instrumento = $row2['nombre'];
@@ -1799,7 +1799,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_payon = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -1819,7 +1819,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_payon = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -1883,7 +1883,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_dore = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -1903,7 +1903,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_dore = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -1954,7 +1954,7 @@ if($fase_id == 24 && $etapa_id == 31){
                             <tr>";                             
                                 $result_h = $mysqli->query("SELECT  ins_id as ins_id_cop, nombre FROM arg_instrumentos WHERE fase_id = 11 AND etapa_id = 9 
                                                             UNION ALL
-                                                            SELECT  ins_id as ins_id_cop, nombre FROM arg_instrumentos WHERE fase_id = 11 AND etapa_id = 8 ") or die(mysqli_error());   
+                                                            SELECT  ins_id as ins_id_cop, nombre FROM arg_instrumentos WHERE fase_id = 11 AND etapa_id = 8 ") or die(mysqli_error($mysqli));   
                                 $html.="<td><select name='ins_id_cop' id='ins_id_cop' class='form-control'>";                          
                                 while ( $row2 = $result_h ->fetch_assoc()) {
                                     $instrumento_cop = $row2['nombre'];
@@ -2042,7 +2042,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso = 0"                                                        
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {      
                     if($reensaye == 0){                  
@@ -2064,7 +2064,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                     }
                     else{
                         $peso_det = $mysqli->query("SELECT
@@ -2083,7 +2083,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          pul.peso = 0 AND pul.trn_id = ".$trn_id." 
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                       ORDER BY ot.posicion") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                     }   
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -2123,7 +2123,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY 
                                                             mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                         
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -2163,7 +2163,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                                 AND mq.metodo_id = ".$metodo_id."
                                                             ORDER BY 
                                                                 mq.posicion"
-                                                            ) or die(mysqli_error());
+                                                            ) or die(mysqli_error($mysqli));
 
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             //$con = $res_muestras['posicion'];
@@ -2268,7 +2268,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.incuarte = 0
                                                         AND den.reensaye = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {    
                     if($reensaye == 0){                            
@@ -2290,7 +2290,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.incuarte = 0
                                                             AND mc.reensaye = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());
+                                                or die(mysqli_error($mysqli));
                     }
                     else{
                         $peso_det = $mysqli->query("SELECT
@@ -2310,7 +2310,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                          AND pul.reensaye = 0
                                                       ORDER BY ot.posicion") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                     }                                
                         
                     while ($res_muestras = $peso_det->fetch_assoc()) {
@@ -2376,7 +2376,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_payon = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {    
                     if($reensaye == 0){                       
@@ -2397,7 +2397,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_payon = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                     }
                     else{
                         $peso_det = $mysqli->query("SELECT
@@ -2417,7 +2417,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          AND pul.trn_id = ".$trn_id." 
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                       ORDER BY ot.posicion") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                     }    
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -2459,7 +2459,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         	mq.trn_id_batch  = ".$trn_id."  
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());       
+                                                or die(mysqli_error($mysqli));       
                     }
                     else{
                         $resultado = $mysqli->query("SELECT
@@ -2480,7 +2480,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                       WHERE
                                                          pul.trn_id = ".$trn_id." 
                                                          AND pul.metodo_id = ".$metodo_id." 
-                                                      ORDER BY ot.posicion") or die(mysqli_error());
+                                                      ORDER BY ot.posicion") or die(mysqli_error($mysqli));
                     }
                     $cont = 0;
                          while ($res_muestras = $resultado->fetch_assoc()) {
@@ -2565,7 +2565,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_dore = 0
                                                         AND den.reensaye = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {    
                   //  echo 'holaaaaaaaa';
@@ -2588,7 +2588,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.reensaye = 0
                                                             AND mc.peso_dore = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                     }
                     else{
                         $peso_det = $mysqli->query("SELECT
@@ -2608,7 +2608,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                          AND pul.reensaye = 0
                                                       ORDER BY ot.posicion") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                     }   
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -2651,7 +2651,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND reensaye = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());       
+                                                or die(mysqli_error($mysqli));       
                     }
                     else{
                       //  echo 'Aaca';
@@ -2674,7 +2674,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          pul.trn_id = ".$trn_id." 
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                          AND reensaye = 0
-                                                      ORDER BY ot.posicion") or die(mysqli_error());
+                                                      ORDER BY ot.posicion") or die(mysqli_error($mysqli));
                     }
                     $con = 0;
                          while ($res_muestras = $resultado->fetch_assoc()) {
@@ -2749,7 +2749,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.reensaye = 0
                                                         AND den.capturado = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {          
                     if($reensaye == 0){             
@@ -2771,7 +2771,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.capturado = 0
                                                             AND mc.reensaye = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                     }
                     else{
                         $peso_det = $mysqli->query("SELECT
@@ -2791,7 +2791,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                          AND pul.reensaye = 0
                                                       ORDER BY ot.posicion") 
-                                                or die(mysqli_error()); 
+                                                or die(mysqli_error($mysqli)); 
                     }    
                     while ($res_muestras = $peso_det->fetch_assoc()) {
                         $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -2834,7 +2834,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.reensaye = 0
                                                         ORDER BY mq.posicion") 
-                                                or die(mysqli_error());       
+                                                or die(mysqli_error($mysqli));       
                     }
                     else{
                         $resultado = $mysqli->query("SELECT
@@ -2857,7 +2857,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                          pul.trn_id = ".$trn_id." 
                                                          AND pul.metodo_id = ".$metodo_id." 
                                                          AND pul.reensaye = 0
-                                                      ORDER BY ot.posicion") or die(mysqli_error());
+                                                      ORDER BY ot.posicion") or die(mysqli_error(   $mysqli));
                     }
                     $con = 0;
                          while ($res_muestras = $resultado->fetch_assoc()) {
@@ -2930,7 +2930,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso = 0"                                                        
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {
                     echo 'primerif ';
@@ -2952,7 +2952,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mc.peso = 0
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -2989,7 +2989,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id = ".$metodo_id."
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                        
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3241,7 +3241,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                     mc.trn_id  = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND ol.tipo_id = 0
-                                                    AND mc.peso_original = 0") or die(mysqli_error());             
+                                                    AND mc.peso_original = 0") or die(mysqli_error($mysqli));             
                                 $elpeso_orig = $peso_all_ori->fetch_assoc();
                                 $peso_or = $elpeso_orig['peso_ori'];        
                                       
@@ -3265,7 +3265,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                     mc.trn_id  = ".$trn_id."
                                                     AND mc.metodo_id = ".$metodo_id."
                                                     AND peso = 0
-                                                    AND tipo_id = 0") or die(mysqli_error());             
+                                                    AND tipo_id = 0") or die(mysqli_error($mysqli));             
                                 $elpeso = $peso_all_actu->fetch_assoc();
                                 $peso_sig2 = $elpeso['peso200'];
                                 
@@ -3319,7 +3319,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND ".$peso_sig_fil                                                       
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {
                             $peso_det = $mysqli->query("SELECT 
@@ -3340,7 +3340,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND ".$peso_sig_fil."
                                                         ORDER BY 
                                                             mq.bloque, mq.folio_interno") 
-                                                or die(mysqli_error());  
+                                                or die(mysqli_error($mysqli));  
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3378,7 +3378,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.tipo_id = 0
                                                         ORDER BY
                                                             mq.bloque, mq.posicion"
-                                                         ) or die(mysqli_error());
+                                                         ) or die(mysqli_error($mysqli));
                        
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3444,7 +3444,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.incuarte = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -3464,7 +3464,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.incuarte = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3528,7 +3528,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_payon = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -3548,7 +3548,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_payon = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3612,7 +3612,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_dore = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -3633,7 +3633,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_dore = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
@@ -3698,7 +3698,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                         den.trn_id = ".$trn_id."
                                                         AND den.metodo_id = ".$metodo_id."
                                                         AND den.peso_oro = 0"
-                                                   ) or die(mysqli_error());
+                                                   ) or die(mysqli_error($mysqli));
                     
                   if ($existen_peso->num_rows > 0) {                        
                         $peso_det = $mysqli->query("SELECT 
@@ -3719,7 +3719,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                                             AND mq.metodo_id =  ".$metodo_id."
                                                             AND mc.peso_oro = 0
                                                         ORDER BY mq.bloque, mq.posicion") 
-                                                or die(mysqli_error());                                    
+                                                or die(mysqli_error($mysqli));                                    
                         
                         while ($res_muestras = $peso_det->fetch_assoc()) {
                             $trnid_batch   = $res_muestras['trn_id_batch'];
