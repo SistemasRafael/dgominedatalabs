@@ -668,7 +668,7 @@
             		data: {trn_id:trn_id, metodo:metodo, fase:fase, etapa:etapa, unidad_tem:unidad_tem},
             }).done(function(respuesta){
             //alert(respuesta);
-            if (etapa == 5){//Pesaje muestra
+            if (etapa == 5){ //Pesaje muestra
                 //alert('ok');
                 $('#metodo_modal').modal('show');
                 $("#datos_metodo").html(respuesta); 
@@ -715,7 +715,6 @@
                 $('#digestion_modal').modal('show').trigger('shown');
             }            
             if (etapa == 7){//Lectura de absorcion: exportar-importar CSV
-                console.log("Importar entro aqui");
                 $('#importar_modal').modal('show');
                 $("#datos_importar").html(respuesta);
             }
@@ -885,8 +884,7 @@
             		dataType: 'html',
             		data: {trn_id:trn_id, metodo:metodo, fase:fase, etapa:etapa, unidad_tem:unidad_tem},
             }).done(function(respuesta){
-            //alert(respuesta);
-            if (etapa == 5){//Pesaje charola
+            if (etapa == 5) { //Pesaje charola
                 $('#metodo_modal').modal('show');
                 $("#datos_metodo").html(respuesta); 
                 $('#metodo_modal').on('shown.bs.modal', function (e) {
@@ -1007,7 +1005,6 @@
                 $('#digestion_modal').modal('show').trigger('shown');
             }            
             if (etapa == 7){//Lectura de absorcion: exportar-importar CSV
-                console.log("Exportar entro aqui");
                 $('#importar_modal').modal('show');
                 $("#datos_importar").html(respuesta);
             }
@@ -1343,67 +1340,71 @@
     //Quebradora metodos guardar
     function met_pesoHum_guardar(trnid_batch, trnid_rel, metodo, fase, etapa, contador, unidad)
     {
-         var contador = contador;   
-         var warn_met = 0;
-         var trnid_orden   = trnid_batch;
-         var trnid_muestra = trnid_rel;
-         var metodo_id = metodo;
-         var fase = fase;
-         var etapa = etapa;
-         var unidad = unidad;
-         var table = document.getElementById("tabla_pesaje_met");
-         var total_rows_m = parseInt(table.rows.length)-3;
-         
-         if (total_rows_m == contador){
-             var fin_met = 1;
-         }
-         else{
-             var fin_met = 0;
-         }
-         
-         cantidad_met    = "peso_met"+contador;
-         cantidad_metodo = document.getElementById(cantidad_met).value;
-        // alert(cantidad_metodo);
-         if(metodo_id == 30) {
-             if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
-                {
-                    warn_met = 1;
-                    //alert('El valor debe ser diferente de cero:');
-                    meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
-                }               
-          }
+        var contador = contador;   
+        var warn_met = 0;
+        var trnid_orden   = trnid_batch;
+        var trnid_muestra = trnid_rel;
+        var metodo_id = metodo;
+        var fase = fase;
+        var etapa = etapa;
+        var unidad = unidad;
+        var table = document.getElementById("tabla_pesaje_met");
+        var total_rows_m = parseInt(table.rows.length)-3;
+        
+        if (total_rows_m == contador) {
+            var fin_met = 1;
+        }
+        else {
+            var fin_met = 0;
+        }
+            
+        cantidad_met    = "peso_met"+contador;
+        cantidad_metodo = document.getElementById(cantidad_met).value;
+
+        if(metodo_id == 30) {
+            if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
+            {
+                warn_met = 1;
+                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+            }               
+        }
           
-         if (warn_met == 1){
+        if (warn_met == 1) {
             alert(meg_error);
-         } 
-         else {
+        } 
+        else {
             cantidad_met = "peso_met"+contador;            
             cantidad_metodo = document.getElementById(cantidad_met).value; 
-           
-             //alert(cantidad_metodo);
-             //alert($fase);
-             // alert($etapa);
             $('#boton_save').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>');
-                   $.ajax({
-                		url: 'guardar_metHum_peso.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                		data: {trnid_orden:trnid_orden, trnid_muestra:trnid_muestra, metodo_id:metodo_id, fase:fase, etapa:etapa, cantidad_metodo:cantidad_metodo, fin_met:fin_met, unidad:unidad},
-                    }).done(function(respuesta){
-                        if(respuesta == 'Ha finalizado la etapa.')//alert(respuesta);  
-                        {
-                            alert(respuesta);
-                        }
-                        //else
-                        //{
-                            $('#metodo_modal').modal('show');
-                            $("#datos_metodo").html(respuesta); 
-                            $('#metodo_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_met1').focus();
-                            })                
-                            $('#metodo_modal').modal('show').trigger('shown');
-                })
-          }
+
+            $.ajax({
+                url: 'guardar_metHum_peso.php' ,
+                type: 'POST' ,
+                dataType: 'html',
+                data: {
+                    trnid_orden : trnid_orden, 
+                    trnid_muestra : trnid_muestra, 
+                    metodo_id : metodo_id, 
+                    fase : fase,
+                    etapa : etapa, 
+                    cantidad_metodo : cantidad_metodo, 
+                    fin_met : fin_met, 
+                    unidad : unidad
+                },
+            }).done(function(respuesta){
+                if(respuesta == 'Ha finalizado la etapa.')
+                {
+                    alert(respuesta);
+                }
+                
+                $('#metodo_modal').modal('show');
+                $("#datos_metodo").html(respuesta); 
+                $('#metodo_modal').on('shown.bs.modal', function (e) {
+                    $(this).find('#peso_met1').focus();
+                })                
+                $('#metodo_modal').modal('show').trigger('shown');
+            });
+        }
     }
     
     
@@ -2323,7 +2324,7 @@
    <div class="modal-dialog modal-dialog-scrollable" style="max-width: 750px!important;" role="document">
             <div class="modal-content">
               <div class="modal-header" >
-                <h5 class="modal-title" id="nombre_etapa">METODOS</h5>                             
+                <h5 class="modal-title" id="nombre_etapa">METODOS1</h5>                             
                 <div class="col-md-1 col-lg-1">                
                     <input type="date" id="fecha_metodo"  value="<?php echo date("Y-m-d");?>" min="<?php echo date("Y-m-d");?>" disabled />                    
                     <input type="hidden" id="mina_met" size=20 style="width:125px; color:#996633"  disabled /> 
@@ -2428,8 +2429,8 @@
             <?php
                 $action = $_POST["action"] ?? '';
                 $action_quebr = $_POST["upload_quebr"] ?? '';
-                var_dump($action);
-                var_dump(dirname(__DIR__)); 
+                // var_dump($action);
+                // var_dump(dirname(__DIR__)); 
                 if ($action == "upload") //si action tiene como valor UPLOAD haga algo (el value de este hidden es es UPLOAD iniciado desde el value
                 {
                     extract($_POST);  
@@ -2443,13 +2444,13 @@
                     // $dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
                         //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
                         $desti = rtrim($dest).$archivo;   
-                        var_dump($desti);                     
+                        // var_dump($desti);                     
                     copy($_FILES['excel']['tmp_name'],$desti);
                     /// echo $archivo_corto;
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
                     $archivo_exist = $archivo_exis->fetch_assoc();
                     $archivo_ex = $archivo_exist['folio']; 
-                    var_dump($archivo.'     =====      '.$archivo_ex);                  
+                    // var_dump($archivo.'     =====      '.$archivo_ex);                  
                     if($archivo_ex == $archivo) {
                         mysqli_multi_query ($mysqli, "UPDATE arg_ordenes_csv SET archivo_csv = '".$archivo."' WHERE folio = '".$archivo."'") OR DIE (mysqli_error($mysqli));
                         
