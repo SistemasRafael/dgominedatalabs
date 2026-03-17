@@ -15,39 +15,39 @@ $unidad_id = $_POST['unidad_tem'];
 
 
 if (isset($trn_id)){    
-        $resultado = $mysqli->query("SELECT
-                                	      ob.trn_id_rel
-                                         ,ob.metodo_id
-                                         ,ob.fase_id
-                                         ,ob.etapa_id
-                                         ,f.nombre as fase, et.nombre as etapa
-                                         ,(l.cantidad_muestras+l.posiciones) AS total
-                                         ,fe.cantidad_tipo
-                                         ,(CASE fe.cantidad_tipo WHEN 1 THEN 'PORCIENTO' WHEN 0 THEN 'UNIDADES' WHEN 2 THEN 'CICLOS' END) AS tipo_cantidad_letra
-                                         ,fe.cantidad_muestras
-                                         ,met.nombre as metodo
-                                    FROM 
-                                        arg_ordenes_bitacora_detalle ob
-                                        LEFT JOIN metodos_fases_etapas fe
-                                        	ON fe.fase_id = ob.fase_id
-                                            AND fe.etapa_id = ob.etapa_id
-                                            AND fe.metodo_id = ob.metodo_id
-                                        LEFT JOIN arg_fases f
-                                        	ON f.fase_id = ob.fase_id
-                                        LEFT JOIN arg_etapas et
-                                        	ON et.etapa_id = fe.etapa_id
-                                        LEFT JOIN ordenes_metodos_lista l
-                                            ON l.trn_id_rel = ob.trn_id_rel
-                                            AND l.metodo_id = ob.metodo_id
-                                        LEFT JOIN arg_metodos met
-                                            ON met.metodo_id = ob.metodo_id
-                                    WHERE
-                                        ob.trn_id_rel = ".$trn_id."
-                                        AND ob.metodo_id = ".$metodo_id."
-                                        AND ob.fase_id = ".$fase_id."
-                                        AND ob.etapa_id = ".$etapa_id."
-                                    ORDER BY ob.fecha DESC
-                                    LIMIT 1") or die(mysqli_error($mysqli));
+    $resultado = $mysqli->query("SELECT
+                                        ob.trn_id_rel
+                                        ,ob.metodo_id
+                                        ,ob.fase_id
+                                        ,ob.etapa_id
+                                        ,f.nombre as fase, et.nombre as etapa
+                                        ,(l.cantidad_muestras+l.posiciones) AS total
+                                        ,fe.cantidad_tipo
+                                        ,(CASE fe.cantidad_tipo WHEN 1 THEN 'PORCIENTO' WHEN 0 THEN 'UNIDADES' WHEN 2 THEN 'CICLOS' END) AS tipo_cantidad_letra
+                                        ,fe.cantidad_muestras
+                                        ,met.nombre as metodo
+                                FROM 
+                                    arg_ordenes_bitacora_detalle ob
+                                    LEFT JOIN metodos_fases_etapas fe
+                                        ON fe.fase_id = ob.fase_id
+                                        AND fe.etapa_id = ob.etapa_id
+                                        AND fe.metodo_id = ob.metodo_id
+                                    LEFT JOIN arg_fases f
+                                        ON f.fase_id = ob.fase_id
+                                    LEFT JOIN arg_etapas et
+                                        ON et.etapa_id = fe.etapa_id
+                                    LEFT JOIN ordenes_metodos_lista l
+                                        ON l.trn_id_rel = ob.trn_id_rel
+                                        AND l.metodo_id = ob.metodo_id
+                                    LEFT JOIN arg_metodos met
+                                        ON met.metodo_id = ob.metodo_id
+                                WHERE
+                                    ob.trn_id_rel = ".$trn_id."
+                                    AND ob.metodo_id = ".$metodo_id."
+                                    AND ob.fase_id = ".$fase_id."
+                                    AND ob.etapa_id = ".$etapa_id."
+                                ORDER BY ob.fecha DESC
+                                LIMIT 1") or die(mysqli_error($mysqli));
                                     
    $tipo_orden = $mysqli->query("SELECT 
                                     (CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
@@ -55,7 +55,8 @@ if (isset($trn_id)){
                                 FROM arg_ordenes ord
                                 LEFT JOIN arg_ordenes_detalle odet
                                     ON ord.trn_id =  odet.trn_id_rel
-                                WHERE odet.trn_id = ".$trn_id) or die(mysqli_error($mysqli));             
+                                WHERE odet.trn_id = ".$trn_id) or die(mysqli_error($mysqli));    
+
    $tipo_ord = $tipo_orden->fetch_assoc();
    $reensaye = $tipo_ord['reensaye'];
    $orden_trabajo = $tipo_ord['folio_interno']; 
@@ -74,7 +75,8 @@ if (isset($trn_id)){
                                     WHERE 
                                         up.perfil_id = 5
                                         AND up.activo = 1
-                                    	AND up.u_id = ".$u_id) or die(mysqli_error($mysqli));             
+                                    	AND up.u_id = ".$u_id) or die(mysqli_error($mysqli)); 
+                                                    
    $validar_supervi = $validar_superv->fetch_assoc();
    $supervisor = $validar_supervi['perfil_id'];   
         
