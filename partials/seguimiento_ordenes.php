@@ -374,7 +374,7 @@
                 		dataType: 'html',
                 		data: {trn_id_hum:trn_id_hum, trn_id_rel_hum:trn_id_rel_hum, total_peso_hum:total_peso_hum, total_peso_sec:total_peso_sec, total_porc_hum:total_porc_hum, fin_hum:fin_hum},
                     }).done(function(respuesta){
-                        //if(respuesta == 'El m�todo ha finalizado.')//alert(respuesta);  
+                        //if(respuesta == 'El m todo ha finalizado.')//alert(respuesta);  
                        // {
                        //     alert(respuesta);
                       //  }
@@ -690,7 +690,7 @@
                 })                
                 $('#temperatura_modal').modal('show').trigger('shown');
             }
-            if (etapa == 6){//Pesaje Pay�n
+            if (etapa == 6){//Pesaje Pay n
                 $('#payon_modal').modal('show');
                 $("#datos_payon").html(respuesta);
                 $('#payon_modal').on('shown.bs.modal', function (e) {
@@ -706,7 +706,7 @@
                 })                
                 $('#copelado_modal').modal('show').trigger('shown');
             }
-            if (etapa == 4){//Digesti�n
+            if (etapa == 4){//Digesti n
                 $('#digestion_modal').modal('show');
                 $("#datos_digestion").html(respuesta);
                 $('#digestion_modal').on('shown.bs.modal', function (e) {
@@ -980,7 +980,7 @@
                 })                
                 $('#temperatura_modal').modal('show').trigger('shown');
             }
-            if (etapa == 6){//Pesaje Pay�n
+            if (etapa == 6){//Pesaje Pay n
                 $('#metodo_modal').modal('show');
                 $("#datos_metodo").html(respuesta); 
                 $('#metodo_modal').on('shown.bs.modal', function (e) {
@@ -996,7 +996,7 @@
                 })                
                 $('#copelado_modal').modal('show').trigger('shown');
             }
-            if (etapa == 4){//Digesti�n
+            if (etapa == 4){//Digesti n
                 $('#digestion_modal').modal('show');
                 $("#datos_digestion").html(respuesta);
                 $('#digestion_modal').on('shown.bs.modal', function (e) {
@@ -1763,7 +1763,7 @@
                             })                
                             $('#metodo_modal_quebr').modal('show').trigger('shown');
 
-                            /* if (etapa == 6){//Pesaje Pay�n
+                            /* if (etapa == 6){//Pesaje Pay n
                 $('#metodo_modal').modal('show');
                 $("#datos_metodo").html(respuesta); 
                 $('#metodo_modal').on('shown.bs.modal', function (e) {
@@ -2562,13 +2562,18 @@
     if (isset($_GET['unidad_id'])) {
         $mysqli -> set_charset("utf8");
         $datos_orden_detalle = $mysqli->query("SELECT 
-                                                ord.folio, DATE_FORMAT(ord.fecha, '%d-%m-%Y') AS fecha, ord.hora, us.nombre AS usuario, ord.trn_id
-                                                ,om.trn_id AS trn_id_batch, om.folio_interno, om.folio_inicial
+                                                ord.folio, 
+                                                ord.fecha,
+                                                ord.hora,
+                                                us.nombre AS usuario, 
+                                                ord.trn_id
+                                                ,om.trn_id AS trn_id_batch, 
+                                                om.folio_interno, 
+                                                om.folio_inicial
                                                 ,om.folio_final, om.cantidad, om.estado as estado_id
                                                 ,(CASE om.estado WHEN 0 THEN 'Pendiente' WHEN 1 THEN 'Iniciada' WHEN 2 THEN 'Finalizada' END) AS estado
                                                 ,buscar_fase(om.trn_id,0) AS fase_id
                                                 ,buscar_etapa(om.trn_id,0) AS etapa_id
-                                                ,buscar_etapa_acceso (om.trn_id,0,".$u_id.") AS boton_acceso
                                                 ,buscar_etapa_nombre(om.trn_id,0) AS etapa
                                                 ,buscar_metodo(om.trn_id) AS metodo_id                                                                                                 
                                                 ,(CASE WHEN met1 = 1 THEN 'X' ELSE '' END) AS met1
@@ -2576,23 +2581,120 @@
                                                 ,(CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
                                                 ,(CASE WHEN ord.tipo = 5 THEN 1 ELSE 0 END) AS orden_sobrelim
                                                 ,(CASE WHEN ord.tipo = 6 THEN 6 ELSE 0 END) AS recheck
-                                                ,(CASE WHEN ord.tipo = 2 THEN 2 ELSE 0 END) AS soluciones
-                                                ,(CASE ord.tipo WHEN 3 THEN 3 WHEN 4 THEN 3
-                                                        WHEN 7 THEN 3 WHEN 8 THEN 3 WHEN 9 THEN 3 END) AS metalurgia
+                                                ,(CASE WHEN ord.tipo = 2 THEN 2 ELSE 0 END) AS soluciones                                                       
+                                                ,(CASE ord.tipo WHEN 3 THEN 3 
+                                                                WHEN 4 THEN 3 
+                                                                WHEN 7 THEN 3 
+                                                                WHEN 8 THEN 3 
+                                                                WHEN 9 THEN 3 
+                                                    END) AS metalurgia
                                                 ,buscar_humedad(om.trn_id) AS humedad
-                                                ,acceso_preparacion(".$u_id.") AS prepara
+                                                ,acceso_preparacion($u_id) AS prepara
                                                 ,(CASE WHEN om.estado = 0 AND ord.trn_id_rel <> 0 THEN iniciar_reensayeOrden(ord.trn_id) ELSE 0 END) AS iniciar_reen
-                                            FROM
-                                                `ordenes_metodos` om
-                                            LEFT JOIN `arg_ordenes` ord
-                                                ON ord.trn_id = om.trn_id_rel
-                                            LEFT JOIN arg_usuarios us
-                                                ON us.u_id = ord.usuario_id                                              
-                                            WHERE estado <> 99 AND ord.unidad_id = ".$unidad_id." 
-                                            AND DATE_FORMAT(ord.fecha, '%Y-%m-%d') BETWEEN '$fecha_i' AND '$fecha_f'
+                                            FROM `ordenes_metodos` om
+                                            LEFT JOIN `arg_ordenes` ord ON ord.trn_id = om.trn_id_rel
+                                            LEFT JOIN arg_usuarios us ON us.u_id = ord.usuario_id                                              
+                                            WHERE estado <> 99 AND ord.unidad_id = $unidad_id AND
+                                                    ord.fecha >= CONCAT('$fecha_i', ' 00:00:00') AND 
+                                                    ord.fecha <= CONCAT('$fecha_f', ' 23:59:59')
                                             ORDER BY ord.fecha DESC, om.folio_interno DESC"
-                                    ) or die(mysqli_error($mysqli)); 
+                                    ) or die(mysqli_error($mysqli));
                                     
+        $list_Baches_id = ""; 
+        $listDatosOrdenDetalle = [];                                          
+        while ($row = $datos_orden_detalle->fetch_assoc()) {
+            $list_Baches_id .= (!empty($list_Baches_id) ? "," : "");
+            $list_Baches_id .= $row["trn_id_batch"];
+            $listDatosOrdenDetalle[] = $row;
+        }
+
+        $buscar_etapas_acceso = $mysqli->query("SELECT 
+                                        t2.trn_id_rel, 
+                                        t2.etapa
+                                    FROM(
+                                        SELECT 
+                                            bd.trn_id_rel,
+                                            CASE WHEN om.trn_id_rel IS NOT NULL THEN 15 ELSE IFNULL(bd.etapa_id,0) END AS etapa
+                                        FROM (    
+                                            SELECT t.trn_id_rel, 
+                                                    t.etapa_id
+                                            FROM (
+                                                SELECT trn_id_rel, 
+                                                        etapa_id, 
+                                                        ROW_NUMBER() OVER (PARTITION BY trn_id_rel ORDER BY fecha DESC) AS rn
+                                                FROM arg_ordenes_bitacora_detalle
+                                                WHERE (
+                                                    COALESCE('$list_Baches_id', '') = ''
+                                                    OR trn_id_rel IN ($list_Baches_id)
+                                                )
+                                            ) AS t
+                                            WHERE rn = 1
+                                        ) AS bd
+                                        LEFT JOIN arg_ordenes_metodos AS om ON om.trn_id_rel = bd.trn_id_rel AND om.metodo_id = 4 AND om.terminado = 0
+                                    ) AS t2 
+                                    INNER JOIN perfiles_privilegios AS PP ON u_id = 6 AND directiva_id = 3 AND etapa_id = t2.etapa AND activo = 1
+                                    GROUP BY t2.trn_id_rel, t2.etapa, PP.nombre;") or die(mysqli_error($mysqli));
+
+        $metodos_lista = $mysqli->query("SELECT  
+                                        m.nombre
+                                        ,aom.metodo_id
+                                        ,m.color
+                                        ,aom.trn_id_rel AS trn_id_batch
+                                        ,buscar_fase(aom.trn_id_rel, aom.metodo_id) AS fase_id
+                                        ,buscar_etapa(aom.trn_id_rel, aom.metodo_id) AS etapa_id
+                                        ,(EXIST.metodo_id IS NOT NULL) AS boton_acceso
+                                        ,buscar_etapa_nombre(aom.trn_id_rel, aom.metodo_id) AS etapa
+                                        ,buscar_etapa_img(aom.trn_id_rel, aom.metodo_id) AS etapa_img
+                                    FROM arg_ordenes_metodos aom 
+                                    INNER JOIN arg_metodos m ON m.metodo_id = aom.metodo_id
+                                    LEFT JOIN (
+                                        SELECT 
+                                            finalResult.trn_id_rel,
+                                            finalResult.metodo_id,
+                                            ROW_NUMBER() OVER (PARTITION BY finalResult.trn_id_rel, finalResult.metodo_id ORDER BY finalResult.fecha DESC) AS rn,
+                                            finalResult.etapa
+                                        FROM (
+                                            SELECT 
+                                                t2.trn_id_rel, 
+                                                t2.metodo_id,
+                                                t2.fecha,
+                                                t2.etapa
+                                            FROM(
+                                                SELECT 
+                                                    bd.trn_id_rel,
+                                                    bd.metodo_id,
+                                                    bd.fecha,
+                                                    CASE WHEN om.trn_id_rel IS NOT NULL THEN 15 ELSE IFNULL(bd.etapa_id,0) END AS etapa
+                                                FROM (
+                                                    SELECT trn_id_rel,
+                                                            metodo_id,
+                                                            etapa_id,
+                                                            fecha
+                                                    FROM arg_ordenes_bitacora_detalle
+                                                ) AS bd
+                                                LEFT JOIN arg_ordenes_metodos AS om ON om.trn_id_rel = bd.trn_id_rel AND om.metodo_id = 4 AND om.terminado = 0
+                                            ) AS t2 
+                                            INNER JOIN perfiles_privilegios AS PP ON u_id = 6 AND directiva_id = 3 AND etapa_id = t2.etapa AND activo = 1
+                                            GROUP BY t2.trn_id_rel, t2.metodo_id, t2.etapa, t2.fecha
+                                        ) AS finalResult
+                                    ) AS EXIST ON EXIST.trn_id_rel = aom.trn_id_rel AND EXIST.metodo_id = aom.metodo_id AND EXIST.rn = 1
+                                    WHERE m.metodo_id <> 4 AND 
+                                    (
+                                        COALESCE('$list_Baches_id', '') = ''
+                                        OR aom.trn_id_rel IN ($list_Baches_id)
+                                    )"
+                                    ) or die(mysqli_error($mysqli));
+
+        $Metodoslista = [];
+        while ($row = $metodos_lista->fetch_assoc()) {
+            $Metodoslista[] = $row;
+        }
+
+        $listBuscarEtapasAcceso = [];
+        while ($row = $buscar_etapas_acceso->fetch_assoc()) {
+            $listBuscarEtapasAcceso[] = $row;
+        }
+                                        
         $datos_metodos = $mysqli->query("SELECT nombre FROM arg_metodos WHERE tipo_id = 1") or die(mysqli_error($mysqli));             
         $total_metodos = (mysqli_num_rows($datos_metodos));
         
@@ -2603,7 +2705,7 @@
         $imprime_etiq = $mysqli->query("SELECT acceso_preparacion(".$u_id.") AS etiquetas") or die(mysqli_error($mysqli));             
         $imprime_etiqu = $imprime_etiq->fetch_assoc();
         $imprime_etiquetas = $imprime_etiqu['etiquetas'];
-    ?>
+?>
     <div class="container-fluid">
     <br/><br/><br/><br/><br/>
 
@@ -2654,7 +2756,7 @@
                                </thead>
                                <tbody>";
                                
-                               while ($fila = $datos_orden_detalle->fetch_assoc()) {
+                               foreach ($listDatosOrdenDetalle as $fila) {
                                    $num = 1;
                                    //$variable_img = $fila['etapa_img'];
                                    $html_det.="<tr>";
@@ -2665,7 +2767,8 @@
                                       else{
                                         $html_det.="<td> <a href='orden_trabajo_rep.php?trn_id=".$fila['trn_id']."' target='_blank'>".$fila['folio_interno']."</a></td>";
                                       
-                                      }$html_det.="<td>".$fila['fecha']."</td>";                                     
+                                      }
+                                      $html_det.="<td>".date("d-m-Y", strtotime($fila['fecha']))."</td>";                                  
                                       $html_det.="<td>".$fila['hora']."</td>";
                                       $html_det.="<td>".$fila['cantidad']."</td>";                                 
                                       $html_det.="<td>".$fila['folio_inicial']."</td>";
@@ -2675,7 +2778,7 @@
                                       if ($fila['estado_id'] == 0){
                                             if ($fila['humedad'] <> 0){
                                                 $html_det.="<td><a type='button' class='btn btn-warning' name='print' id='print'";
-                                                if ( $fila['boton_acceso'] == 1){
+                                                if (!empty(array_filter($listBuscarEtapasAcceso, fn($obj) => $obj["trn_id_rel"] == $fila['trn_id_batch']))) {
                                                        $html_det.="onclick = iniciar_humedad(".$fila['trn_id_batch'].",".$unidad_id.")";
                                                 }               
                                                 $html_det.="><span class='fa fa-percent fa-2x'> Humedad </span>
@@ -2712,62 +2815,69 @@
                                             if($fila['fase_id'] == 1){                                                
                                                 if($fila['reensaye'] == 1 ){
                                                     $html_det.="<td> <button type='button' class='btn btn-info'";
-                                                        if ($fila['boton_acceso'] <> 0){
-                                                            $html_det.="onclick = iniciar_etapa_reen(".$fila['trn_id_batch'].",".$fila['etapa_id'].",".$unidad_id.")";
-                                                        }
-                                                        
-                                                            $html_det.="><span class='fa fa-hourglass-start fa-2x'>Iniciar ".$fila['etapa']." </span>
-                                                                    </button></td>";
+                                                    if (!empty(array_filter($listBuscarEtapasAcceso, fn($obj) => $obj["trn_id_rel"] == $fila['trn_id_batch']))) {
+                                                        $html_det.="onclick = iniciar_etapa_reen(".$fila['trn_id_batch'].",".$fila['etapa_id'].",".$unidad_id.")";
+                                                    }
+                                                    $html_det.="><span class='fa fa-hourglass-start fa-2x'>Iniciar ".$fila['etapa']." </span></button></td>";
                                                         
                                                 }
                                                 else{
                                                     $html_det.="<td> <button type='button' class='btn btn-info'";
-                                                                if ($fila['boton_acceso'] <> 0){    
-                                                                    $html_det.="onclick = iniciar_etapa(".$fila['trn_id_batch'].",".$fila['etapa_id'].",".$unidad_id.")";
-                                                                }
-                                                                $html_det.="><span class='fa fa-hourglass-start fa-2x'>Iniciar ".$fila['etapa']." </span>
-                                                                </button></td>";  
+                                                    if (!empty(array_filter($listBuscarEtapasAcceso, fn($obj) => $obj["trn_id_rel"] == $fila['trn_id_batch']))) {
+                                                        $html_det.="onclick = iniciar_etapa(".$fila['trn_id_batch'].",".$fila['etapa_id'].",".$unidad_id.")";
+                                                    }
+                                                    $html_det.="><span class='fa fa-hourglass-start fa-2x'>Iniciar ".$fila['etapa']." </span></button></td>";  
                                                 }                                                                                              
                                             }else{
                                                 $html_det.="<td>";
-                                                  $metodos_lista = $mysqli->query("SELECT  nombre
-                                                                                          ,om.metodo_id
-                                                                                          ,m.color
-                                                                                          ,buscar_fase(".$fila['trn_id_batch'].", om.metodo_id) AS fase_id
-                                                                                          ,buscar_etapa(".$fila['trn_id_batch'].", om.metodo_id) AS etapa_id
-                                                                                          ,buscar_etapa_acceso(".$fila['trn_id_batch'].", om.metodo_id, ".$u_id.") AS boton_acceso
-                                                                                          ,buscar_etapa_nombre(om.trn_id_rel,om.metodo_id) AS etapa
-                                                                                          ,buscar_etapa_img(om.trn_id_rel,om.metodo_id) AS etapa_img
-                                                                                   FROM arg_metodos m
-                                                                                   LEFT JOIN arg_ordenes_metodos om
-                                                                                    ON m.metodo_id = om.metodo_id
-                                                                                   WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error($mysqli));
-                                                  while ($fila_met = $metodos_lista->fetch_assoc()) {
+                                                // $metodos_lista = $mysqli->query("SELECT  nombre
+                                                //                                         ,om.metodo_id
+                                                //                                         ,m.color
+                                                //                                         ,buscar_fase(".$fila['trn_id_batch'].", om.metodo_id) AS fase_id
+                                                //                                         ,buscar_etapa(".$fila['trn_id_batch'].", om.metodo_id) AS etapa_id
+                                                //                                         ,buscar_etapa_acceso(".$fila['trn_id_batch'].", om.metodo_id, ".$u_id.") AS boton_acceso
+                                                //                                         ,buscar_etapa_nombre(om.trn_id_rel,om.metodo_id) AS etapa
+                                                //                                         ,buscar_etapa_img(om.trn_id_rel,om.metodo_id) AS etapa_img
+                                                //                                 FROM arg_metodos m
+                                                //                                 LEFT JOIN arg_ordenes_metodos om
+                                                //                                 ON m.metodo_id = om.metodo_id
+                                                //                                 WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error($mysqli));
+                                                foreach (array_filter($Metodoslista, fn($obj) => $obj["trn_id_batch"] == $fila['trn_id_batch']) as $fila_met) {
+                                                    if ($fila['estado_id'] == 2){
+                                                        $variable_color = 'btn btn-success';
+                                                    }
+                                                    else {
+                                                        $variable_color = $fila_met['color'];
+                                                    }
+                                                    $variable_img = $fila_met['etapa_img'];
+                                                    $html_det.="<button type='button' class='".$variable_color."'";
+
+                                                    if ($fila_met['boton_acceso'] <> 0) {                                                                        
+                                                        if($fila['orden_sobrelim'] == 1 || $fila_met['metodo_id'] == 1) {
+                                                            $html_det.="onclick = iniciar_metodo_sobrelim(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
+                                                        }
+                                                        else if ($fila_met['metodo_id'] == 30 || 
+                                                                 $fila_met['metodo_id'] == 31 || 
+                                                                 $fila_met['metodo_id'] == 5 || 
+                                                                 $fila_met['metodo_id'] == 28 || 
+                                                                 $fila_met['metodo_id'] == 29 || 
+                                                                 $fila_met['metodo_id'] == 33 || 
+                                                                 $fila_met['metodo_id'] == 27 || 
+                                                                 $fila_met['metodo_id'] == 2 || 
+                                                                 $fila_met['metodo_id'] == 9 || 
+                                                                 $fila_met['metodo_id'] == 35) {
+                                                            $html_det.="onclick = iniciar_metodo_quebr(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
                                                         
-                                                        if ($fila['estado_id'] == 2){
-                                                            $variable_color = 'btn btn-success';
                                                         }
                                                         else{
-                                                            $variable_color = $fila_met['color'];
+                                                            $html_det.="onclick = iniciar_metodo(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
                                                         }
-                                                        $variable_img = $fila_met['etapa_img'];
-                                                        $html_det.="<button type='button' class='".$variable_color."'";
-                                                                    if ($fila_met['boton_acceso'] <> 0){                                                                        
-                                                                        if($fila['orden_sobrelim'] == 1 || $fila_met['metodo_id'] == 1){
-                                                                            $html_det.="onclick = iniciar_metodo_sobrelim(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
-                                                                        }
-                                                                        elseif ($fila_met['metodo_id'] == 30 || $fila_met['metodo_id'] == 31 || $fila_met['metodo_id'] == 5 || $fila_met['metodo_id'] == 28 || $fila_met['metodo_id'] == 29 || $fila_met['metodo_id'] == 33 || $fila_met['metodo_id'] == 27 || $fila_met['metodo_id'] == 2 || $fila_met['metodo_id'] == 9 || $fila_met['metodo_id'] == 35){
-                                                                            $html_det.="onclick = iniciar_metodo_quebr(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
-                                                                      
-                                                                      }
-                                                                        else{
-                                                                            $html_det.="onclick = iniciar_metodo(".$fila['trn_id_batch'].",".$fila_met['metodo_id'].",".$fila_met['fase_id'].",".$fila_met['etapa_id'].",".$unidad_id.")";
-                                                                        }
-                                                                     }
-                                                                    $html_det.="><span class='".$variable_img."'>".$fila_met['nombre']."  ".$fila_met['etapa']." </span>
-                                                                    </button>";                                                                  
-                                                  }
-                                                  $html_det.="</td>";
+                                                    }
+                                                    $html_det.="><span class='".$variable_img."'>".$fila_met['nombre']."  ".$fila_met['etapa']." </span>
+                                                    </button>";                                                                  
+                                                }
+
+                                                $html_det.="</td>";
                                               }
                                       }
                                      
