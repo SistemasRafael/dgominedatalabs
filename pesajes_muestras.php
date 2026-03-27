@@ -3,8 +3,8 @@
     <title>Argonaut Gold</title>
 	</head>
 		<body>		
-            <?include('partials/header.php'); ?>
-            <?include('partials/pesajes_muestras.php');?>
-            <?include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/pesajes_muestras.php'); ?>
+            <?php include('partials/footer.php'); ?>
 		</body>
 	</html>

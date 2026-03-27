@@ -1,16 +1,7 @@
-<? //include "../connections/config.php";
-
-$u_id = $_SESSION['u_id'];
-$fecha_i = $_GET['fecha_i'];
-$fecha_f = $_GET['fecha_f'];
-if (is_null($fecha_i)){
-    $fecha_i = date('Y-m-d',strtotime("-3 days"));//date('d/m/y');
-}
-if (is_null($fecha_f)){
-    $fecha_f = date('Y-m-d');
-}
-
-
+<?php  
+    $u_id = $_SESSION['u_id'];
+    $fecha_i = $_GET['fecha_i'] ?? date('Y-m-d',strtotime("-3 days"));
+    $fecha_f = $_GET['fecha_f'] ?? date('Y-m-d',strtotime("-3 days"));
 ?>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -42,14 +33,6 @@ if (is_null($fecha_f)){
 </script>
 
 <style type="text/css">
-    .izq {
-        background-color: ;
-    }
-
-    .derecha {
-        background-color: ;
-    }
-
     .btnSubmit {
         width: 50%;
         border-radius: 1rem;
@@ -73,7 +56,7 @@ if (is_null($fecha_f)){
     <div class="col-md-1 col-lg-1">
         <label for="metodo_id_sel" class="col-form-label"><b>MÉTODOS</b></label>
         <select name="metodo_id_sel" id="metodo_id_sel" class="form-control">
-            <? $result_h = $mysqli->query("SELECT 0 AS metodo_id, 'TODOS' AS nombre
+            <?php  $result_h = $mysqli->query("SELECT 0 AS metodo_id, 'TODOS' AS nombre
                                                          UNION ALL
                                                          SELECT metodo_id, nombre FROM `arg_metodos` ") or die(mysqli_error($mysqli));
             while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
@@ -83,14 +66,14 @@ if (is_null($fecha_f)){
                     $stringm = "selected";
                 }
             ?>
-                <option value="<? echo $row2['metodo_id'] ?>" <? echo $stringm ?>><? echo $met_sele ?></option>
-            <? } ?>
+                <option value="<?php  echo $row2['metodo_id'] ?>" <?php  echo $stringm ?>><?php  echo $met_sele ?></option>
+            <?php  } ?>
         </select>
     </div>
     <div class="col-md-2 col-lg-2">
         <label for="tipo_id_sel" class="col-form-label"><b>TIPO DE MUESTRAS</b></label>
         <select name="tipo_id_sel" id="tipo_id_sel" class="form-control">
-            <? $result_h = $mysqli->query("SELECT 0 AS tipo_id, 'Muestras de Geología y Controles de Calidad' AS nombre 
+            <?php  $result_h = $mysqli->query("SELECT 0 AS tipo_id, 'Muestras de Geología y Controles de Calidad' AS nombre 
                                                           UNION ALL 
                                                           SELECT 1 AS tipo_id, 'Muestras Geo' AS nombre") or die(mysqli_error($mysqli));
             while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
@@ -100,8 +83,8 @@ if (is_null($fecha_f)){
                     $stringt = "selected";
                 }
             ?>
-                <option value="<? echo $row2['tipo_id'] ?>" <? echo $stringt ?>><? echo $met_sele ?></option>
-            <? } ?>
+                <option value="<?php  echo $row2['tipo_id'] ?>" <?php  echo $stringt ?>><?php  echo $met_sele ?></option>
+            <?php  } ?>
         </select>
     </div>
     <br /><br /><br /><br /><br />
@@ -117,18 +100,18 @@ if (is_null($fecha_f)){
     
     <div class="col-md-2 col-lg-2">                     
                       <label for="fecha_inicial"><b>DESDE:</b></label>
-                      <input type="date" name="fecha_inicial" class="form-control" id="fecha_inicial" value="<?echo $fecha_i;?>" />
+                      <input type="date" name="fecha_inicial" class="form-control" id="fecha_inicial" value="<?php echo $fecha_i;?>" />
                 </div>
                 <div class="col-md-2 col-lg-2">
                       <label for="fecha_final"><b>HASTA:</b></label><br/>
-                      <input type="date" name="fecha_final" class="form-control" id="fecha_final" value="<?echo $fecha_f;?>" />                                
+                      <input type="date" name="fecha_final" class="form-control" id="fecha_final" value="<?php echo $fecha_f;?>" />                                
                 </div>                
 
     <div class="col-md-2 col-lg-3">
         <label for="print"></label><br /><br />
         <button type='button' class='btn btn-info' name='print' id='print' onclick="llama_datos();"> <span class="fa fa-eye fa-2x"> Ejecutar</span> </button>
 
-        <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar_listado(<? echo $unidad_id; ?>)"> <span class="fa fa-file-excel-o fa-2x"> Exportar</span>
+        <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar_listado(<?php  echo $unidad_id; ?>)"> <span class="fa fa-file-excel-o fa-2x"> Exportar</span>
         </button>
     </div>
     <div>
@@ -136,6 +119,7 @@ if (is_null($fecha_f)){
         <?php
         $mysqli->set_charset("utf8");
        // echo $fecha_i; echo $fecha_f;
+       var_dump("CALL arg_rpt_pesajesMuestras(0, 0, 0, '".$fecha_i."','".$fecha_f."')");
         $query = "CALL arg_rpt_pesajesMuestras(0, 0, 0, '".$fecha_i."','".$fecha_f."')";
         mysqli_multi_query($mysqli, $query);
         $result = $mysqli->store_result();

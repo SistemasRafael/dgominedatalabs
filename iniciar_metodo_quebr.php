@@ -1424,7 +1424,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                     <th>  </th>
                                     <tr class='table-primary' align='left'>
                                         <th colspan='4'>                                        
-                                            <form name='importa' method='post' action='$PHP_SELF' enctype='multipart/form-data' >
+                                            <form name='importa' method='post' action='".$_SERVER["PHP_SELF"]."' enctype='multipart/form-data' >
                                                 <input type='file' name='excel' />
                                                 </br>                                              
                                                <button type='input' class='btn btn-success' value='upload_quebr' name='action_quebr' >
