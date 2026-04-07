@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trnid_m    = $_POST['trnid_pay'];
@@ -17,7 +17,7 @@ if (isset($trnid_m)){
     $resultado_efaa = $mysqli->query(" SELECT metodo, fase, etapa
                                            FROM ordenes_fases_etapas
                                            WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel
-                                         ) or die(mysqli_error());
+                                         ) or die(mysqli_error($mysqli));
         
     $tipo_orden = $mysqli->query("SELECT 
                                          (CASE WHEN ord.trn_id_rel = 0 THEN 0 ELSE 1 END) AS reensaye 
@@ -25,7 +25,7 @@ if (isset($trnid_m)){
                                       FROM arg_ordenes ord
                                       LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error());             
+                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error($mysqli));             
     $tipo_ord = $tipo_orden->fetch_assoc();
     $reensaye = $tipo_ord['reensaye'];
     $orden_trabajo = $tipo_ord['folio_interno'];
@@ -44,7 +44,7 @@ if (isset($trnid_m)){
                                     WHERE 
                                         up.perfil_id = 5
                                         AND up.activo = 1
-                                    	AND up.u_id = ".$u_id) or die(mysqli_error());             
+                                    	AND up.u_id = ".$u_id) or die(mysqli_error($mysqli));             
     $validar_supervi = $validar_superv->fetch_assoc();
     $supervisor = $validar_supervi['perfil_id'];
      
@@ -67,7 +67,7 @@ if (isset($trnid_m)){
                                             mq.trn_id_batch  = ".$trnid_m."  
                                             AND mq.metodo_id =  ".$metodo_sel."
                                         ORDER BY mq.posicion"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
        }
        else{
         /*   $origen_reen = $mysqli->query("SELECT 
@@ -102,7 +102,7 @@ if (isset($trnid_m)){
                                     AND pul.metodo_id = ".$metodo_sel."
                                  ORDER BY 
                                     ot.posicion"
-                                ) or die(mysqli_error());
+                                ) or die(mysqli_error($mysqli));
                                             
                                     /*else{
                                         $resultado = $mysqli->query("SELECT
@@ -215,7 +215,7 @@ if (isset($trnid_m)){
                                             AND mq.metodo_id =  ".$metodo_sel."
                                             AND mc.reensaye = 0
                                         ORDER BY mq.posicion"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
        }
        else{
             $resultado = $mysqli->query("SELECT
@@ -236,7 +236,7 @@ if (isset($trnid_m)){
                                     AND pul.reensaye = 0
                                  ORDER BY 
                                     ot.posicion"
-                                ) or die(mysqli_error());
+                                ) or die(mysqli_error($mysqli));
                     
        }//FIN validacion reensaye o no
        if ($resultado->num_rows > 0) {
@@ -307,7 +307,7 @@ if (isset($trnid_m)){
                                             AND mq.metodo_id =  ".$metodo_sel."
                                             AND mc.reensaye = 0
                                         ORDER BY mq.posicion"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
        }
        else{
             $resultado = $mysqli->query("SELECT
@@ -328,7 +328,7 @@ if (isset($trnid_m)){
                                     AND pul.reensaye = 0
                                  ORDER BY 
                                     ot.posicion"
-                                ) or die(mysqli_error());
+                                ) or die(mysqli_error($mysqli));
                     
        }//FIN validacion reensaye o no
        if ($resultado->num_rows > 0) {

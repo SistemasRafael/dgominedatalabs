@@ -1,4 +1,4 @@
-   <? // include "connections/config.php";
+   <?php  // include "connections/config.php";
         $trn_id_abs = $_GET['trn_id_abs'];
         $metodo_id_abs = $_GET['metodo_id_abs'];
         $u_id_abs = $_SESSION['u_id'];
@@ -47,12 +47,6 @@
  </script>
  
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -96,12 +90,12 @@ if (isset($_GET['trn_id_abs'])){
            <br />
            <br />                
                 <div class="col-2 col-md-2 col-lg-2">
-                    <button type='button' class='btn btn-primary' onclick='liberar_res(<? echo $trn_id_abs.", ".$metodo_id.", ".$u_id_abs.", ".$unidad_id?>)' >
+                    <button type='button' class='btn btn-primary' onclick='liberar_res(<?php  echo $trn_id_abs.", ".$metodo_id.", ".$u_id_abs.", ".$unidad_id?>)' >
                         <span class='fa fa-envelope-o fa-2x'> Liberar </span>
                     </button>
                 </div>  
             <br />             
-     <?
+     <?php 
        $datos_orden = $mysqli->query("SELECT
                                             un.nombre AS unidad, ord.folio, date_format(ord.fecha, '%d-%m-%Y') AS fecha_inicio, ord.hora, us.nombre AS usuario, det.folio_interno
                                             ,(CASE WHEN ord.tipo = 0 THEN 1 ELSE 0 END) AS reensaye
@@ -115,7 +109,7 @@ if (isset($_GET['trn_id_abs'])){
                                        LEFT JOIN arg_usuarios us
                                             ON us.u_id = ord.usuario_id
                                        WHERE det.trn_id = ".$trn_id_abs
-                                   ) or die(mysqli_error());               
+                                   ) or die(mysqli_error($mysqli));               
         $orden_encabezado = $datos_orden->fetch_assoc(); 
         $reensaye = $orden_encabezado['reensaye'];
 
@@ -130,7 +124,7 @@ if (isset($_GET['trn_id_abs'])){
                                                 LEFT JOIN arg_ordenes ord
                                                     ON ord.trn_id = det.trn_id_rel
                                                 WHERE det.trn_id = ".$trn_id_abs
-                                            ) or die(mysqli_error());               
+                                            ) or die(mysqli_error($mysqli));               
             $datos_orden_reen = $datos_orden_ree->fetch_assoc(); 
             $tipo_orden_origen = $datos_orden_reen['trn_origen'];
 
@@ -141,13 +135,13 @@ if (isset($_GET['trn_id_abs'])){
                                                     LEFT JOIN arg_ordenes AS oor
                                                         ON oor.trn_id = odet.trn_id_rel
                                                 WHERE odet.trn_id = ".$tipo_orden_origen
-                                            ) or die(mysqli_error());               
+                                            ) or die(mysqli_error($mysqli));               
             $datos_reen = $datos_ree->fetch_assoc(); 
             $tipo_orden = $datos_reen['tipo_orden'];
 
         }
     
-        $datos_metodo = $mysqli->query("SELECT nombre FROM `arg_metodos` WHERE metodo_id = ".$metodo_id) or die(mysqli_error());               
+        $datos_metodo = $mysqli->query("SELECT nombre FROM `arg_metodos` WHERE metodo_id = ".$metodo_id) or die(mysqli_error($mysqli));               
         $metodo = $datos_metodo->fetch_assoc(); 
         $metodo_nombre = $metodo['nombre'];
     
@@ -171,11 +165,11 @@ if (isset($_GET['trn_id_abs'])){
                                         hum.trn_id_batch = mm.trn_id_rel 
                                         AND hum.trn_id_rel = mm.trn_id
                                     WHERE
-                                        hum.trn_id_batch =  ".$trn_id_abs) or die(mysqli_error());
+                                        hum.trn_id_batch =  ".$trn_id_abs) or die(mysqli_error($mysqli));
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -222,7 +216,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -290,11 +284,11 @@ if (isset($_GET['trn_id_abs'])){
                                         hum.trn_id_batch = mm.trn_id_rel 
                                         AND hum.trn_id_rel = mm.trn_id
                                     WHERE
-                                        hum.trn_id_batch =  ".$trn_id_abs) or die(mysqli_error());
+                                        hum.trn_id_batch =  ".$trn_id_abs) or die(mysqli_error($mysqli));
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -365,11 +359,11 @@ if (isset($_GET['trn_id_abs'])){
                                             ON hum.trn_id_batch = mm.trn_id_rel 
                                             AND hum.trn_id_rel = mm.trn_id
                                       WHERE
-                                          hum.trn_id_batch = ".$trn_id_abs) or die(mysqli_error());
+                                          hum.trn_id_batch = ".$trn_id_abs) or die(mysqli_error($mysqli));
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -445,7 +439,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -535,7 +529,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -593,7 +587,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -707,7 +701,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -726,7 +720,7 @@ if (isset($_GET['trn_id_abs'])){
                                   </tr>";
                   $html_en.="</thead></table>";
                   
-                  $html_det .= "<table class='table' id='detalle_abs'>
+                  $html_det = "<table class='table' id='detalle_abs'>
                                 <thead>                   
                                     <tr class='table-secondary' justify-content: left;>
                                         <th scope='col1'>No.</th>
@@ -824,7 +818,7 @@ if (isset($_GET['trn_id_abs'])){
              ?>
              <br/> <br/>
              <div class="container">            
-              <?                
+              <?php                 
                 $hoy = date("Y-m-d H:i:s");                 
                 $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
