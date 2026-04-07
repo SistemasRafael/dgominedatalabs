@@ -150,7 +150,7 @@
                   $valor = substr($_SESSION['unidades'], $i, 1);
                   if (is_numeric($valor)) {
                     // echo $valor;
-                    $datos_umina = $mysqli->query("SELECT serie, unidad_id, nombre FROM arg_empr_unidades WHERE unidad_id = " . $valor) or die(mysqli_error());
+                    $datos_umina = $mysqli->query("SELECT serie, unidad_id, nombre FROM arg_empr_unidades WHERE unidad_id = " . $valor) or die(mysqli_error($mysqli));
                     $mina_acce = $datos_umina->fetch_array(MYSQLI_ASSOC);
                     $mina_acc = $mina_acce['unidad_id'];
                     $mina_acc_nombre = $mina_acce['nombre'];
@@ -192,7 +192,7 @@
                                 WHERE 
                                     directiva_id = 1 AND activo = 1 AND u_id = " .$_SESSION['u_id']."
                                 ORDER BY menu_id")
-        or die(mysqli_error());
+        or die(mysqli_error($mysqli));
       //utf8_encode($mysqli);
       while ($row_menu = $datos_menu->fetch_assoc()) { ?>
         <div class="col-xl-3 col-sm-5 col-md-4 col-ld-5 ">
@@ -218,7 +218,7 @@
                                                                 AND menu_id = " . $row_menu['menu_id'] . " 
                                                                 AND u_id = " . $_SESSION['u_id'] . 
                                                          " ORDER BY  orden")
-                  or die(mysqli_error());
+                  or die(mysqli_error($mysqli));
                 $total_rows =  mysqli_num_rows($datos_transacciones);
                 $i = 1;
                 while ($row_transaccion = $datos_transacciones->fetch_assoc()) { ?>

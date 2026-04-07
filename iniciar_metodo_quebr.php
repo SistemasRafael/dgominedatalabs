@@ -2489,8 +2489,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                 $cont = $cont+1;
                                 $trnid_batch_met = $res_muestras['trn_id_batch'];
                                 $trnid_rel_met   = $res_muestras['trn_id_rel'];
-                                $muestra_met     = $res_muestras['muestra'];     
-                                $metodo          = $res_muestras['metodo_nombre'];
+                                $muestra_met     = $res_muestras['muestra'];
                                 $peso            = $res_muestras['peso_payon'];
                                 $control = $res_muestras['control'];
 
@@ -2509,7 +2508,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                         <td>".$control."</td>
                                         <td>".$peso."</td>";
                                         if ($supervisor == 1){
-                                           $html .="<td> <input type='number' id='peso_pay".$cont."' value='".$peso_actual."' class='form-control'/> </td>
+                                           $html .="<td> <input type='number' id='peso_pay".$cont."' class='form-control'/> </td>
                                              <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardarEditCarb(".$trnid_batch_met.",".$trnid_rel_met.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$cont.")' >
                                                         <span class='fa fa-cloud fa-1x'></span>
                                                   </button>
@@ -2684,7 +2683,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                 $trnid_batch_met = $res_muestras['trn_id_batch'];
                                 $trnid_rel_met   = $res_muestras['trn_id_rel'];
                                 $muestra_met     = $res_muestras['muestra'];     
-                                $metodo          = $res_muestras['metodo_nombre'];
+                                // $metodo          = $res_muestras['metodo_nombre'];
                                 $peso            = $res_muestras['peso_dore'];
                                                 
                                 $html.="<td>".$con."</td> 
@@ -2694,7 +2693,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                         <td>".$muestra_met."</td>
                                         <td>".$peso."</td>";
                                         if ($supervisor == 1){
-                                           $html .="<td> <input type='number' id='peso_pay".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                           $html .="<td> <input type='number' id='peso_pay".$con."' class='form-control'/> </td>
                                              <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardarEditCarb(".$trnid_batch_met.",".$trnid_rel_met.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                         <span class='fa fa-cloud fa-1x'></span>                
                                                   </button>
@@ -2867,7 +2866,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                 $trnid_batch_met = $res_muestras['trn_id_batch'];
                                 $trnid_rel_met   = $res_muestras['trn_id_rel'];
                                 $muestra_met     = $res_muestras['muestra'];     
-                                $metodo          = $res_muestras['metodo_nombre'];
+                                // $metodo          = $res_muestras['metodo_nombre'];
                                 $peso            = $res_muestras['peso_oro'];
                                 $control         = $res_muestras['control'];
                                                 
@@ -2879,7 +2878,7 @@ if($fase_id == 24 && $etapa_id == 31){
                                         <td>".$control."</td>
                                         <td>".$peso."</td>";
                                         if ($supervisor == 1){
-                                           $html .="<td> <input type='number' id='peso_pay".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                           $html .="<td> <input type='number' id='peso_pay".$con."' class='form-control'/> </td>
                                              <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardarEditCarb(".$trnid_batch_met.",".$trnid_rel_met.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                         <span class='fa fa-cloud fa-1x'></span>                
                                                   </button>

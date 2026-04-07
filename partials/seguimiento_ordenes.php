@@ -1702,78 +1702,62 @@
 
     function met_payon_guardarEditCarb(trnid_batch, trnid_rel, metodo, fase, etapa, contador, unidad)
     {
-         var con_pay = contador;   
-         var warn_pay = 0;
-         var trnid_pay   = trnid_batch;
-         var trnid_muestra_pay = trnid_rel;
-         var metodo_id_pay = metodo;
-         var fase_pay = fase;
-         var etapa_pay = etapa;
-         var unidad_pay = unidad;
-         var table = document.getElementById("tabla_pesaje_met");
-         var total_rows_pay = parseInt(table.rows.length)-4;
-         //alert(total_rows_pay);alert(con_pay);
-         /*alert(trnid_pay);
-         alert(trnid_muestra_pay);
-         alert(metodo_id_pay);*/
+        var con_pay = contador;   
+        var warn_pay = 0;
+        var trnid_pay   = trnid_batch;
+        var trnid_muestra_pay = trnid_rel;
+        var metodo_id_pay = metodo;
+        var fase_pay = fase;
+        var etapa_pay = etapa;
+        var unidad_pay = unidad;
+        var table = document.getElementById("tabla_pesaje_met");
+        var total_rows_pay = parseInt(table.rows.length) - 4;
 
-         if (total_rows_pay <= con_pay){
-             var fin_met_pay = 1;
-         }
-         else{
-             var fin_met_pay = 0;
-         }
-         //Validar que el peso se encuentre entre 25 y 45 gramos   
-         cantidad_pay        = "peso_pay"+con_pay;
-         cantidad_met_pay = document.getElementById(cantidad_pay).value;
-         
-         if(cantidad_met_pay == 0 && cantidad_met_pay == '' && edicion == 0)
-            {
-                warn_pay = 1;
-                alert('El valor debe ser diferente de cero l\u00EDnea: '+con_pay);
-            }
-         else {
-            //alert(cantidad_met_pay);
-            if (etapa_pay == 6 &&(cantidad_met_pay < 20 || cantidad_met_pay > 50)){
+        if (total_rows_pay <= con_pay) {
+            var fin_met_pay = 1;
+        }
+        else {
+            var fin_met_pay = 0;
+        }
+ 
+        cantidad_pay = "peso_pay" + con_pay;
+        cantidad_met_pay = document.getElementById(cantidad_pay).value;
+        
+        if(cantidad_met_pay == 0 && cantidad_met_pay == '' && edicion == 0) {
+            warn_pay = 1;
+            alert('El valor debe ser diferente de cero l\u00EDnea: ' + con_pay);
+        }
+        else {
+            if (etapa_pay == 6 &&(cantidad_met_pay < 20 || cantidad_met_pay > 50)) {
                 alert('Error: Peso fuera de rango, se enviará la muestra a REENSAYE');
-                //Crear proceso para enviar a REE
             }
-                cantidad_pay = "peso_pay"+con_pay;            
-                cantidad_met_pay = document.getElementById(cantidad_pay).value;  
-               // alert(cantidad_met_pay);       
-                //alert(trnid_orden);alert(trnid_muestra);alert(metodo_id);  alert(fase);alert(etapa);  alert(cantidad_metodo);  
-                //alert(fin_met);
-                $('#boton_save_pay').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
-                    $.ajax({
-                		url: 'guardar_payon_pesoCarb.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                	    data: {trnid_pay:trnid_pay, trnid_muestra_pay:trnid_muestra_pay, metodo_id_pay:metodo_id_pay, fase_pay:fase_pay, etapa_pay:etapa_pay, cantidad_met_pay:cantidad_met_pay, fin_met_pay:fin_met_pay},
-                    }).done(function(respuesta){
-                        //if(respuesta == 'La etapa ha finalizado.')//alert(respuesta);  
-                         //{
-                           // alert(respuesta);
-                         //}
-                      //  else
-                    //    {
-                            $('#metodo_modal').modal('show');
-                            $("#datos_metodo").html(respuesta); 
-                            $('#metodo_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_met1').focus();
-                            })                
-                            $('#metodo_modal_quebr').modal('show').trigger('shown');
-
-                            /* if (etapa == 6){//Pesaje Pay n
+            
+            cantidad_pay = "peso_pay" + con_pay;       
+            cantidad_met_pay = document.getElementById(cantidad_pay).value;
+            $('#boton_save_pay').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
+            
+            $.ajax({
+                url: 'guardar_payon_pesoCarb.php',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    trnid_pay : trnid_pay, 
+                    trnid_muestra_pay : trnid_muestra_pay, 
+                    metodo_id_pay : metodo_id_pay, 
+                    fase_pay : fase_pay, 
+                    etapa_pay : etapa_pay, 
+                    cantidad_met_pay : cantidad_met_pay, 
+                    fin_met_pay : fin_met_pay
+                },
+            }).done(function(respuesta){
                 $('#metodo_modal').modal('show');
                 $("#datos_metodo").html(respuesta); 
                 $('#metodo_modal').on('shown.bs.modal', function (e) {
                     $(this).find('#peso_met1').focus();
                 })                
                 $('#metodo_modal_quebr').modal('show').trigger('shown');
-            }*/
-                        //}
-                    })
-          }
+            });
+        }
     }
     
     function met_payon_finalizar(trnid_batch, metodo, fase, etapa)
@@ -1812,72 +1796,71 @@
 
     function met_payon_finalizarCarb(trnid_batch, metodo, fase, etapa)
     {
-         var trnid_pay   = trnid_batch;
-         var metodo_id_pay = metodo;
-         var fase_pay = fase;
-         var etapa_pay = etapa;
-         
-         //var cadena_fin = 'La etapa ha finalizado';
-         
-         //alert(pedcadena);
-         //var unidad_pay = unidad;
-         
+        var trnid_pay   = trnid_batch;
+        var metodo_id_pay = metodo;
+        var fase_pay = fase;
+        var etapa_pay = etapa;
         $('#boton_save_payconfirm').html('<div class="loading">FINALIZANDO ETAPA...<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i><span class="sr-only">Finalizando...</span></div>'); 
-                $.ajax({
-                		url: 'guardar_payon_confirmarCarb.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                	    data: {trnid_pay:trnid_pay, metodo_id_pay:metodo_id_pay, fase_pay:fase_pay, etapa_pay:etapa_pay},
-                    }).done(function(respuesta){
-                        //var cadena_fin = 'La etapa ha finalizado';
-                        var confir = respuesta.substring(0,22);
-                        if(confir == 'La etapa ha finalizado')//alert(respuesta);  
-                         {
-                            alert(confir);
-                         }
-                      //  else
-                    //    {
-                            $('#metodo_modal').modal('show');
-                            $("#datos_metodo").html(respuesta); 
-                            $('#metodo_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_met1').focus();
-                            })                
-                            $('#metodo_modal_quebr').modal('show').trigger('shown');
-                        //}
-                    })
+        
+        $.ajax({
+            url: 'guardar_payon_confirmarCarb.php' ,
+            type: 'POST' ,
+            dataType: 'html',
+            data: {
+                trnid_pay : trnid_pay, 
+                metodo_id_pay : metodo_id_pay, 
+                fase_pay : fase_pay, 
+                etapa_pay : etapa_pay
+            },
+        }).done(function(respuesta){
+            var confir = respuesta.substring(0,22);
+            if(confir == 'La etapa ha finalizado') {
+                alert(confir);
+            }
+
+            $('#metodo_modal').modal('show');
+            $("#datos_metodo").html(respuesta); 
+            $('#metodo_modal').on('shown.bs.modal', function (e) {
+                $(this).find('#peso_met1').focus();
+            })                
+            $('#metodo_modal_quebr').modal('show').trigger('shown');
+        });
     }
     
-    //Copelado
-    function copelado_guardar(trn_id_cop, metodo_cop)
-        {               
-            var trn_id_cp    = trn_id_cop;
-            var metodo_cp    = metodo_cop
-            var cantidad_cp  = document.getElementById("cantidad_cop").value;
-            var ins_id_cp    = document.getElementById("ins_id_cop").value;
-            if (cantidad_cp == 0 || cantidad_cp == ''){
-                alert('La temperatura no puede ser 0');
-            }
-            else 
-            {
-                if(cantidad_cp < 900 || cantidad_cp > 940){
-                    alert('Error: Temperatura fuera de rango, reintente por favor');
-                }
-                else{
-                    $('#boton_save_cop').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
-                    $.ajax({
-                    		url: 'guardar_copelado.php' ,
-                    		type: 'POST' ,
-                    		dataType: 'html',
-                    		data: {trn_id_cp:trn_id_cp, metodo_cp:metodo_cp, cantidad_cp:cantidad_cp, ins_id_cp:ins_id_cp},
-                    	})
-                    	.done(function(respuesta){
-                    		///$("#placas_dat").html(respuesta);  
-                            alert(respuesta);
-                            $('#boton_save_cop').html('<div class="loading" ><i  disabled="disabled" class="fa fa-cloud fa-1x"  disabled="disabled" ></i><span class="sr-only">Loading...</span></div>'); 
-                      })
-                }
-           }            
+    function copelado_guardar(trn_id_cop, metodo_cop) {               
+        var trn_id_cp    = trn_id_cop;
+        var metodo_cp    = metodo_cop
+        var cantidad_cp  = document.getElementById("cantidad_cop").value;
+        var ins_id_cp    = document.getElementById("ins_id_cop").value;
+
+        if (cantidad_cp == 0 || cantidad_cp == '') {
+            alert('La temperatura no puede ser 0');
         }
+        else 
+        {
+            if(cantidad_cp < 900 || cantidad_cp > 940) {
+                alert('Error: Temperatura fuera de rango, reintente por favor');
+            }
+            else{
+                $('#boton_save_cop').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
+                $.ajax({
+                    url: 'guardar_copelado.php' ,
+                    type: 'POST' ,
+                    dataType: 'html',
+                    data: {
+                        trn_id_cp : trn_id_cp, 
+                        metodo_cp : metodo_cp, 
+                        cantidad_cp : cantidad_cp, 
+                        ins_id_cp : ins_id_cp
+                    },
+                })
+                .done(function(respuesta){
+                    alert(respuesta);
+                    $('#boton_save_cop').html('<div class="loading" ><i  disabled="disabled" class="fa fa-cloud fa-1x"  disabled="disabled" ></i><span class="sr-only">Loading...</span></div>'); 
+                });
+            }
+        }            
+    }
         
     //Digestion
     function digestion_guardar(trn_id_dig, metodo_dig)
@@ -2830,18 +2813,6 @@
                                                 }                                                                                              
                                             }else{
                                                 $html_det.="<td>";
-                                                // $metodos_lista = $mysqli->query("SELECT  nombre
-                                                //                                         ,om.metodo_id
-                                                //                                         ,m.color
-                                                //                                         ,buscar_fase(".$fila['trn_id_batch'].", om.metodo_id) AS fase_id
-                                                //                                         ,buscar_etapa(".$fila['trn_id_batch'].", om.metodo_id) AS etapa_id
-                                                //                                         ,buscar_etapa_acceso(".$fila['trn_id_batch'].", om.metodo_id, ".$u_id.") AS boton_acceso
-                                                //                                         ,buscar_etapa_nombre(om.trn_id_rel,om.metodo_id) AS etapa
-                                                //                                         ,buscar_etapa_img(om.trn_id_rel,om.metodo_id) AS etapa_img
-                                                //                                 FROM arg_metodos m
-                                                //                                 LEFT JOIN arg_ordenes_metodos om
-                                                //                                 ON m.metodo_id = om.metodo_id
-                                                //                                 WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error($mysqli));
                                                 foreach (array_filter($Metodoslista, fn($obj) => $obj["trn_id_batch"] == $fila['trn_id_batch']) as $fila_met) {
                                                     if ($fila['estado_id'] == 2){
                                                         $variable_color = 'btn btn-success';

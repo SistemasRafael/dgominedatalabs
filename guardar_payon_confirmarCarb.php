@@ -1,4 +1,4 @@
-<? include "connections/config.php"; ?>
+<?php include "connections/config.php"; ?>
 <?php
 //$html = '';
 $trn_id_fin = $_POST['trnid_pay'];
@@ -18,7 +18,7 @@ if (isset($trn_id_fin)) {
                                         FROM arg_ordenes ord
                                         LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error());             
+                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error($mysqli));             
         $tipo_ord = $tipo_orden->fetch_assoc();
         $reensaye = $tipo_ord['reensaye'];
         $orden_trabajo = $tipo_ord['folio_interno'];   
@@ -59,7 +59,7 @@ if (isset($trn_id_fin)) {
                                                     mq.trn_id_batch  = ".$trn_id_fin."  
                                                     AND mq.metodo_id =  ".$metodo_id."
                                                 ORDER BY mq.posicion"
-                                                    ) or die(mysqli_error());
+                                                    ) or die(mysqli_error($mysqli));
             }else{
                 $resultado = $mysqli->query("SELECT
                                                 ot.trn_id_rel AS trnid_batch_met,
@@ -78,7 +78,7 @@ if (isset($trn_id_fin)) {
                                                 AND pul.metodo_id = ".$metodo_id."
                                             ORDER BY 
                                                 ot.posicion"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
             }
                             
                                 $cont = 0;
@@ -121,14 +121,14 @@ if (isset($trn_id_fin)) {
                                         FROM arg_ordenes ord
                                         LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error());             
+                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error($mysqli));             
         $tipo_ord = $tipo_orden->fetch_assoc();
         $reensaye = $tipo_ord['reensaye'];
         $orden_trabajo = $tipo_ord['folio_interno'];   
         
            // $html = 'La etapa ha finalizado';
             
-            $html .=  "<table class='table text-black' id='tabla_pesaje_met'>
+            $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                         <thead class='thead-info' align='center'>                                    
                                             <tr class='table-warning' align='center'>
                                                 <th colspan='4'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>
@@ -164,7 +164,7 @@ if (isset($trn_id_fin)) {
                                                     AND mq.metodo_id =  ".$metodo_id."
                                                     AND mc.reensaye = 0
                                                 ORDER BY mq.posicion"
-                                                    ) or die(mysqli_error());
+                                                    ) or die(mysqli_error($mysqli));
             }
             else{
                 $resultado = $mysqli->query("SELECT
@@ -185,7 +185,7 @@ if (isset($trn_id_fin)) {
                                                 AND pul.reensaye = 0
                                             ORDER BY 
                                                 ot.posicion"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
             }
                             
                                 $cont = 0;
@@ -222,14 +222,14 @@ if (isset($trn_id_fin)) {
                                         FROM arg_ordenes ord
                                         LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error());             
+                                        WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error($mysqli));             
         $tipo_ord = $tipo_orden->fetch_assoc();
         $reensaye = $tipo_ord['reensaye'];
         $orden_trabajo = $tipo_ord['folio_interno'];   
         
            // $html = 'La etapa ha finalizado';
             
-        $html .=  "<table class='table text-black' id='tabla_pesaje_met'>
+        $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                         <thead class='thead-info' align='center'>                                    
                                             <tr class='table-warning' align='center'>
                                                 <th colspan='5'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>
@@ -265,7 +265,7 @@ if (isset($trn_id_fin)) {
                                             AND mq.metodo_id =  ".$metodo_id."
                                             AND mc.reensaye = 0
                                             ORDER BY mq.posicion"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
         }
         else{
             $resultado = $mysqli->query("SELECT
@@ -286,7 +286,7 @@ if (isset($trn_id_fin)) {
                                             AND pul.reensaye = 0
                                         ORDER BY 
                                             ot.posicion"
-                                        ) or die(mysqli_error());
+                                        ) or die(mysqli_error($mysqli));
         }
                             
                                 $cont = 0;
