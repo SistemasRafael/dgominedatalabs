@@ -3,8 +3,8 @@
     <title>Argonaut Gold</title>
 	</head>
 		<body>		
-            <?include('partials/header.php'); ?>
-            <?include('partials/reportes_geo.php');?>
-            <?include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/reportes_geo.php');?>
+            <?php include('partials/footer.php'); ?>
 		</body>
 	</html>

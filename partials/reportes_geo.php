@@ -1,4 +1,4 @@
-<? //include "../connections/config.php";
+<?php
 
 $date = date('Y-m-d');
 $fecha_inicial = date("Y-m-d", strtotime($date));
@@ -37,7 +37,7 @@ $fecha_final = date("Y-m-d");
 
 <div class="container-fluid">
     <br /><br /><br /><br /><br /><br />
-    <?
+    <?php
         $fecha_minima_val = date('Y-m-d');
         $nuevafecha = strtotime($fecha_minima_val);
         $nuevafecha = date('Y-m-d', $nuevafecha);
@@ -57,14 +57,14 @@ $fecha_final = date("Y-m-d");
             <label for="tipo_id_sel"><b>TIPO DE MUESTRAS</b></label>
             <select name="tipo_id_sel" id="tipo_id_sel" class="form-control">
                 <option value="2" selected>Seleccione</option>
-                <? $result_h = $mysqli->query("SELECT 0 AS tipo_id, 'Muestras de Geología' AS nombre 
+                <?php $result_h = $mysqli->query("SELECT 0 AS tipo_id, 'Muestras de Geología' AS nombre 
                                                           UNION ALL 
                                                           SELECT 1 AS tipo_id, 'Muestras Geo y Controles de Calidad' AS nombre") or die(mysqli_error($mysqli));
                 while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
                     $met_sele = $row2['nombre'];
                 ?>
-                    <option value="<? echo $row2['tipo_id'] ?>"><? echo $met_sele ?></option>
-                <? } ?>
+                    <option value="<?php  echo $row2['tipo_id'] ?>"><?php  echo $met_sele ?></option>
+                <?php  } ?>
             </select>
         </div>
         <div class="col-md-4 col-lg-4">
@@ -117,8 +117,6 @@ $fecha_final = date("Y-m-d");
     echo ($html_det);
     ?>
 </div>
-<?
-?>
 <script>
     function updateTabla(url) {
         var fecha_inicial_ex = document.getElementById('fecha_inicial_ex').value;

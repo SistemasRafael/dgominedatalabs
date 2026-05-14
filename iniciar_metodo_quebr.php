@@ -3752,4 +3752,3 @@ if($fase_id == 24 && $etapa_id == 31){
 $mysqli -> set_charset("utf8");
 echo($html);
 ?>
-

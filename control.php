@@ -19,8 +19,11 @@ else {
                                         WHERE u.codigo = '".$usr."'
                                         AND u.clave = '".$pass."'");
         $existe_extu = $existe_ext->fetch_array(MYSQLI_ASSOC);
+        
         if ($existe_extu <> ''){
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $_SESSION["LoggedIn"] = 1;
             $_SESSION["user"] = $usr;
             $_SESSION["autentica"] = "SIP";  
@@ -49,6 +52,7 @@ else {
         else { 
             echo"<script> alert('Usuario o clave incorrecta. Vuelva a digitarlos por favor.'); window.location.href='index.php'; </script>";
         }
+        
     }
     else {
         session_start();

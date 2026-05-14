@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 //$html = '';
 $u_id = $_SESSION['u_id'];
@@ -22,7 +22,7 @@ if (isset($perfil_id)){
              //$datos_user = $mysqli->query("SELECT DISTINCT directiva_id, descripcion_directiva, perfil_id, perfil FROM `perfiles_privilegios` WHERE  perfil_id = ".$perfil_id) or die(mysqli_error());
            
       //  }   
-        $html.=  "<table class='table text-black' id='datos_perfiles_det'>
+        $html =  "<table class='table text-black' id='datos_perfiles_det'>
                                 <thead class='thead-warning' align='center'>
                                 <tr class='table-info' align='left'>
                                 <th>Perfil</th>

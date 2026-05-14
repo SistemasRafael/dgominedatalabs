@@ -423,7 +423,7 @@ if (isset($_GET["unidad_id"])) {
                   
                      $fecha             = $_POST['fecha'];
                      $hora              = $_POST['hora_sel'];
-                     $mina_seleccionada = $_POST['mina_seleccionada'];
+                     $mina_seleccionada = $_POST['mina_seleccionada'] ?? NULL;
                      $u_id              = $_SESSION['u_id'];
                      
                      $i   = 1;
@@ -431,9 +431,9 @@ if (isset($_GET["unidad_id"])) {
                      $pos = 1;
                      while($i <> 0){ 
                         $preorden_sel = "preorden".$pos;
-                        $preorden = $_POST[$preorden_sel];
+                        $preorden = $_POST[$preorden_sel] ?? null;
                         $cantidad = 'cantidad_muestras'.$pos;
-                        $cantidad_sel = $_POST[$cantidad];
+                        $cantidad_sel = $_POST[$cantidad] ?? null;
                         
                         //Métodos
                         $val_met = 0;
@@ -441,7 +441,7 @@ if (isset($_GET["unidad_id"])) {
                             while ($metodos = $metodos_validar->fetch_assoc()) {
                                 $metodo_id = $metodos['metodo_id'];
                                 $fila1 = 'fila'.$pos.'_'.$metodo_id;
-                                $metodo_sel = $_POST[$fila1];
+                                $metodo_sel = $_POST[$fila1] ?? null;
                                 if ($metodo_sel == 'on'){
                                     $val_met = 1;
                                 }
@@ -621,6 +621,7 @@ if (isset($_GET["unidad_id"])) {
                                          
                                          //ORDENES CON DETALLE DE MUESTRAS
                                              $c = 1;
+                                             $cons_det = 1;
                                              while ($c <= $cant_bloque_muestras){
                                               //   $length = 6;
                                                  $length = 9;
@@ -655,7 +656,7 @@ if (isset($_GET["unidad_id"])) {
                                 while ($metodos = $metodos_validar->fetch_assoc()) {
                                         $metodo_id = $metodos['metodo_id'];
                                         $fila1 = 'fila'.$pos.'_'.$metodo_id;
-                                        $metodo_sel = $_POST[$fila1];
+                                        $metodo_sel = $_POST[$fila1] ?? null;
                                         if ($metodo_sel == 'on'){
                                                     $query = "INSERT INTO arg_ordenes_metodos (trn_id, trn_id_rel, metodo_id ) ".
                                                              "VALUES ($trn_id_met, $tr_id_det, $metodo_id)";
@@ -667,10 +668,10 @@ if (isset($_GET["unidad_id"])) {
                                 }                            
                                $i++;
                                $pos++;
-                               $cons++;                   
+                               //$cons++;                   
                            }   
                     }     
-                      //die();               
+                      die();               
                      echo "<script>";
                      echo "imprimir(".$unidad_id.", ".$trn_id.")";
                      echo "</script>";

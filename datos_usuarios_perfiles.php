@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 //$html = '';
 $u_id = $_SESSION['u_id'];
@@ -26,7 +26,7 @@ if (isset($u_id_ver)){
         //$datos_user_perfiles = $datos_user ->fetch_array(MYSQLI_ASSOC);
         //$usuario = $datos_user['nombre'];
         
-        $html.=  "<table class='table text-black' id='tabla_pesaje_met'>
+        $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                 <thead class='thead-info' align='center'>"; 
                  $html.="<tr class='table-info' align='left'>
                                         <th>Usuario</th>
@@ -34,8 +34,8 @@ if (isset($u_id_ver)){
                                         <th>Activo</th> 
                                         <th>Feha Inicial</th> 
                                         <th>Fecha Final</th>                                        
-                                        <th>Menús</th>
-                                        <th>Transacción</th> 
+                                        <th>Menï¿½s</th>
+                                        <th>Transacciï¿½n</th> 
                                         <th>Atributos</th>                   
                                 </thead>
                                 <tbody>";

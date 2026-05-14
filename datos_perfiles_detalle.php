@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 //$html = '';
 $u_id = $_SESSION['u_id'];
@@ -20,12 +20,12 @@ if (isset($perfil_id)){
                                      	ON me.menu_id = up.valor
                                      WHERE up.perfil_id = ".$perfil_id."
                                         AND up.directiva_id =".$dir_id) or die(mysqli_error());
-                 $html.=  "<table class='table text-black' id='datos_perfiles'>
+                 $html =  "<table class='table text-black' id='datos_perfiles'>
                                                 <thead class='thead-warning' align='center'>"; 
                                  $html.="<tr class='table-warning' align='left'>
                                                         <th>Perfil</th>                                                                                
-                                                        <th>Menú</th> 
-                                                        <th>Descripción</th>                       
+                                                        <th>Menï¿½</th> 
+                                                        <th>Descripciï¿½n</th>                       
                                                 </thead>
                                                 <tbody>";
                                  $cont = 0;
@@ -48,7 +48,7 @@ if (isset($perfil_id)){
        $datos_user = $mysqli->query("SELECT 
                                              DISTINCT directiva_id, valor,
                                               me.transaccion AS nombre_directiva,
-                                             'Transacción' AS descripcion_directiva,
+                                             'Transacciï¿½n' AS descripcion_directiva,
                                               p.descripcion AS perfil
                                      FROM `arg_usuarios_privilegios` up
                                      LEFT JOIN arg_perfiles AS p
@@ -58,12 +58,12 @@ if (isset($perfil_id)){
                                      WHERE up.perfil_id = ".$perfil_id."
                                         AND up.directiva_id = ".$dir_id) or die(mysqli_error());
         
-         $html.=  "<table class='table text-black' id='datos_perfiles'>
+         $html =  "<table class='table text-black' id='datos_perfiles'>
                                 <thead class='thead-warning' align='center'>"; 
                  $html.="<tr class='table-warning' align='left'>
                                         <th>Perfil</th>                                                                                
-                                        <th>Menú</th> 
-                                        <th>Descripción</th>                       
+                                        <th>Menï¿½</th> 
+                                        <th>Descripciï¿½n</th>                       
                                 </thead>
                                 <tbody>";
                  $cont = 0;
@@ -90,7 +90,7 @@ if (isset($perfil_id)){
                                                 ,mt.transaccion
                                                 ,bt.etapa_id
                                                 ,p.descripcion AS perfil
-                                                ,'Botón' AS descripcion_directiva 
+                                                ,'Botï¿½n' AS descripcion_directiva 
                                                 ,(CASE WHEN bt.etapa_id = 0 THEN 'Todos' ELSE et.nombre END) AS nombre_directiva                                               
                                             FROM
                                             	arg_sys_menus_transacciones AS mt
@@ -111,8 +111,8 @@ if (isset($perfil_id)){
                  $html.="<tr class='table-warning' align='left'>
                                         <th>Perfil</th>                                                                                
                                         <th>Directiva</th> 
-                                        <th>Transacción</th> 
-                                        <th>Descripción</th>                       
+                                        <th>Transacciï¿½n</th> 
+                                        <th>Descripciï¿½n</th>                       
                                 </thead>
                                 <tbody>";
                  $cont = 0;

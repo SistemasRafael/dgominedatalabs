@@ -1,4 +1,4 @@
-<? //include "../connections/config.php"; 
+<?php //include "../connections/config.php"; 
 $unidad_id = $_GET['unidad_id'];
 $area_muestras = $_GET['area_id'];
 $_SESSION['unidad_id'] = $unidad_id;
@@ -145,7 +145,7 @@ $_SESSION['unidad_id'] = $unidad_id;
     
 </script>
     <br/><br/>
-     <?  
+     <?php   
         if(($_SESSION['LoggedIn']) <> '')
         {
             $user_fir       = $mysqli->query("SELECT nombre
@@ -155,7 +155,7 @@ $_SESSION['unidad_id'] = $unidad_id;
             $nombre_usuario = $user_firmado['nombre'];
                         
      ?>                             
-                    <form method="post" action="app_sln.php?unidad_id=<?echo $unidad_id."&area_id=".$area_muestras;?>" name="Visitaform" id="Visitaform">  
+                    <form method="post" action="app_sln.php?unidad_id=<?php echo $unidad_id."&area_id=".$area_muestras;?>" name="Visitaform" id="Visitaform">  
                     <fieldset>                       
                             <div class="col-md-12 col-lg-12 bg-info text-black text-center">
                                 <br />
@@ -168,7 +168,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                     
                                   <div class="col-md-3 col-lg-3">  
                                                           
-                                        <?     
+                                        <?php      
                                         $area_muestras = $_GET['area_id'];  
                                         if ($area_muestras == ""){
                                             $nombretop = "Seleccione Tipo de Muestras";
@@ -195,13 +195,13 @@ $_SESSION['unidad_id'] = $unidad_id;
                                 </div> 
                                                     
                                     <div class="col-md-1 col-lg-1">               
-                                        <h5><?echo 'Fecha:'?></h5>
+                                        <h5><?php echo 'Fecha:'?></h5>
                                     </div>
                                     <div class="col-md-2 col-lg-2">
                                          <input type="date" name="fecha" class="form-control" id="fecha" value="<?php echo date("Y-m-d");?>"/>
                                     </div>                                
                                     <div class="col-md-2 col-lg-2">                                                                                                         
-                                    <?                           
+                                    <?php                            
                                                                             
                                         echo ("<form name=\"turno\" id=\"turno\">");                                   
                                         echo ("<select name=\"turno\" id=\"turno\" class=\"form-control\" > ");        
@@ -217,7 +217,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                         ?>                                     
                                      </div>  
                               <div class="col-md-2 col-lg-2">                                
-                                        <?                           
+                                        <?php                            
                                         $unidad_id = $_GET['unidad_id'];
                                         if ($unidad_id == ""){
                                             $nombretop = "Seleccione Mina";
@@ -261,26 +261,26 @@ $_SESSION['unidad_id'] = $unidad_id;
                                     </tr>
                                     <tr>
                                        <th colspan='4'>
-                                              <? $datos_res = $mysqli->query("SELECT metodo_id, nombre FROM arg_metodos WHERE activo = 1 AND tipo_id = 2") or die(mysqli_error());?>
+                                              <?php  $datos_res = $mysqli->query("SELECT metodo_id, nombre FROM arg_metodos WHERE activo = 1 AND tipo_id = 2") or die(mysqli_error());?>
                                                  <div class="[ form-group ] ">   
-                                                    <?while ($fila = $datos_res->fetch_assoc()) {?>
-                                                            <input type="checkbox" name="<?echo 'fila2_'.$fila['metodo_id']?>" id="<?echo 'fila2_'.$fila['metodo_id']?>" autocomplete="off" />
+                                                    <?php while ($fila = $datos_res->fetch_assoc()) {?>
+                                                            <input type="checkbox" name="<?php echo 'fila2_'.$fila['metodo_id']?>" id="<?php echo 'fila2_'.$fila['metodo_id']?>" autocomplete="off" />
                                                             <div class="[ btn-group ]">                                                                
-                                                                <label for="<?echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-warning ]">
+                                                                <label for="<?php echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-warning ]">
                                                                     <span class="[ glyphicon glyphicon-ok ]"></span>                            
                                                                     <span></span>
                                                                 </label>                                                    
-                                                                <label for="<?echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-default active ]">
-                                                                    <?echo $fila['nombre']?>
+                                                                <label for="<?php echo 'fila2_'.$fila['metodo_id']?>" class="[ btn btn-default active ]">
+                                                                    <?php echo $fila['nombre']?>
                                                                 </label>                              
                                                             </div>                                            
-                                                    <?}?>                                        
+                                                    <?php }?>                                        
                                                  </div>   
                                          </th>
                                     </tr>
-                                    <?if ($area_muestras == 2){ ?> 
+                                    <?php if ($area_muestras == 2){ ?> 
                                             <th colspan='1'>No.</th>
-                                            <th colspan='1'>MUESTRAS <?                                      
+                                            <th colspan='1'>MUESTRAS <?php                                       
                                       $result = $mysqli->query("SELECT trn_id, folio   
                                                                 FROM arg_ordenes_muestrasSoluciones 
                                                                 WHERE activo = 1 AND tipo_id = 2 AND area_id = ".$area_muestras." AND unidad_id = ".$unidad_id
@@ -309,7 +309,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                               </th>  
                                                 <th colspan='1'>  <input type="button" class="btn btn-info" name="add_muestra" id="add_muestra" onclick="agregar_muestra()"  value="AGREGAR A LA ORDEN" />                      
                                               </th> 
-                                    <?} 
+                                    <?php } 
                                     else{?>    
                                         <tr>
                                             <th colspan='2'>MUESTRAS</th>
@@ -318,7 +318,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                     <tbody>
                                       
                                      <div class="col-md-1 col-lg-1">                                     
-                                      <?                                      
+                                      <?php                                       
                                       /*$result = $mysqli->query("SELECT trn_id, folio   
                                                                 FROM arg_ordenes_muestrasSoluciones 
                                                                 WHERE activo = 1 AND tipo_id = 2 AND area_id = ".$area_muestras) or die(mysqli_error());*/
@@ -335,9 +335,9 @@ $_SESSION['unidad_id'] = $unidad_id;
                                                    <td> <input type='text' disabled='1' id='$muestra_sol' name='$muestra_sol' value='$muestra_sol' class='form-control' /> </td>"
                                                    );                                                                                   
                                               ?>                             
-                                                   <td> <input type="checkbox" name="<?echo 'fila'.$i;?>" id="<?echo 'fila'.$i;?>" onchange="calculatotal()" class='form-control' autocomplete="off" /> </td>
+                                                   <td> <input type="checkbox" name="<?php echo 'fila'.$i;?>" id="<?php echo 'fila'.$i;?>" onchange="calculatotal()" class='form-control' autocomplete="off" /> </td>
                                                    </tr>
-                                        <?                                       
+                                        <?php                                        
                                             $i = $i+1;
                                           }
                                           $total_muestras = (mysqli_num_rows($result));  
@@ -355,7 +355,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                                       <td style="width:1%"></td>                               
                                       <td style="width:5%"><input type="input" name="total_muestras_1" id="total_muestras_1" disabled="1"  value="" class="form-control" /></td> 
                                       <input type="hidden" name="total_muestras1" id="total_muestras1" value="" class="form-control" />
-                                      <input type="hidden" name="total_muestras_lista" id="total_muestras_lista" value="<?echo  $total_muestras;?>" class="form-control" />
+                                      <input type="hidden" name="total_muestras_lista" id="total_muestras_lista" value="<?php echo  $total_muestras;?>" class="form-control" />
                                       <td style="width:20%"></td>     
                                        </tr>                                    
                                 </tbody>                                      
@@ -385,7 +385,7 @@ $_SESSION['unidad_id'] = $unidad_id;
                     </div>
                   </div>
                 </div> 
-       <?
+       <?php 
               //Click en Generar Orden
                 if (isset($_POST['generar_ordenSln'])){
                      $caracter_mina  = $mysqli->query("SELECT caracter_folio, nombre, serie
