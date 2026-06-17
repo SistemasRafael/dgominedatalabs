@@ -1,4 +1,4 @@
-<?
+<?php
 include "connections/config.php";
 
 $html = '';
@@ -17,7 +17,7 @@ IF (isset($trn_id_a)){
                                        LEFT JOIN arg_ordenes ord
                                             ON ord.trn_id = det.trn_id_rel
                                        WHERE det.trn_id = ".$trn_id_a
-                                   ) or die(mysqli_error());               
+                                   ) or die(mysqli_error($mysqli));               
     $orden_encabezado = $datos_orden->fetch_assoc(); 
     
      if($orden_encabezado['tipo'] == 2){

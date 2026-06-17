@@ -44,6 +44,7 @@ if (isset($trn_id_rel)) {
         }
     }
     else{            
+        var_dump($trn_id_rel, $metodo_tem, " fase_id = [".$fase_id."] ", $etapa_id, $hora_ini, $hora_fin, $u_id);
         mysqli_multi_query ($mysqli, "CALL arg_cianurado_guardar(".$trn_id_rel.", ".$metodo_tem.", ".$fase_id.", ".$etapa_id.", '".$hora_ini."', '".$hora_fin."', ".$u_id.")") OR DIE (mysqli_error($mysqli));   
         
         $resultado = $mysqli->query("SELECT

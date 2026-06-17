@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $metodo_id = $_POST['metodo_id'];
@@ -15,7 +15,7 @@ if (isset($metodo_id)){
     	          <tbody>";
     
         $resultado = $mysqli->query("SELECT * FROM metodos_controles
-                                     WHERE activo = 1 AND metodo_id = ".$metodo_id." ORDER BY tipo_control") or die(mysqli_error());
+                                     WHERE activo = 1 AND metodo_id = ".$metodo_id." ORDER BY tipo_control") or die(mysqli_error($mysqli));
         
         if ($resultado->num_rows > 0) {
             while ($res = $resultado->fetch_assoc()) {

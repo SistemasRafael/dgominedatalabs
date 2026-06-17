@@ -1,6 +1,5 @@
-<? include "connections/config.php"; ?>
+<?php include "connections/config.php"; ?>
 <?php
-//$html = '';
 $trn_id_fin = $_POST['trnid_pay'];
 $metodo_id  = $_POST['metodo_id_pay'];
 $fase_id    = $_POST['fase_pay'];
@@ -17,7 +16,7 @@ if (isset($trn_id_fin)) {
                                 FROM arg_ordenes ord
                                 LEFT JOIN arg_ordenes_detalle odet
                                     ON ord.trn_id =  odet.trn_id_rel
-                                WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error());             
+                                WHERE odet.trn_id = ".$trn_id_fin) or die(mysqli_error($mysqli));             
    $tipo_ord = $tipo_orden->fetch_assoc();
    $reensaye = $tipo_ord['reensaye'];
    $orden_trabajo = $tipo_ord['folio_interno'];   
@@ -33,7 +32,7 @@ if (isset($trn_id_fin)) {
                                     <tr class='table-info' align='left'>
                                         <th>No.</th>
                                         <th>Muestra</th>
-                                        <th>Peso Payón g</th>
+                                        <th>Peso Payï¿½n g</th>
                                         <th></th>                                
                                 </thead>
                             <tbody>";
@@ -60,7 +59,7 @@ if (isset($trn_id_fin)) {
                                                 AND se.metodo_id = ".$metodo_id."
                                              ORDER BY 
                                                 om.folio_interno"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
                     
                          $cont = 0;
                          while ($res_muestras = $resultado->fetch_assoc()) {

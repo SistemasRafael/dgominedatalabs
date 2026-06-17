@@ -1,6 +1,4 @@
-<?include "connections/config.php";?>
-
-<!--<link href="http://192.168.20.3:81/__pro/argonaut/boostrapp/css/check.css" rel="stylesheet">--!>
+<?php include "connections/config.php";?>
 <link href="http://192.168.20.22/intranet-spa/css/check.css" rel="stylesheet"> 
 <?php
 $html = '';
@@ -46,10 +44,10 @@ if (isset($trn_id)){
                                         ob.trn_id_rel = ".$trn_id."
                                         AND ob.etapa_id = ".$etapa_id."
                                     ORDER BY ob.fecha DESC
-                                    LIMIT 1") or die(mysqli_error());
+                                    LIMIT 1") or die(mysqli_error($mysqli));
         
         if ($resultado->num_rows > 0) {
-        //Inicia preparación con etapa 1 secado    
+        //Inicia preparaciï¿½n con etapa 1 secado    
         if($etapa_id == 1){        
             if ($resultado->num_rows > 0) {
                 while ($res = $resultado->fetch_assoc()) {
@@ -85,7 +83,7 @@ if (isset($trn_id)){
                                                           AND ot.trn_id_batch = ".$trn_id." 
                                                           AND ot.metodo_id = ".$metodo_id."
                                                           AND sec.peso = 0
-                                                    ORDER BY posicion) AS x ORDER BY  posicion") or die(mysqli_error());  //PARA HACERLO ALEATORIO ORDER BY (FLOOR (1+RAND()*".$total."))
+                                                    ORDER BY posicion) AS x ORDER BY  posicion") or die(mysqli_error($mysqli));  //PARA HACERLO ALEATORIO ORDER BY (FLOOR (1+RAND()*".$total."))
                 
                 $html =  "<div class='col-md-12 col-lg-12'>
                            <table class='table text-black' id='tabla_secado'>
@@ -135,7 +133,7 @@ if (isset($trn_id)){
                                                                             WHERE 
                                                                                 tipo_id = 0 AND trn_id_batch = ".$trn_id."                                                                                                                                                            
                                                                             ORDER BY posicion
-                                                            LIMIT ".$limite.") AS x ORDER BY posicion")   or die(mysqli_error());  // para haceerlo aleatorio ORDER BY (FLOOR (1+RAND()*".$total."))
+                                                            LIMIT ".$limite.") AS x ORDER BY posicion")   or die(mysqli_error($mysqli));  // para haceerlo aleatorio ORDER BY (FLOOR (1+RAND()*".$total."))
                         while ($res_muestras_ins = $resultado_mues->fetch_assoc()) {
                             $con = $con+1; 
                             $trn_id_batch = $res_muestras_ins['trn_id_batch'];
@@ -206,7 +204,7 @@ if (isset($trn_id)){
                                                         ON  pul.trn_id = ot.trn_id_batch
                                                         AND pul.trn_id_rel = ot.trn_id_rel
                                                   WHERE
-                                                    pul.peso = 0 AND pul.peso_malla = 0 AND  pul.trn_id = ".$trn_id) or die(mysqli_error());
+                                                    pul.peso = 0 AND pul.peso_malla = 0 AND  pul.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
             
                  if ($existen_quebr->num_rows > 0) {
                         while ($res_muestras = $existen_quebr->fetch_assoc()) {
@@ -222,9 +220,9 @@ if (isset($trn_id)){
                                             <td style='display:none;'> <input type='input' id='trn_batch_q".$con."' value='".$trn_id_batch."'/></td>  
                                             <td style='display:none;'> <input type='input' id='trn_batch_relq".$con."' value='".$trn_id_rel."'/>".$muestra."</td>                             
                                             <td> <input type='input' name='trn_rel_que".$con."' class='form-control' id='trn_rel_que".$con."' value='".$muestra."' disabled></td> 
-                                            <td> <input type='number' name='peso_que".$con."' id='peso_que".$con."' value='".$peso_mu_que."' class='form-control' onchange='calcula_porc(".$con.")' /> </td>
-                                            <td> <input type='number' name='peso_malla_que".$con."' id='peso_malla_que".$con."' value='".$peso_malla_que."' class='form-control' onchange='calcula_porc(".$con.")' /> </td>
-                                            <td> <input type='number' name='porc_que".$con."' id='porc_que".$con."' value='".$porc_que."' class='form-control' disabled/> </td>
+                                            <td> <input type='number' name='peso_que".$con."' id='peso_que".$con."' class='form-control' onchange='calcula_porc(".$con.")' /> </td>
+                                            <td> <input type='number' name='peso_malla_que".$con."' id='peso_malla_que".$con."' class='form-control' onchange='calcula_porc(".$con.")' /> </td>
+                                            <td> <input type='number' name='porc_que".$con."' id='porc_que".$con."' class='form-control' disabled/> </td>
                                             <td> <input type='text' name='comentario_que".$con."' id='comentario_que".$con."' value='".$coment_que."' class='form-control' disabled /></td>
                                             <td> <button type='button'class='btn btn-primary' id='boton_save_quebrado' onclick='quebrado_guardar(".$trn_id_batch.", ".$trn_id_rel.", ".$con.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
@@ -245,7 +243,7 @@ if (isset($trn_id)){
                                                                                 `ordenes_transacciones` WHERE tipo_id = 0 AND trn_id_batch = ".$trn_id."
                                                                                  AND muestra_geologia = '".$folio_inicial."'                                                                          
                                                                             ORDER BY (FLOOR (1+RAND()*".$total."))
-                                                            LIMIT ".$limite.") AS x ORDER BY bloque, posicion")   or die(mysqli_error());
+                                                            LIMIT ".$limite.") AS x ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             $html.="<tr>
                                          <td style='display:none;'> <input type='input' id='trn_batch_q".$con."' value='".$trn_id_batch."'/></td>  
@@ -272,7 +270,7 @@ if (isset($trn_id)){
                                                     FROM 
                                                         `ordenes_transacciones` WHERE tipo_id = 0 AND trn_id_batch = ".$trn_id." AND metodo_id = ".$metodo_id."
                                                     ORDER BY (FLOOR (1+RAND()*".$total."))
-                                                    LIMIT ".$limite.") AS x ORDER BY bloque, posicion")   or die(mysqli_error());
+                                                    LIMIT ".$limite.") AS x ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                          while ($res_muestras = $resultado_mues->fetch_assoc()) {
                             $con = $con+1;                  
                             $html.="<tr>
@@ -302,7 +300,7 @@ if (isset($trn_id)){
                      //echo 'bloques'.$bloques.'blo';
                      //echo 'pos'.$posicion.'pos';
                      
-                     //Insertando la primer posición
+                     //Insertando la primer posiciï¿½n
                      $resultado_mues1 = $mysqli->query("SELECT * FROM  (SELECT
                                                                         	trn_id_batch,
                                                                             bloque,                                                            
@@ -315,7 +313,7 @@ if (isset($trn_id)){
                                                                               tipo_id = 0 AND trn_id_batch = ".$trn_id."
                                                                               AND muestra_geologia = '".$folio_inicial."'
                                                                        ORDER BY muestra_geologia) AS x 
-                                                           ") or die(mysqli_error());
+                                                           ") or die(mysqli_error($mysqli));
                          
                      if ($resultado_mues1->num_rows > 0) {
                                $res_muestras = $resultado_mues1->fetch_assoc();
@@ -342,7 +340,7 @@ if (isset($trn_id)){
                             }
                             
                      $bl = 1;
-                     $pos_sel;
+                     //$pos_sel;
                      //echo 'BLOQUES='.$bloques;
                      if ($bloques >= 1)
                      {                         
@@ -363,7 +361,7 @@ if (isset($trn_id)){
                                                                                 WHERE trn_id_batch = ".$trn_id." AND muestra_geologia = '".$folio_inicial."'
                                                                                 
                                                                              ) AS x 
-                                                                                ORDER BY bloque, posicion")   or die(mysqli_error());
+                                                                                ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                          
                            if ($resultado_mues->num_rows > 0) {
                                $res_muestras = $resultado_mues->fetch_assoc();
@@ -409,7 +407,7 @@ if (isset($trn_id)){
                                                                                 WHERE trn_id_batch = ".$trn_id." AND muestra_geologia = '".$folio_inicial."'
                                                                                 
                                                                              ) AS x 
-                                                                                ORDER BY bloque, posicion")   or die(mysqli_error());
+                                                                                ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                                 
                                     if ($resultado_mues->num_rows > 0) {
                                        $res_muestras = $resultado_mues->fetch_assoc();
@@ -488,7 +486,7 @@ if (isset($trn_id)){
                                                     ON  pul.trn_id = ot.trn_id_batch
                                                     AND pul.trn_id_rel = ot.trn_id_rel
                                             WHERE
-                                                pul.porcentaje = 0 AND pul.trn_id = ".$trn_id) or die(mysqli_error());
+                                                pul.porcentaje = 0 AND pul.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
             
                if ($existen_pulv->num_rows > 0) {
                     while ($res_muestras = $existen_pulv->fetch_assoc()) {
@@ -504,8 +502,8 @@ if (isset($trn_id)){
                             <td style='display:none;'> <input type='input' id='trn_batch_pul".$con."' value='".$trn_id_batch."'/></td>  
                             <td style='display:none;'> <input type='input' id='trn_rel_pul".$con."' value='".$trn_id_rel."'/>".$res_muestras['muestra']."</td>                             
                             <td> <input type='input' name='trn_rel_pul".$con."' class='form-control' id='trn_rel_pul".$con."' value='".$muestra."' disabled></td> 
-                            <td> <input type='number' name='peso_pul".$con."' step='.01' id='peso_pul".$con."' class='form-control' value='".$peso_mu_pulv."' onchange='calcula_porc_pulv(".$con.")' /> </td>
-                            <td> <input type='number' name='peso_malla_pul".$con."' id='peso_malla_pul".$con."' class='form-control' value='".$peso_malla_pulv."' onchange='calcula_porc_pulv(".$con.")' /> </td>
+                            <td> <input type='number' name='peso_pul".$con."' step='.01' id='peso_pul".$con."' class='form-control' onchange='calcula_porc_pulv(".$con.")' /> </td>
+                            <td> <input type='number' name='peso_malla_pul".$con."' id='peso_malla_pul".$con."' class='form-control' onchange='calcula_porc_pulv(".$con.")' /> </td>
                             <td> <input type='number' name='porc_pul".$con."' id='porc_pul".$con."' class='form-control' value='".$porc_pulv."' disabled/> </td>
                             <td> <input type='text' name='comentario_pul".$con."' id='comentario_pul".$con."' class='form-control' value='".$coment."' disabled /></td>
                             <td> <button type='button'class='btn btn-primary' id='boton_save_pulverizado' onclick='pulverizado_guardar(".$trn_id_batch.", ".$trn_id_rel.", ".$con.")' >
@@ -534,7 +532,7 @@ if (isset($trn_id)){
                   //echo 'bloq'.$bloques;
                   //echo $cantidad_muestras.'ca';
                   
-                  //Insertando la primer posición
+                  //Insertando la primer posiciï¿½n
                   $resultado_mues = $mysqli->query("SELECT
                                                                     	trn_id_batch,
                                                                         bloque,                                                            
@@ -545,7 +543,7 @@ if (isset($trn_id)){
                                                                     FROM 
                                                                         `ordenes_transacciones` 
                                                                     WHERE tipo_id = 0 AND trn_id_batch = ".$trn_id." AND muestra_geologia = '".$folio_inicial."'
-                                                                     ")   or die(mysqli_error());
+                                                                     ")   or die(mysqli_error($mysqli));
                                                                 //Le quito el tipo = 0 revisar con nancy: 2704/2022 
                   if ($resultado_mues->num_rows > 0) {
                         $res_muestras = $resultado_mues->fetch_assoc();
@@ -586,7 +584,7 @@ if (isset($trn_id)){
                                                                                     FROM 
                                                                                         `ordenes_transacciones` 
                                                                                     WHERE tipo_id = 0 AND trn_id_batch = ".$trn_id." AND muestra_geologia = '".$folio_inicial."'
-                                                                                    LIMIT 1")   or die(mysqli_error());
+                                                                                    LIMIT 1")   or die(mysqli_error($mysqli));
                                                                 //Le quito el tipo = 0 revisar con nancy: 2704/2022 
                                 if ($resultado_mues->num_rows > 0) {
                                    $res_muestras = $resultado_mues->fetch_assoc();
@@ -625,7 +623,7 @@ if (isset($trn_id)){
                                                                                     FROM 
                                                                                         `ordenes_transacciones` 
                                                                                     WHERE tipo_id = 0 AND trn_id_batch = ".$trn_id." AND muestra_geologia = '".$folio_inicial."'
-                                                                                    LIMIT 1")   or die(mysqli_error());
+                                                                                    LIMIT 1")   or die(mysqli_error($mysqli));
                                                                 //Le quito el tipo = 0 revisar con nancy: 2704/2022 
                                 if ($resultado_mues->num_rows > 0) {
                                    $res_muestras = $resultado_mues->fetch_assoc();

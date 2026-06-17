@@ -3,8 +3,8 @@
 	<html>
 		<body>
 		
-            <?include('partials/header.php'); ?>
-            <?include('partials/muestras_soluciones.php'); ?>
-            <?include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/muestras_soluciones.php'); ?>
+            <?php include('partials/footer.php'); ?>
 		</body>
 		</html>

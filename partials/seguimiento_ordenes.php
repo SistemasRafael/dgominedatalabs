@@ -2428,12 +2428,14 @@
                         //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
                         $desti = rtrim($dest).$archivo;   
                         // var_dump($desti);                     
+                        // die();
                     copy($_FILES['excel']['tmp_name'],$desti);
                     /// echo $archivo_corto;
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
                     $archivo_exist = $archivo_exis->fetch_assoc();
                     $archivo_ex = $archivo_exist['folio']; 
-                    // var_dump($archivo.'     =====      '.$archivo_ex);                  
+                    // var_dump($archivo.'     =====      '.$archivo_ex);    
+                    // die();              
                     if($archivo_ex == $archivo) {
                         mysqli_multi_query ($mysqli, "UPDATE arg_ordenes_csv SET archivo_csv = '".$archivo."' WHERE folio = '".$archivo."'") OR DIE (mysqli_error($mysqli));
                         

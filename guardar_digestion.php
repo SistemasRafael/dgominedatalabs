@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trn_id_rel_dg   = $_POST['trn_id_dg'];
@@ -13,10 +13,10 @@ if (isset($trn_id_rel_dg)){
                                     se.trn_id as trn_id_batch, se.trn_id_rel
                                 FROM 
                                     arg_muestras_digestion se
-                                WHERE se.trn_id_rel = ".$trn_id_rel_dg." AND se.metodo_id = ".$metodo_dg) or die(mysqli_error());
+                                WHERE se.trn_id_rel = ".$trn_id_rel_dg." AND se.metodo_id = ".$metodo_dg) or die(mysqli_error($mysqli));
              //echo $query;
         if ($resultado->num_rows > 0) {
-            $html =  'La etapa de Digestión ha finalizado.';
+            $html =  'La etapa de Digestiï¿½n ha finalizado.';
         }
         else{
             $html = 'Hubo un error, reintente por favor.';

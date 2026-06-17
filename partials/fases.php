@@ -1,16 +1,9 @@
 <?php
-//include "../connections/config.php";
 $unidad_id = $_GET['unidad_id'];
 $_SESSION['unidad_id'] = $unidad_id;
 $mysqli -> set_charset("utf8");
 ?>
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -20,7 +13,6 @@ $mysqli -> set_charset("utf8");
         cursor: pointer;
     }    
     .nav-tabs > li { 
-        /* width = (100/number of tabs). This example assumes 3 tabs. */ 
         width:15%; 
     }
     .circulos{
@@ -70,6 +62,8 @@ $mysqli -> set_charset("utf8");
                        var direccionar = '<?php echo "\ fases.php?unidad_id="?>'+unidad_id;                                  
                       window.location.href = direccionar;                      
                     }
+              }).fail(function(){
+                    alert("Error al guardar, intente de nuevo.");
               })
       }
             
@@ -159,18 +153,18 @@ $mysqli -> set_charset("utf8");
               
                     <label for="fases_exis" class="col-form-label">Fases Existentes:</label>  
                     <select name="fases_exis" id="fases_exis" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $banco_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['fase_id']?>"><?echo $banco_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['fase_id']?>"><?php echo $banco_sele?></option>
+                        <?php }?>
                     </select>
                     <label for="nombre_fase" class="col-form-label">Nombre de fase a crear:</label>
                     <input name="nombre_fase" id="nombre_fase" size=40 style="width:470px; color:#996633"  value="" enabled />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="GuardarFases(<?echo $unidad_id;?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarFases(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -190,18 +184,18 @@ $mysqli -> set_charset("utf8");
               
                     <label for="etapa_exis" class="col-form-label">Etapas Existentes:</label>  
                     <select name="etapa_exis" id="etapa_exis" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT etapa_id, nombre FROM `arg_etapas`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT etapa_id, nombre FROM `arg_etapas`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $banco_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['etapa_id']?>"><?echo $banco_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['etapa_id']?>"><?php echo $banco_sele?></option>
+                        <?php }?>
                     </select>
                     <label for="nombre_etapa" class="col-form-label">Nombre de la etapa a crear:</label>
                     <input name="nombre_etapa" id="nombre_etapa" size=40 style="width:470px; color:#996633"  value="" enabled />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="GuardarEtapa(<?echo $unidad_id;?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarEtapa(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -222,22 +216,22 @@ $mysqli -> set_charset("utf8");
               
                     <label for="metodo_id_sel" class="col-form-label">Elige un método de análisis:</label>  
                     <select name="metodo_id_sel" id="metodo_id_sel" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $met_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['metodo_id']?>"><?echo $met_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['metodo_id']?>"><?php echo $met_sele?></option>
+                        <?php }?>
                     </select>
                     
                     <label for="fase_id_sel" class="col-form-label">Fases A Asignar:</label>  
                     <select name="fase_id_sel" id="fase_id_sel" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $fase_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['fase_id']?>"><?echo $fase_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['fase_id']?>"><?php echo $fase_sele?></option>
+                        <?php }?>
                     </select>
                     
                     <label for="orden" class="col-form-label">Orden de la fase:</label>
@@ -246,7 +240,7 @@ $mysqli -> set_charset("utf8");
                      
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="GuardarAsignarFases(<?echo $unidad_id;?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarAsignarFases(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -267,22 +261,22 @@ $mysqli -> set_charset("utf8");
               
                     <label for="fase_sel" class="col-form-label">Fase:</label>  
                     <select name="fase_sel" id="fase_sel" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT fase_id, nombre FROM `arg_fases`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $met_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['fase_id']?>"><?echo $met_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['fase_id']?>"><?php echo $met_sele?></option>
+                        <?php }?>
                     </select>
                     
                     <label for="etapa_id_sel" class="col-form-label">Elige una etapa a asignar:</label>  
                     <select name="etapa_id_sel" id="etapa_id_sel" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT etapa_id, nombre FROM `arg_etapas`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT etapa_id, nombre FROM `arg_etapas`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $fase_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['etapa_id']?>"><?echo $fase_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['etapa_id']?>"><?php echo $fase_sele?></option>
+                        <?php }?>
                     </select>
                     
                     <label for="orden_etapa" class="col-form-label">Orden de la etapa en esta fase:</label>
@@ -290,19 +284,19 @@ $mysqli -> set_charset("utf8");
                     
                     <label for="cantidad_id" class="col-form-label">Cantidad de muestras a aplicar en:</label>
                     <select name="cantidad_id" id="cantidad_id" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT cantidad_id, nombre FROM arg_fases_tipoCantidad") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT cantidad_id, nombre FROM arg_fases_tipoCantidad") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $met_sele = $row2['nombre'];                                
                                               ?>       
-                        <option value="<?echo $row2['cantidad_id']?>"><?echo $met_sele?></option>
-                        <?}?>
+                        <option value="<?php echo $row2['cantidad_id']?>"><?php echo $met_sele?></option>
+                        <?php }?>
                     </select>              
                     <label for="cantidad_muestras" class="col-form-label">Cantidad:</label>
                     <input name="cantidad_muestras" id="cantidad_muestras" size=40 style="width:470px; color:#996633"  value="" enabled />
                      
               </div>
               <div class="modal-footer">
-                 <button type="button" class="btn btn-primary" onclick="GuardarFasesyetapa(<?echo $unidad_id;?>)">Guardar</button>
+                 <button type="button" class="btn btn-primary" onclick="GuardarFasesyetapa(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -312,7 +306,7 @@ $mysqli -> set_charset("utf8");
 <?php
 
 if (isset($unidad_id)){
-    $metodo_filtro = $_GET['metodo_id_sel'];
+    $metodo_filtro = $_GET['metodo_id_sel'] ?? 0;
     $metodo_filtro_fun = $metodo_filtro;
     //echo $metodo_filtro;
     if ($metodo_filtro == '' or $metodo_filtro == 0){
@@ -337,7 +331,9 @@ if (isset($unidad_id)){
         <div class="container" class="col-md-12 col-lg-12"> 
             <br />
             <br />
-                    <? $mysqli -> set_charset("utf8");
+                    <?php  
+                    //var_dump($metodo_filtro);
+                      $mysqli -> set_charset("utf8");
                         $datos_fases = $mysqli->query("SELECT
                                                             met.nombre AS metodo,
                                                             met.nombre_largo,
@@ -355,17 +351,16 @@ if (isset($unidad_id)){
                                                             et.etapa_id = ef.etapa_id
                                                         LEFT JOIN arg_metodos met ON
                                                             mefa.metodo_id = met.metodo_id
-                                                        WHERE mefa.metodo_id = ".$metodo_filtro."
                                                         ORDER BY
                                                             met.nombre, mefa.orden, ef.orden"
-                                            ) or die(mysqli_error());  //(CASE WHEN cantidad_tipo = 0 THEN 'Unidades' ELSE 'Porciento' END) AS tipo_cantidad,
+                                            ) or die(mysqli_error($mysqli));  //(CASE WHEN cantidad_tipo = 0 THEN 'Unidades' ELSE 'Porciento' END) AS tipo_cantidad,
                                                             //cantidad_muestras
                      ?>
                      <br />
                      <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                     <button type='button' class='btn btn-primary' name='agregar_metodo_fase' id='agregar_metodo_fase' data-toggle="modal" data-target="#ModalAsignarFases" >ASIGNAR FASE A MÉTODO</button>
-                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?echo $metodo_filtro_fun;?>)" >EXPORTAR
+                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?php echo $metodo_filtro_fun;?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>
@@ -373,22 +368,22 @@ if (isset($unidad_id)){
                             <div class="col-md-2 col-lg-5">
                             </div>
                             <div class="col-md-2 col-lg-2">
-                                <select name="metodo_id_sel" id="metodo_id_sel" value="<?echo $metodo_filtro;?>" class="form-control"> 
-                                <?$result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos` UNION ALL SELECT 0 AS metodo_id, 'Todos los métodos' as nombre ORDER BY metodo_id ") or die(mysqli_error());                             
+                                <select name="metodo_id_sel" id="metodo_id_sel" value="<?php echo $metodo_filtro;?>" class="form-control"> 
+                                <?php $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos` UNION ALL SELECT 0 AS metodo_id, 'Todos los métodos' as nombre ORDER BY metodo_id ") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                     $banco_sele = $row2['nombre'];?>       
-                                                    <option value="<?echo $row2['metodo_id']?>"><?echo $banco_sele?></option>
-                                <?}?>
+                                                    <option value="<?php echo $row2['metodo_id']?>"><?php echo $banco_sele?></option>
+                                <?php }?>
                                 </select>            
                             </div>
                              <div class="col-md-2 col-lg-1">
-                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <?echo $unidad_id?>)" >FILTRAR
+                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <?php echo $unidad_id?>)" >FILTRAR
                                         <span class='fa fa-filter fa-1x'></span>
                                 </button>
                              </div>                                
                      </div>
                         <br/><br/>
-                            <?
+                            <?php 
                         $html_det = "<div class='container'>
                                      <table class='table table-striped' id='materiales'>
                                      <thead>
@@ -422,7 +417,7 @@ if (isset($unidad_id)){
         <div class="container" class="col-md-12 col-lg-12"> 
             <br />
             <br />
-                    <? $mysqli -> set_charset("utf8");
+                    <?php  $mysqli -> set_charset("utf8");
                        $datos_fases = $mysqli->query("SELECT
                                                             fae.fase_id,
                                                             fa.nombre as fase,
@@ -437,20 +432,20 @@ if (isset($unidad_id)){
                                                         LEFT JOIN arg_etapas et 
                                                         	ON et.etapa_id = fae.etapa_id
                                                         ORDER BY fae.fase_id, fae.orden"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
                      ?>
                      <br />
                      <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                     <button type='button' class='btn btn-primary' name='agregar_etapaAfase' id='agregar_etapaAfase' data-toggle="modal" data-target="#ModalFaseEtapa" >ASIGNAR ETAPA A FASE</button>
-                                    <button type='button' class='btn btn-success' name='exportarfasesyetapas' id='exportarfasesyetapas' onclick="exportar_fases(1, <?echo $metodo_filtro_fun;?>)" >EXPORTAR
+                                    <button type='button' class='btn btn-success' name='exportarfasesyetapas' id='exportarfasesyetapas' onclick="exportar_fases(1, <?php echo $metodo_filtro_fun;?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>
                                                       
                      </div>
                         <br/><br/>
-                            <?
+                            <?php 
                         $html_det = "<div class='container'>
                                  <table class='table table-striped' id='materiales'>
                                     <thead>
@@ -482,23 +477,23 @@ if (isset($unidad_id)){
         <div id="content" class="col-md-12 col-lg-12"> 
             <br />
             <br />
-                    <? $datos_fases = $mysqli->query("SELECT 
+                    <?php  $datos_fases = $mysqli->query("SELECT 
                                                          fa.nombre
                                                       FROM
                                                          arg_fases fa
-                                                        ") or die(mysqli_error());
+                                                        ") or die(mysqli_error($mysqli));
                      ?>
                      <br />
                      <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                     <button type='button' class='btn btn-primary' name='agregar_fase' id='agregar_fase' data-toggle="modal" data-target="#ModalFases" >+ AGREGAR FASE</button>
-                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?echo $metodo_filtro_fun;?>)" >EXPORTAR
+                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?php echo $metodo_filtro_fun;?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>                       
                      </div>
                      <br/><br/>
-                            <?
+                            <?php 
                      $html_det = "<div class='container'>
                                  <table class='table table-striped' id='materiales'>
                                     <thead>
@@ -522,23 +517,23 @@ if (isset($unidad_id)){
         <div id="content" class="col-md-12 col-lg-12">
             <br />
             <br />
-                    <? $datos_fases = $mysqli->query("SELECT 
+                    <?php  $datos_fases = $mysqli->query("SELECT 
                                                          nombre
                                                       FROM
                                                          arg_etapas 
-                                                        ") or die(mysqli_error());
+                                                        ") or die(mysqli_error($mysqli));
                      ?>
                      <br />
                      <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                     <button type='button' class='btn btn-primary' name='agregar_etapa' id='agregar_etapa' data-toggle="modal" data-target="#ModalEtapas" >+ AGREGAR ETAPA</button>
-                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?echo $metodo_filtro_fun;?>)" >EXPORTAR
+                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_fases(1, <?php echo $metodo_filtro_fun;?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>               
                      </div>
                      <br/><br/>
-                            <?
+                            <?php 
                      $html_det = "<div class='container'>
                                  <table class='table table-striped' id='materiales'>
                                     <thead>
@@ -561,9 +556,7 @@ if (isset($unidad_id)){
         
     </div>
     </div>
- <?}?>                    
-<br /><br /><br /><br /><br /><br /><br /><br />    
-<!--<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/vehiculos.js"></script>-->  
+ <?php }?>                    
+<br /><br /><br /><br /><br /><br /><br /><br />
           
 

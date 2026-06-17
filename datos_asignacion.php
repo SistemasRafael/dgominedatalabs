@@ -1,6 +1,5 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
-//$html = '';
 $u_id = $_SESSION['u_id'];
 $metodo_id = $_POST['metodo_id'];
 $fase_id = $_POST['fase_id'];
@@ -15,17 +14,21 @@ if (isset($u_id)){
                                             metodo_id
                                           FROM 
                                             arg_metodos_fases
-                                          WHERE metodo_id = ".$metodo_id." AND fase_id = ".$fase_id) or die(mysqli_error());
-             //echo $query;
+                                          WHERE metodo_id = ".$metodo_id." AND fase_id = ".$fase_id) or die(mysqli_error($mysqli));
+    
     if ($resultado->num_rows > 0) {
         $html = 'Se registro exitosamente.';
+        var_dump("aqui entro a datos asignacion3");
+        die();
     }
     else{
         $html = 'Hubo un error, reintente por favor.';
+        var_dump("aqui entro a datos asignacion4");
+        die();
     }
   }
   
- $mysqli -> set_charset("utf8");
+ // $mysqli -> set_charset("utf8");
  
 /*if ($resultado->num_rows > 0) {
     //Enviar correo
@@ -35,7 +38,7 @@ if (isset($u_id)){
     $fecha_reserva_final = $datos_in['fecha_inicial'];
     $ubicacion = $datos_in['nombre'];
     $username = $datos_in['username'];
-    $html = 'Se realizó su reservación del día '.date("Y-m-d", strtotime($fecha_reserva)).' al '.date("Y-m-d", strtotime($fecha_reserva_final));
+    $html = 'Se realizï¿½ su reservaciï¿½n del dï¿½a '.date("Y-m-d", strtotime($fecha_reserva)).' al '.date("Y-m-d", strtotime($fecha_reserva_final));
     //$office_correo = 'asseneth.soto@argonautgold.com';
     $copy = 'danira.romero@argonautgold.com';
     
@@ -49,9 +52,9 @@ if (isset($u_id)){
                     $mail->AddBCC("".$copy.""); 
             
     				$mail->ContentType = "text/html";
-    				$body = "Usted ha reservado con el usuario ".$username." la ubicación <strong>".$ubicacion."</strong> desde el día <strong>".$fecha_reserva." </strong> hasta el día  <strong>".date("Y-m-d", strtotime($fecha_reserva_final))."</strong><br><br>";
-    				$body .= "La ubicación contiene las siguientes herramientas:"."<br>".$herramienta;
-                    $body .= "<br>Para realizar una nueva reservación ingrese a:<br>";    
+    				$body = "Usted ha reservado con el usuario ".$username." la ubicaciï¿½n <strong>".$ubicacion."</strong> desde el dï¿½a <strong>".$fecha_reserva." </strong> hasta el dï¿½a  <strong>".date("Y-m-d", strtotime($fecha_reserva_final))."</strong><br><br>";
+    				$body .= "La ubicaciï¿½n contiene las siguientes herramientas:"."<br>".$herramienta;
+                    $body .= "<br>Para realizar una nueva reservaciï¿½n ingrese a:<br>";    
                     $body .= "http://192.168.20.22/intranet-spa/calendario_reservas.php<br><br>";			
                     $body .= "Atte: Argonaut Gold INC";
                     $body = utf8_encode($body);
