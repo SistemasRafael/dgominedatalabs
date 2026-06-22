@@ -64,9 +64,7 @@ if (isset($trn_id)){
                   }
                   if ($tipo_can == 2){
                         $limite = $cantidad_muestras;       
-                  }                   
-                 //echo 'lim'.$limite;
-                 
+                  }
                 $resultado_mues_existe = $mysqli->query("SELECT * FROM  (SELECT
                                                         trn_id_batch,
                                                         bloque,
@@ -121,7 +119,6 @@ if (isset($trn_id)){
                   
                         
                         $limite = ceil(($cantidad_muestras*$total)/100);
-                        
                         $resultado_mues = $mysqli->query(" SELECT * FROM  (SELECT
                                                                             	trn_id_batch,
                                                                                 bloque,
@@ -134,6 +131,7 @@ if (isset($trn_id)){
                                                                                 tipo_id = 0 AND trn_id_batch = ".$trn_id."                                                                                                                                                            
                                                                             ORDER BY posicion
                                                             LIMIT ".$limite.") AS x ORDER BY posicion")   or die(mysqli_error($mysqli));  // para haceerlo aleatorio ORDER BY (FLOOR (1+RAND()*".$total."))
+
                         while ($res_muestras_ins = $resultado_mues->fetch_assoc()) {
                             $con = $con+1; 
                             $trn_id_batch = $res_muestras_ins['trn_id_batch'];

@@ -1139,7 +1139,7 @@ if (isset($trn_id)){
        //Inicia metodo con pesaje de la fase 7
         if($fase_id == 7 && $etapa_id == 5){
             // var_dump("Fase 7, Etapa 5");
-        while ($res = $resultado->fetch_assoc()) {            
+        while ($res = $resultado->fetch_assoc()) {  
                   $tipo_can          = $res['cantidad_tipo'];
                   $cantidad_muestras = $res['cantidad_muestras']; 
                   $total             = $res['total'];
@@ -1174,10 +1174,9 @@ if (isset($trn_id)){
                                                   WHERE
                                                      pul.trn_id = ".$trn_id." 
                                                      AND pul.metodo_id = ".$metodo_id."
-                                                 ") or die(mysqli_error($mysqli));
-            
+                                                 ") or die(mysqli_error($mysqli)); 
+
                  if ($existen_peso->num_rows > 0) {
-                    // var_dump("existen pesos");
                         if($reensaye == 0){                        
                             $peso_det = $mysqli->query("SELECT
                                             	     ot.trn_id_batch,
@@ -1236,14 +1235,9 @@ if (isset($trn_id)){
                      }
                 }
                 else{
-                    // var_dump("no existen pesos");
-                    if ($tipo_can == 1){ //Porcentaje
+                    if ($tipo_can == 1){
                         $limite = (($cantidad_muestras*$total)/100);
-                        //var_dump("limite = ".$limite);
-                        // var_dump("Tipo cantidad: porcentaje".$limite);
-                        //var_dump("total = " .$total);
                         if ($reensaye == 0){
-                            // var_dump("reensaye");
                             $resultado_mues = $mysqli->query("SELECT * FROM  ( SELECT
                                                                                 trn_id_batch,
                                                                                 bloque,
@@ -1270,6 +1264,7 @@ if (isset($trn_id)){
                                                                             ORDER BY (FLOOR (1+RAND()*".$total."))
                                                                             LIMIT ".$limite.") AS x 
                                                         ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
+                                                         var_dump("aquiii1 = ".$reensaye); 
                         }
                         else{
                                 $resultado_mues = $mysqli->query("SELECT * FROM (SELECT

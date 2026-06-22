@@ -273,34 +273,31 @@ if (isset($_GET['trn_id_abs'])){
             
         
     }
-    else{
-    
-            if ($orden_encabezado['reensaye'] == 0){   
-                mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli));
-                
+    else {
+        if ($orden_encabezado['reensaye'] == 0){   
+            mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli));  
+        }
+        else {
+            $origen_reen = $mysqli->query("SELECT 
+                                                                    COUNT(*) AS existe_rech
+                                                                FROM 
+                                                                    arg_muestras_reensaye mre
+                                                                WHERE mre.trn_id_rel = " . $trn_id_abs . " 
+                                                                AND mre.metodo_id = (CASE WHEN " . $metodo_id_abs . " = 0 
+                                                                                    THEN mre.metodo_id ELSE " . $metodo_id_abs . " 
+                                                                                    END) 
+                                                                AND mre.trn_id_muestra IN (SELECT trn_id_rel 
+                                                                                        FROM muestras_recheck)") or die(mysqli_error($mysqli));
+            $existe_reche = $origen_reen->fetch_assoc();
+            $existe_rec = $existe_reche['existe_rech'];
+                                
+            if ($existe_rec == 0) {
+                mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion_ree ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli)); 
             }
-            else{
-                $origen_reen = $mysqli->query("SELECT 
-                                                                        COUNT(*) AS existe_rech
-                                                                   FROM 
-                                                                       arg_muestras_reensaye mre
-                                                                   WHERE mre.trn_id_rel = " . $trn_id_abs . " 
-                                                                   AND mre.metodo_id = (CASE WHEN " . $metodo_id_abs . " = 0 
-                                                                                        THEN mre.metodo_id ELSE " . $metodo_id_abs . " 
-                                                                                        END) 
-                                                                   AND mre.trn_id_muestra IN (SELECT trn_id_rel 
-                                                                                          FROM muestras_recheck)"
-                                    ) or die(mysqli_error($mysqli));
-                $existe_reche = $origen_reen->fetch_assoc();
-                $existe_rec = $existe_reche['existe_rech'];
-                                    
-                 if ($existe_rec == 0){
-                    mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion_ree ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli)); 
-                 }else{
-                    mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion_reeRech ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli)); 
-                 }
+            else {
+                mysqli_multi_query ($mysqli, "CALL arg_prc_revisionAbsorcion_reeRech ($trn_id_abs,$metodo_id_abs)") OR DIE (mysqli_error($mysqli)); 
             }
-                    ?>
+        }?>
                      <br/> <br/>
                      <div class="container">            
                       <?php                  
@@ -338,7 +335,7 @@ if (isset($_GET['trn_id_abs'])){
                                        </thead>
                                        <tbody>"; 
                if ($result = mysqli_store_result($mysqli)) {                
-                  while ($row = mysqli_fetch_assoc($result)) { 
+                  while ($row = mysqli_fetch_assoc($result)) {
                         if ($row['reensaye'] == 1 or $row['reensaye'] == 2 or $row['sobrelimite'] == 1){
                             $html_det.="<tr  style='color: #BD2819; background: #FDEBD0';>";
                                                 $html_det.="<td align='left' >".$row['posicion']."</td>";
@@ -385,6 +382,4 @@ if (isset($_GET['trn_id_abs'])){
 </div>
 <?php 
 }
-?>                    
-          
-
+?>
