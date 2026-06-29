@@ -10,7 +10,6 @@ $etapa_id     = $_POST['etapa_id_agi'];
 $u_id = $_SESSION['u_id'];
 
 if (isset($trn_id_rel)){
-    var_dump($trn_id_rel, $metodo_tem, " fase_id = [".$fase_id."] ", $etapa_id, $hora_ini, $hora_fin, $u_id);
     mysqli_multi_query ($mysqli, "CALL arg_cianurado_guardar(".$trn_id_rel.", ".$metodo_tem.", ".$fase_id.", ".$etapa_id.", '".$hora_ini."', '".$hora_fin."', ".$u_id.")") OR DIE (mysqli_error($mysqli));   
   
     $resultado = $mysqli->query("SELECT

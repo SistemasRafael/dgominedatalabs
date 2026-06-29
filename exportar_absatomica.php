@@ -186,14 +186,14 @@ if ($result = mysqli_store_result($mysqli)) {
                 $cont_sol++;
             }
                 
-            $sheet->setCellValue('A'.$i, $i);//->setValue($i);
-            $sheet->setCellValue('B'.$i, $row['folio_interno']);//->setValue($row['folio_interno']);
-            $sheet->setCellValue('C'.$i, $row['nombre']);//->setValue($row['nombre']);
-            $sheet->setCellValue('D'.$i, $row['peso']);//->setValue($row['peso']);
-            $sheet->setCellValue('E'.$i, '1');//->setValue('1');
-            $sheet->setCellValue('F'.$i, ($metodo_id_a == 36) ? 50 : $volumen_metodo); //->setValue(($metodo_id_a == 36) ? $row['volumen'] : $volumen_metodo);
-            $sheet->setCellValue('G'.$i, '1');//->setValue('1');
-            $sheet->setCellValue('H'.$i, '1');//->setValue('1');            
+            $sheet->setCellValue('A'.$i, $i);
+            $sheet->setCellValue('B'.$i, $row['folio_interno']);
+            $sheet->setCellValue('C'.$i, $row['nombre']);
+            $sheet->setCellValue('D'.$i, $row['peso']);
+            $sheet->setCellValue('E'.$i, '1');
+            $sheet->setCellValue('F'.$i, ($metodo_id_a == 36 || $metodo_id_a == 37) ? 50 : $volumen_metodo);
+            $sheet->setCellValue('G'.$i, '1');
+            $sheet->setCellValue('H'.$i, '1');
             
             $i=$i+1;
             $bloque=$bloque+1;

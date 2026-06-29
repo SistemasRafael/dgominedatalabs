@@ -14,8 +14,7 @@ if (isset($trnid_m)){
         mysqli_multi_query ($mysqli, "CALL arg_prc_ordenMetodoPeso(".$trnid_m.", ".$trnidrel_m.", ".$metodo_sel.", ".$fase_sel.", ".$etapa_sel.", ".$cantidad.", ".$u_id.",".$final.")") OR DIE (mysqli_error($mysqli));  
         $resultado_efaa = $mysqli->query(" SELECT metodo, fase, etapa
                                            FROM ordenes_fases_etapas
-                                           WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel
-                                         ) or die(mysqli_error($mysqli));
+                                           WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel. " AND metodo_id = ".$metodo_sel) or die(mysqli_error($mysqli));
         
        $tipo_orden = $mysqli->query("SELECT 
                                           (CASE WHEN ord.trn_id_rel = 0 THEN 0 ELSE 1 END) AS reensaye 
@@ -134,7 +133,7 @@ if (isset($trnid_m)){
             $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                 <thead class='thead-info' align='center'>
                                    <tr class='table-info'>
-                                        <th colspan='5'>".$metodo_codigo." Fase: ".$metodo_fase." Etapa: ".$metodo_etapa."</th>
+                                        <th colspan='5'>M&eacute;todo: ".$metodo_codigo." Fase: ".$metodo_fase." Etapa1: ".$metodo_etapa."</th>
                                     </tr>
                                     <tr class='table-warning' align='center'>
                                         <th colspan='11'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>

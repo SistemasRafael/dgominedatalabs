@@ -7,7 +7,7 @@ $metodo_id_a   = $_POST['metodo_id_a'];
 $u_id_a        = $_POST['u_id_a'];
 $unidad_id_ree = $_POST['unidad_id_a'];
 
-IF (isset($trn_id_a)){
+if (isset($trn_id_a)) {
     
      $datos_orden = $mysqli->query("SELECT
                                             (CASE WHEN ord.trn_id_rel <> 0 THEN 1 ELSE 0 END) AS reensaye
@@ -58,7 +58,9 @@ IF (isset($trn_id_a)){
         
          if($result = mysqli_store_result($mysqli)){
     		mysqli_free_result($result);
-        } while(mysqli_more_results($mysqli) && mysqli_next_result($mysqli));
+        } 
+        
+        while(mysqli_more_results($mysqli) && mysqli_next_result($mysqli));
         
         
          if ($orden_encabezado['reensaye'] == 0){    

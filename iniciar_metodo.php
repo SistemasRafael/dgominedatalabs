@@ -1138,7 +1138,6 @@ if (isset($trn_id)){
        }//Fin fase 6 y etapa 5 pesaje muestras
        //Inicia metodo con pesaje de la fase 7
         if($fase_id == 7 && $etapa_id == 5){
-            // var_dump("Fase 7, Etapa 5");
         while ($res = $resultado->fetch_assoc()) {  
                   $tipo_can          = $res['cantidad_tipo'];
                   $cantidad_muestras = $res['cantidad_muestras']; 
@@ -1152,7 +1151,7 @@ if (isset($trn_id)){
                   $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                 <thead class='thead-info' align='center'>
                                     <tr class='table-info'>
-                                        <th colspan='5'>M�todo: f".$metodo." Fase: ".$fase." Etapa: ".$etapa."</th>
+                                        <th colspan='5'>M&eacute;todo: ".$metodo." Fase: ".$fase." Etapa: ".$etapa."</th>
                                     </tr>
                                     <tr class='table-warning' align='center'>
                                         <th colspan='11'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>
@@ -1264,7 +1263,6 @@ if (isset($trn_id)){
                                                                             ORDER BY (FLOOR (1+RAND()*".$total."))
                                                                             LIMIT ".$limite.") AS x 
                                                         ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
-                                                         var_dump("aquiii1 = ".$reensaye); 
                         }
                         else{
                                 $resultado_mues = $mysqli->query("SELECT * FROM (SELECT
@@ -1425,10 +1423,8 @@ if (isset($trn_id)){
            while ($res = $resultado->fetch_assoc()) {
                 $metodo = $res['metodo'];
                 $fase   = $res['fase'];
-                $etapa  = $res['etapa']; 
-                $Object = new DateTime(); 
-                $fecha_hora_ini = $Object->format("d/m/Y h:i:s a");
-            }                
+                $etapa  = $res['etapa'];
+            }    
             $html =  "<table class='table text-black' id='datos_temperatura'>
                             <thead class='thead-info' align='left'>
                                 <tr class='table-info'>
@@ -1439,14 +1435,14 @@ if (isset($trn_id)){
                                 </tr>
                                 <tr class='table-info' align='left'>
                                         <th>Hora de Inicio</th>
-                                        <th>Hora de Finalizaci�n</th>
+                                        <th>Hora de Finalizaci&oacute;n</th>
                                         <th></th>                                                         
                             </thead>
                             <tbody>
                             <tr>";                             
                                 $html.="                                                           
-                                    <td> <input type='datetime-local' class='form-control' id='hora_inicio'></td>
-                                    <td> <input type='input' class='form-control' value='".$fecha_hora_ini."' id='hora_final'></td>
+                                    <td><input type='datetime-local' class='form-control' id='hora_inicio'></td>
+                                    <td><input type='datetime-local' class='form-control' id='hora_final'></td>
                                     <td> <button type='button'class='btn btn-primary' id='boton_save_fun' onclick='agitacion_guardar(".$trn_id.", ".$metodo_id.", ".$fase_id.", ".$etapa_id.")' >
                                              <span class='fa fa-cloud fa-1x'></span>
                                          </button>
@@ -1480,7 +1476,7 @@ if (isset($trn_id)){
                             <tbody>
                             <tr>";                             
                                 $html.=" 
-                                    <td> <input type='dametime-local' class='form-control' value='".$fecha_hora."' id='hora_final_cen'></td>
+                                    <td> <input type='datetime-local' class='form-control' id='hora_final_cen'></td>
                                     <td> <button type='button'class='btn btn-primary' id='boton_save_fun' onclick='centrifugado_guardar(".$trn_id.", ".$metodo_id.")' >
                                              <span class='fa fa-cloud fa-1x'></span>
                                          </button>
