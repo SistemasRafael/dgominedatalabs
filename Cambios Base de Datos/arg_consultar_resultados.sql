@@ -5,16 +5,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `arg_consultar_resultados`(IN `trn_i
 IF (ver_reensayes = 0) THEN
 BEGIN
     SELECT
-         ot.tipo_id
-        ,(ot.muestra_geologia) AS muestra
-        ,CONCAT(ban.banco, vol.voladura_id) AS banvol
-        ,ot.folio_interno, det.folio_interno
-        ,(CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) AS absorcion
-        ,o.folio
-        ,date_format(o.fecha, "%d-%m-%Y") AS fecha
-        ,o.hora
-        ,date_format(bde.fecha, "%d-%m-%Y") AS fecha_fin
-        ,met.nombre AS metodo
+        ot.tipo_id
+        , (ot.muestra_geologia) AS muestra
+        , banco_voladura (mr.trn_id_rel) AS banvol
+        , ot.folio_interno, det.folio_interno
+        , (CASE WHEN metodo_id = 3 THEN (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) ELSE mr.absorcion END) AS absorcion        
+        , o.folio
+        , date_format(o.fecha, "%d-%m-%Y") AS fecha, o.hora
+        , date_format(bde.fecha, "%d-%m-%Y") AS fecha_fin
+        , met.nombre AS metodo
     FROM 
         `arg_muestras_resultados` mr
         LEFT JOIN ordenes_transacciones ot
@@ -46,11 +45,10 @@ BEGIN
     SELECT
         ot.tipo_id
         , (ot.muestra_geologia) AS muestra
-        , CONCAT(ban.banco
-        , vol.voladura_id) AS banvol
+        , banco_voladura (mr.trn_id_rel) AS banvol
         , ot.folio_interno
         , det.folio_interno
-        , (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) AS absorcion
+        , (CASE WHEN metodo_id = 3 THEN (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) ELSE mr.absorcion END) AS absorcion          
         , o.folio
         , date_format(o.fecha, "%d-%m-%Y") AS fecha
         , date_format(bde.fecha, "%H:%i:%S" ) as hora
@@ -87,10 +85,10 @@ BEGIN
         SELECT
             ot.tipo_id
             , (ot.muestra_geologia) AS muestra
-            , CONCAT(ban.banco, vol.voladura_id) AS banvol
+            , banco_voladura (mr.trn_id_rel) AS banvol
             , ot.folio_interno
             , det.folio_interno
-            , (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) AS absorcion
+            , (CASE WHEN metodo_id = 3 THEN (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) ELSE mr.absorcion END) AS absorcion           
             , o.folio
             , date_format(o.fecha, "%d-%m-%Y") AS fecha
             , date_format(bde.fecha, "%H:%i:%S" ) as hora
@@ -126,16 +124,15 @@ BEGIN
     ELSE
 	BEGIN
     	 SELECT
-        	ot.tipo_id
-            , (ot.muestra_geologia) AS muestra
-            , CONCAT(ban.banco, vol.voladura_id) AS banvol
-            , ot.folio_interno
-            , det.folio_interno
-            , (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) AS absorcion
-            , o.folio
-            , date_format(o.fecha, "%d-%m-%Y") AS fecha, o.hora
-        	,date_format(bde.fecha, "%d-%m-%Y") AS fecha_fin
-        	,met.nombre AS metodo
+        ot.tipo_id
+        , (ot.muestra_geologia) AS muestra
+        , banco_voladura (mr.trn_id_rel) AS banvol
+        , ot.folio_interno, det.folio_interno
+        , (CASE WHEN metodo_id = 3 THEN (CASE WHEN mr.absorcion >= 1 THEN '>1' ELSE (ROUND(mr.absorcion, 3)) END) ELSE mr.absorcion END) AS absorcion     
+        , o.folio
+        , date_format(o.fecha, "%d-%m-%Y") AS fecha, o.hora
+        ,date_format(bde.fecha, "%d-%m-%Y") AS fecha_fin
+        ,met.nombre AS metodo
     FROM 
         `arg_muestras_resultados` mr
         LEFT JOIN ordenes_transacciones ot
