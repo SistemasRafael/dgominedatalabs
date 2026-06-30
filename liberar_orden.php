@@ -66,10 +66,10 @@ if($soluciones != 2) {
             $objSheet->setCellValue('C' . $i, $row['fecha']);
 
             switch($metodo_id_a){
-                case 36: $objSheet->setCellValue('D' . $i, $row['absorcion'] <= 0.042 ? "<".$row['absorcion'] : $row['absorcion']);
+                case 36: $objSheet->setCellValue('D' . $i, $row['absorcion'] <= 0.042 ? "<0.042" : $row['absorcion']);
                     break;
 
-                case 37: $objSheet->setCellValue('D' . $i, $row['absorcion'] <= 0.7 ? "<".$row['absorcion'] : $row['absorcion']);
+                case 37: $objSheet->setCellValue('D' . $i, $row['absorcion'] <= 0.7 ? "<0.700" : $row['absorcion']);
                     break;
 
                 default: $objSheet->setCellValue('D' . $i, $row['absorcion']);

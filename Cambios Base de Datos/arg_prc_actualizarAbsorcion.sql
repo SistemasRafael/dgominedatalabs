@@ -8,8 +8,6 @@ BEGIN
     LEFT JOIN arg_muestras_resultados mr ON mr.trn_id = ot.trn_id_batch AND mr.trn_id_rel = ot.trn_id_rel AND mr.metodo_id = det.metodo_id
     SET mr.absorcion = (CASE WHEN det.valor1 <= 0 AND metodo_id_ab = 3 THEN 0.020
                              WHEN det.valor1 <= 0 AND metodo_id_ab = 6 THEN 0.001
-                             WHEN det.valor1 <= 0.042 AND metodo_id_ab = 36 THEN 0.042
-                             WHEN det.valor1 <= 0.700 AND metodo_id_ab = 37 THEN 0.700
                         ELSE det.valor1 END),
         mr.porcentaje = IFNULL((CASE WHEN ot.trn_id_dup = 0 THEN 0 ELSE duplicado_resultado (trn_id_batch, det.folio, metodo_id_ab) END), 0),
         mr.lectura = det.trn_id
