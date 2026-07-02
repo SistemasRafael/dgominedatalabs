@@ -8,7 +8,6 @@ $etapa_id  = $_POST['etapa'];
 $u_id  = $_SESSION['u_id'];
 $unidad_id = $_POST['unidad_tem'];
 
-//echo 'aqui'.$fase_id.' '.$trn_id.$etapa_id;
 if (isset($trn_id)){    
         $resultado = $mysqli->query("SELECT
                                 	      ob.trn_id_rel
@@ -818,7 +817,7 @@ if (isset($trn_id)){
                                         <th>No.</th>
                                         <th>Muestra</th>
                                         <th>Control</th>
-                                        <th>Peso</th>
+                                        <th>Peso g</th>
                                         <th></th>                                
                                 </thead>
                             <tbody>";
@@ -1160,7 +1159,7 @@ if (isset($trn_id)){
                                         <th>No.</th>
                                         <th>Muestra</th>
                                         <th>Control</th>
-                                        <th>Peso</th>
+                                        <th>Peso g</th>
                                         <th></th>                                
                                 </thead>
                             <tbody>";

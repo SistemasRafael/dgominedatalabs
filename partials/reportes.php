@@ -1,4 +1,4 @@
-<?// include "../connections/config.php";
+<?php
 $unidad_id = $_GET['unidad_id'];
 $_SESSION['unidad_id'] = $unidad_id;
 $u_id = $_SESSION['u_id'];
@@ -9,12 +9,6 @@ $fecha_final = $_GET['fecha_final'];
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -129,12 +123,12 @@ if (isset($_GET['unidad_id'])){
                                                        om.estado <> 99
                                                        AND ord.unidad_id = ".$unidad_id."
                                                        AND date_format(ord.fecha, '%Y-%m-%d') BETWEEN '".$fecha_inicial."' AND '".$fecha_final."'"
-                                            ) or die(mysqli_error()); 
+                                            ) or die(mysqli_error($mysqli)); 
                                             
-             $datos_metodos = $mysqli->query("SELECT nombre FROM arg_metodos WHERE tipo_id = 1") or die(mysqli_error());             
+             $datos_metodos = $mysqli->query("SELECT nombre FROM arg_metodos WHERE tipo_id = 1") or die(mysqli_error($mysqli));             
              $total_metodos = (mysqli_num_rows($datos_metodos));
              
-             $unidad_mi = $mysqli->query("SELECT nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());             
+             $unidad_mi = $mysqli->query("SELECT nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));             
              $unidad_min = $unidad_mi->fetch_assoc();
              $unidad_mina = $unidad_min['nombre'];
              
@@ -248,7 +242,7 @@ if (isset($_GET['unidad_id'])){
                                                                                    FROM arg_metodos m
                                                                                    LEFT JOIN arg_ordenes_metodos om
                                                                                     ON m.metodo_id = om.metodo_id
-                                                                                   WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error());
+                                                                                   WHERE m.metodo_id <> 4 AND om.trn_id_rel = ".$fila['trn_id_batch']) or die(mysqli_error($mysqli));
                                                  
                                                  if ($fila['estado_id'] == 2){
                                                     $html_det.="<td> <a button type='button'class='btn btn-info' href='certificado_pdf.php?trn_id=".$fila['trn_id_batch']."' target='_blank'>
@@ -293,7 +287,6 @@ if (isset($_GET['unidad_id'])){
                                }                              
                   $html_det.="</tbody></table>";
                   
-                 echo ("$html_en");
                  echo ("$html_det");
                 ?>
         </div>

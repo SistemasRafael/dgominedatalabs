@@ -131,38 +131,40 @@
              })
         }
         
-   function iniciar_etapa_reen(trn_id, etapa, unidad)
-        {               
-            trn_id    = trn_id;
-            unidad_id = unidad;
-            etapa_id = etapa;
-            document.getElementById("mina").value = unidad_id; 
-            //alert(etapa_id);           
-            $.ajax({
-            		url: 'iniciar_etapa_ree.php' ,
-            		type: 'POST' ,
-            		dataType: 'html',
-            		data: {trn_id:trn_id,etapa_id:etapa_id},
-            	})
-            	.done(function(respuesta){                  
-                    if(etapa_id == 2){
-                        //alert(respuesta);
-                        $('#quebrado_modal').modal('show');
-                        $("#datos_quebrado").html(respuesta);
-                        $('#quebrado_modal').on('shown.bs.modal', function (e) {
-                            $(this).find('#peso_que1').focus();
-                        })
-                    }
-                    if (etapa_id == 3){
-                        $('#pulverizado_modal').modal('show');
-                        $("#datos_pulverizado").html(respuesta);
-                        $('#pulverizado_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_pul1').focus();
-                        })
-                        $('#pulverizado_modal').modal('show').trigger('shown');
-                    }
-             })
-        }
+    function iniciar_etapa_reen(trn_id, etapa, unidad)
+    {               
+        trn_id    = trn_id;
+        unidad_id = unidad;
+        etapa_id = etapa;
+        document.getElementById("mina").value = unidad_id;
+
+        $.ajax({
+            url: 'iniciar_etapa_ree.php' ,
+            type: 'POST' ,
+            dataType: 'html',
+            data: {
+                trn_id : trn_id,
+                etapa_id : etapa_id
+            }
+        })
+        .done(function(respuesta){                  
+            if(etapa_id == 2) {
+                $('#quebrado_modal').modal('show');
+                $("#datos_quebrado").html(respuesta);
+                $('#quebrado_modal').on('shown.bs.modal', function (e) {
+                    $(this).find('#peso_que1').focus();
+                })
+            }
+            if (etapa_id == 3) {
+                $('#pulverizado_modal').modal('show');
+                $("#datos_pulverizado").html(respuesta);
+                $('#pulverizado_modal').on('shown.bs.modal', function (e) {
+                    $(this).find('#peso_pul1').focus();
+                })
+                $('#pulverizado_modal').modal('show').trigger('shown');
+            }
+        });
+    }
   
         
    function peso_guardar(trn_bat_sec, trn_rel_sec, cont_sec)
@@ -1159,94 +1161,104 @@
     /******** HUMEDADES PARA CARBONES Y METALURGIA *************/
     function met_peso_guardar(trnid_batch, trnid_rel, metodo, fase, etapa, contador, unidad)
     {
-         var contador = contador;   
-         var warn_met = 0;
-         var trnid_orden   = trnid_batch;
-         var trnid_muestra = trnid_rel;
-         var metodo_id = metodo;
-         var fase = fase;
-         var etapa = etapa;
-         var unidad = unidad;
-         var table = document.getElementById("tabla_pesaje_met");
-         var total_rows_m = parseInt(table.rows.length)-3;
-         //alert(contador);
-         //$('#guardando_modal_peso').modal('show');
-         //alert(total_rows_m);
-         if (total_rows_m == contador){
-             var fin_met = 1;
-         }
-         else{
-             var fin_met = 0;
-         }
-         //Validar que el porcentajes sean mayores a 70   
-         cantidad_met    = "peso_met"+contador;
-         cantidad_metodo = document.getElementById(cantidad_met).value;
-         //alert(cantidad_metodo);
+        var contador = contador;   
+        var warn_met = 0;
+        var trnid_orden   = trnid_batch;
+        var trnid_muestra = trnid_rel;
+        var metodo_id = metodo;
+        var fase = fase;
+        var etapa = etapa;
+        var unidad = unidad;
+        var table = document.getElementById("tabla_pesaje_met");
+        var total_rows_m = parseInt(table.rows.length) - 3;
+
+        if (total_rows_m == contador) {
+            var fin_met = 1;
+        }
+        else {
+            var fin_met = 0;
+        }
+
+        cantidad_met    = "peso_met"+contador;
+        cantidad_metodo = document.getElementById(cantidad_met).value;
          
-         if(metodo_id == 3) {
-             if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
-                {
-                    warn_met = 1;
-                    //alert('El valor debe ser diferente de cero:');
-                    meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
-                }
+        if(metodo_id == 3) {
+            if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00) {
+                warn_met = 1;
+                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+            }
                 
-             if(cantidad_metodo < 15 || cantidad_metodo > 40)
-                {
-                    warn_met = 1;
-                   // alert('El peso está fuera de rango. Por favor reintente');
+            if(cantidad_metodo < 15 || cantidad_metodo > 40) {
+                warn_met = 1;
+                meg_error = 'El peso está fuera de rango. Por favor reintente';
+            }
+        }
+          
+        if (metodo_id == 6) {
+            if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
+            {
+                warn_met = 1;
+                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+            }
+            
+            if(cantidad_metodo < 1.900 || cantidad_metodo > 2.100)
+            {
+                warn_met = 1;
                     meg_error = 'El peso está fuera de rango. Por favor reintente';
-                }
-          }
+            }
+        }
+
+        if (metodo_id == 36 || 
+            metodo_id == 37)
+        {
+            if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
+            {
+                warn_met = 1;
+                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+            }
+            
+            if(cantidad_metodo < 20 || cantidad_metodo > 30)
+            {
+                warn_met = 1;
+                meg_error = 'El peso está fuera de rango. Por favor reintente';
+            }
+        }
           
-         if (metodo_id == 6) {
-             if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
-                {
-                    warn_met = 1;
-                    //alert('El valor debe ser diferente de cero:');
-                    meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
-                }
-             
-              if(cantidad_metodo < 1.900 || cantidad_metodo > 2.100)
-                {
-                    warn_met = 1;
-                    //alert('El peso está fuera de rango. Por favor reintente');
-                     meg_error = 'El peso está fuera de rango. Por favor reintente';
-                }
-          
-          }
-          
-         if (warn_met == 1){
+        if (warn_met == 1) {
             alert(meg_error);
-         } 
-         else {
+        } 
+        else {
             cantidad_met = "peso_met"+contador;            
-            cantidad_metodo = document.getElementById(cantidad_met).value;   
-            //$('#boton_save').html('<div class="loading"><img src="images/upload.gif" alt="loading" /></div>');   
-            //$('#peso_met1') = '<img src="images/upload.gif" alt="loading" />';
-            //alert(trnid_orden);alert(trnid_muestra);alert(metodo_id);  alert(fase);alert(etapa);  alert(cantidad_metodo);  
+            cantidad_metodo = document.getElementById(cantidad_met).value;
             $('#boton_save').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>');
-            //alert(fin_met); 
-                    $.ajax({
-                		url: 'guardar_met_peso.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                		data: {trnid_orden:trnid_orden, trnid_muestra:trnid_muestra, metodo_id:metodo_id, fase:fase, etapa:etapa, cantidad_metodo:cantidad_metodo, fin_met:fin_met, unidad:unidad},
-                    }).done(function(respuesta){
-                        if(respuesta == 'Ha finalizado la etapa.')//alert(respuesta);  
-                        {
-                            alert(respuesta);
-                        }
-                        //else
-                        //{
-                            $('#metodo_modal').modal('show');
-                            $("#datos_metodo").html(respuesta); 
-                            $('#metodo_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_met1').focus();
-                            })                
-                            $('#metodo_modal').modal('show').trigger('shown');
-                })
-          }
+            $.ajax({
+                url: 'guardar_met_peso.php' ,
+                type: 'POST' ,
+                dataType: 'html',
+                data: {
+                    trnid_orden : trnid_orden, 
+                    trnid_muestra : trnid_muestra, 
+                    metodo_id : metodo_id, 
+                    fase : fase, 
+                    etapa : etapa, 
+                    cantidad_metodo : cantidad_metodo, 
+                    fin_met : fin_met, 
+                    unidad : unidad
+                }
+            }).done(function(respuesta){
+                if(respuesta == 'Ha finalizado la etapa.')
+                {
+                    alert(respuesta);
+                }
+
+                $('#metodo_modal').modal('show');
+                $("#datos_metodo").html(respuesta); 
+                $('#metodo_modal').on('shown.bs.modal', function (e) {
+                    $(this).find('#peso_met1').focus();
+                })                
+                $('#metodo_modal').modal('show').trigger('shown');
+            });
+        }
     }
 
      /******** HUMEDADES PARA CARBONES Y METALURGIA *************/
@@ -2844,27 +2856,25 @@
                                                             </td>";
                                             }
                                             else{
-                                                 $html_det.="<td><a type='button' class='btn btn-warning' name='prinT' id='print'";
-                                                                if($fila['reensaye'] == 0){
-                                                                    if ($fila['recheck'] == 0){
-                                                                        if ($fila['prepara'] > 0){
-                                                                            $html_det.="onclick = iniciar_batch(".$fila['trn_id_batch'].",".$unidad_id.")";
-                                                                        }
-                                                                    }
-                                                                    else{
-                                                                        if ($fila['prepara'] > 0){
-                                                                            $html_det.="onclick = iniciar_batch_recheck(".$fila['trn_id_batch'].",".$unidad_id.")";
-                                                                        }
-                                                                    }
-                                                                }
-                                                                 else{  
-                                                                                                                                             
-                                                                        if ($fila['prepara'] > 0 and $fila['iniciar_reen'] == 1){
-                                                                            $html_det.="onclick = iniciar_batch_ree(".$fila['trn_id_batch'].",".$unidad_id.")";
-                                                                        }
-
-                                                                 }                                                
-                                                                 $html_det.="><span class='fa fa-check-circle-o fa-2x'>Preparar</span>
+                                                $html_det.="<td><a type='button' class='btn btn-warning' name='prinT' id='print'";
+                                                if($fila['reensaye'] == 0){
+                                                    if ($fila['recheck'] == 0){
+                                                        if ($fila['prepara'] > 0){
+                                                            $html_det.="onclick = iniciar_batch(".$fila['trn_id_batch'].",".$unidad_id.")";
+                                                        }
+                                                    }
+                                                    else{
+                                                        if ($fila['prepara'] > 0){
+                                                            $html_det.="onclick = iniciar_batch_recheck(".$fila['trn_id_batch'].",".$unidad_id.")";
+                                                        }
+                                                    }
+                                                }
+                                                else{                                                                  
+                                                    if ($fila['prepara'] > 0 and $fila['iniciar_reen'] == 1){
+                                                        $html_det.="onclick = iniciar_batch_ree(".$fila['trn_id_batch'].",".$unidad_id.")";
+                                                    }
+                                                }                                                
+                                                $html_det.="><span class='fa fa-check-circle-o fa-2x'>Preparar</span>
                                                                 </a>
                                                             </td>";
                                             }                                        
