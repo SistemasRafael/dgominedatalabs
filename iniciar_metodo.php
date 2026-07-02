@@ -1170,9 +1170,8 @@ if (isset($trn_id)){
                                                   FROM 
                                                     arg_muestras_resultados pul
                                                   WHERE
-                                                     pul.trn_id = ".$trn_id." 
-                                                     AND pul.metodo_id = ".$metodo_id."
-                                                 ") or die(mysqli_error($mysqli)); 
+                                                     pul.trn_id = $trn_id
+                                                     AND pul.metodo_id = $metodo_id") or die(mysqli_error($mysqli)); 
 
                  if ($existen_peso->num_rows > 0) {
                         if($reensaye == 0){                        
@@ -1263,18 +1262,20 @@ if (isset($trn_id)){
                                                                             LIMIT ".$limite.") AS x 
                                                         ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                         }
-                        else{
-                                $resultado_mues = $mysqli->query("SELECT * FROM (SELECT
-                                                                            	trn_id_rel AS trn_id_batch,                                                                                
-                                                                                trn_id_muestra AS trn_id_rel,
-                                                                                folio_interno AS muestra,
-                                                                                control                                                  
-                                                                            FROM 
-                                                                                `ordenes_reensayes`                                                                      
-                                                                            WHERE trn_id_rel = ".$trn_id." AND metodo_id = ".$metodo_id."
-                                                                            ORDER BY (FLOOR (1+RAND()*".$total."))
-                                                                            LIMIT ".$limite.") AS x 
-                                                                ORDER BY folio_interno")   or die(mysqli_error($mysqli));
+                        else {
+                            $resultado_mues = $mysqli->query("SELECT * 
+                                                                FROM (
+                                                                    SELECT
+                                                                        trn_id_rel AS trn_id_batch,                                                                                
+                                                                        trn_id_muestra AS trn_id_rel,
+                                                                        folio_interno AS muestra,
+                                                                        control                                                  
+                                                                    FROM `ordenes_reensayes`                                                                      
+                                                                    WHERE trn_id_rel = $trn_id AND metodo_id = $metodo_id
+                                                                    ORDER BY (FLOOR (1 + RAND() * $total))
+                                                                    LIMIT $limite
+                                                                ) AS x 
+                                                            ORDER BY muestra")   or die(mysqli_error($mysqli));
                         }
                         $con = 1;
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
