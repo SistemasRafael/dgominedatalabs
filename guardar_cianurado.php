@@ -43,7 +43,7 @@ if (isset($trn_id_rel)) {
             $html = 'Hubo un error, reintente por favor.';
         }
     }
-    else{            
+    else{
         mysqli_multi_query ($mysqli, "CALL arg_cianurado_guardar(".$trn_id_rel.", ".$metodo_tem.", ".$fase_id.", ".$etapa_id.", '".$hora_ini."', '".$hora_fin."', ".$u_id.")") OR DIE (mysqli_error($mysqli));   
         
         $resultado = $mysqli->query("SELECT

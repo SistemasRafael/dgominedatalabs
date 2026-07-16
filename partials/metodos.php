@@ -5,25 +5,8 @@ $unidad_id = $_GET['unidad_id'];
 $_SESSION['unidad_id'] = $unidad_id;
 $mysqli -> set_charset("utf8");
 ?>
- <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
- 
-  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>--!>
 
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -109,12 +92,12 @@ $mysqli -> set_charset("utf8");
                     
                     <label for="tipo_id_sel" class="col-form-label">Tipo de Método:</label>  
                     <select name="tipo_id_sel" id="tipo_id_sel" class="form-control"> 
-                        <?$result_h = $mysqli->query("SELECT tipo_id, nombre FROM `arg_metodos_tipos`") or die(mysqli_error());                             
+                        <?php $result_h = $mysqli->query("SELECT tipo_id, nombre FROM `arg_metodos_tipos`") or die(mysqli_error($mysqli));                             
                                               while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                                 $banco_sele = $row2['nombre'];                                
                                               ?>       
-                                               <option value="<?echo $row2['tipo_id']?>"><?echo $banco_sele?></option>
-                        <?}?>
+                                               <option value="<?php echo $row2['tipo_id']?>"><?php echo $banco_sele?></option>
+                        <?php }?>
                     </select>
                     <label for="nombre_metodo" class="col-form-label">Código:</label>
                     <input name="nombre_metodo" id="nombre_metodo" size=40 style="width:470px; color:#996633"  value="" enabled />
@@ -122,7 +105,7 @@ $mysqli -> set_charset("utf8");
                     <input name="nombre_largo_metodo" id="nombre_largo_metodo" size=40 style="width:470px; color:#996633"  value="" enabled />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="GuardarMetodos(<?echo $unidad_id;?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="GuardarMetodos(<?php echo $unidad_id;?>)">Guardar</button>
                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
               </div>
             </div>
@@ -166,7 +149,7 @@ if (isset($unidad_id)){
 
           <br />
             <br />
-                    <? $datos_metodos = $mysqli->query("SELECT 
+                    <?php  $datos_metodos = $mysqli->query("SELECT 
                                                              ti.nombre AS tipo,
                                                              met.metodo_id, met.nombre AS metodo,
                                                              met.nombre_largo,
@@ -179,18 +162,18 @@ if (isset($unidad_id)){
                                                             activo = 1
                                                         ORDER BY ti.nombre, met.nombre
                                                         
-                                                        ") or die(mysqli_error());
+                                                        ") or die(mysqli_error($mysqli));
                      ?>
                      <br />
                     <div class="col-md-2 col-lg-4">
                                 <!--    <button type='button' class='btn btn-primary' name='agregar_metodo' id='agregar_metodo' data-toggle="modal" data-target="#ModalMetodos" >+ AGREGAR MÉTODOS</button>--!>
-                                <!--    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_metodos' onclick="exportar_metodos(1, <?echo $unidad_id;?>)" >EXPORTAR
+                                <!--    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_metodos' onclick="exportar_metodos(1, <?php echo $unidad_id;?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>--!>
                                                          
                      </div>
                      <br/><br/><br/>
-                            <?
+                            <?php 
                         $html_det = "<div class='container'>
                                  <table class='table table-striped' id='materiales'>
                                     <thead>
@@ -225,7 +208,7 @@ if (isset($unidad_id)){
                         echo ("$html_det");?>
          
         </div>
-        <?
+        <?php 
    }
 ?>                    
 <br /><br /><br /><br /><br /><br /><br /><br />     

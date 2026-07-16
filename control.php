@@ -10,10 +10,9 @@ if ($passw == '') {
     echo"<script>window.location.href='index.php'</script>";
 }
 else {
-    $pass = MD5($_POST["clave"]);       
-    $usuario = mailboxpowerloginrd($usr, $_POST["clave"]);        
-
-    if($usuario == "0" || $usuario == '') {
+    $pass = MD5($passw);   
+    $hasAccess = ActiveDirectoryAuthentication($usr, $passw);
+    if(!$hasAccess) {
         $existe_ext = $mysqli->query("SELECT u.u_id, u.codigo, u.nombre,u.email
                                         FROM arg_usuarios u
                                         WHERE u.codigo = '".$usr."'
@@ -51,6 +50,7 @@ else {
         }
     }
     else {
+        $usuario = GetUserInformation($usr, $passw);
         session_start();
         $_SESSION["LoggedIn"] = 1;
         $_SESSION["user"] = $usuario;
@@ -109,7 +109,7 @@ else {
                         
             $mysqli->query($query1) or die('Error, query failed : ' . mysqli_error($mysqli));
                         
-            echo "<br><b>Se guard� con exito:</b><br><br>"."$fileName <br>"; 
+            echo "<br><b>Se guard� con exito:</b><br><br><br>"; 
             
             $_SESSION['u_id'] = $id_max;
             $_SESSION["LoggedIn"] = 1;

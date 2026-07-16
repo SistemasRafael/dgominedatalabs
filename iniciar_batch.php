@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -20,7 +20,7 @@ if (isset($trn_id)){
                                        LEFT JOIN arg_ordenes ord
                                             ON ord.trn_id = det.trn_id_rel
                                   WHERE det.trn_id = ".$trn_id
-                                   ) or die(mysqli_error());               
+                                   ) or die(mysqli_error($mysqli));               
     $orden_encabezado = $datos_orden->fetch_assoc(); 
     
    if($orden_encabezado['tipo'] == 5){ 
@@ -39,10 +39,10 @@ if (isset($trn_id)){
                                     	ON o.trn_id = od.trn_id_rel
                                     LEFT JOIN arg_usuarios u
                                     	ON u.u_id = o.usuario_id
-                                WHERE od.trn_id = ".$trn_id." AND ob.fase_id = 1 LIMIT 1 ") or die(mysqli_error());
+                                WHERE od.trn_id = ".$trn_id." AND ob.fase_id = 1 LIMIT 1 ") or die(mysqli_error($mysqli));
              
                                if ($resultado->num_rows > 0) {
-                                    $html = 'Se inició el batch exitosamente.';
+                                    $html = 'Se iniciï¿½ el batch exitosamente.';
                                }
                                else{
                                     $html = 'Hubo un error, reintente por favor.';
@@ -80,7 +80,7 @@ if ($resultado->num_rows > 0) {
                     
                     $body = "Se ha iniciado la orden de trabajo <strong>".$folio_interno."</strong> con fecha <strong>".$fecha."</strong><br><br>";
     				$body .= "Los cantidad de muestras recibidas en esta orden es de <strong>".$cantidad."</strong> con folio inicial del <strong>"."<br>".$folio_inicial." al folio ".$folio_final;
-                    $body .= "</strong><br><br><br>Para realizar una nueva solicitud de análisis ingrese a:<br>";    
+                    $body .= "</strong><br><br><br>Para realizar una nueva solicitud de anï¿½lisis ingrese a:<br>";    
                     $body .= "http://192.168.10.112/dgominedatalabs/index.php<br><br>";			
                     $body .= "Atte: LABORATORIO QUIMICO DE ARGONAUT GOLD";
 
@@ -110,7 +110,7 @@ if ($resultado->num_rows > 0) {
                         $mail->Subject = $subject;
                         $mail->Body   = $body;
                         $mail->send();
-                        //echo 'Se envió correctamente el mensaje';
+                        //echo 'Se enviï¿½ correctamente el mensaje';
                     } catch (Exception $e) {
                         echo "Error al enviar mensaje: {$mail->ErrorInfo}";
                  }

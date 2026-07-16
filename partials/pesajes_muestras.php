@@ -2,6 +2,10 @@
     $u_id = $_SESSION['u_id'];
     $fecha_i = $_GET['fecha_i'] ?? date('Y-m-d',strtotime("-3 days"));
     $fecha_f = $_GET['fecha_f'] ?? date('Y-m-d',strtotime("-3 days"));
+
+    $unidad_id = $_GET['unidad_id'] ?? 0;
+    $metodo_id = $_GET['metodo_id'] ?? 0;
+    $tipo_id = $_GET['tipo_id'] ?? 0;
 ?>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -118,8 +122,6 @@
         <br /><br /><br /><br /><br /><br />
         <?php
         $mysqli->set_charset("utf8");
-       // echo $fecha_i; echo $fecha_f;
-       var_dump("CALL arg_rpt_pesajesMuestras(0, 0, 0, '".$fecha_i."','".$fecha_f."')");
         $query = "CALL arg_rpt_pesajesMuestras(0, 0, 0, '".$fecha_i."','".$fecha_f."')";
         mysqli_multi_query($mysqli, $query);
         $result = $mysqli->store_result();
@@ -207,7 +209,7 @@
         var fecha_i = document.getElementById('fecha_inicial').value;
         var fecha_f = document.getElementById('fecha_final').value;
        // orden = 0;
-        alert(tipo_mues);
+        // alert(tipo_mues);
         $.ajax({
                 url: 'reporte_pesajes_muestras.php',
                 type: 'POST',

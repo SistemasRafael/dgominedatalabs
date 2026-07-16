@@ -16,11 +16,11 @@ $trn_id_a = $_GET['trn_id_a'];
 $metodo_id_a = $_GET['metodo_id_a'];
 $u_id_a = $_GET['u_id_a'];
 
-    $datos_at = $mysqli->query("SELECT folio_interno FROM arg_ordenes_detalle WHERE trn_id = $trn_id_a") or die(mysqli_error());
+    $datos_at = $mysqli->query("SELECT folio_interno FROM arg_ordenes_detalle WHERE trn_id = $trn_id_a") or die(mysqli_error($mysqli));
     $usuario_atiende = $datos_at->fetch_assoc();
     $folio = $usuario_atiende['folio_interno'];
     
-    $datos_met = $mysqli->query("SELECT nombre AS nombre_metodo, volumen FROM `arg_metodos` WHERE metodo_id = $metodo_id_a") or die(mysqli_error());
+    $datos_met = $mysqli->query("SELECT nombre AS nombre_metodo, volumen FROM `arg_metodos` WHERE metodo_id = $metodo_id_a") or die(mysqli_error($mysqli));
     $datos_meto = $datos_met->fetch_assoc();
     $nombre_metodo  = $datos_meto['nombre_metodo'];
     $volumen_metodo = $datos_meto['volumen'];

@@ -1,4 +1,5 @@
-<? include "connections/config.php";
+<?php 
+include "connections/config.php";
 require_once 'vendors/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
@@ -231,7 +232,7 @@ $output_options["Attachment"] = 0;
 
 $pdf->render();
 
-
+$file_name = "Nombre";
 $pdf->stream($file_name . ".pdf", array("Attachment" => false));
 
-file_put_contents($file_path . $file_name . '.pdf', $pdf->output());
+file_put_contents($file_name . '.pdf', $pdf->output());

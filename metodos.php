@@ -6,8 +6,8 @@
 		</head>
 		<body>
 		
-            <?include('partials/header.php'); ?>
-            <?include('partials/metodos.php'); ?>
-            <?include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/metodos.php'); ?>
+            <?php include('partials/footer.php'); ?>
 		</body>
 		</html>

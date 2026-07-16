@@ -423,7 +423,7 @@ if (isset($_GET["unidad_id"])) {
                   
                      $fecha             = $_POST['fecha'];
                      $hora              = $_POST['hora_sel'];
-                     $mina_seleccionada = $_POST['mina_seleccionada'];
+                     //$mina_seleccionada = $_POST['mina_seleccionada'];
                      $u_id              = $_SESSION['u_id'];
                      
                      $i   = 1;
@@ -431,9 +431,9 @@ if (isset($_GET["unidad_id"])) {
                      $pos = 1;
                      while($i <> 0){ 
                         $preorden_sel = "preorden".$pos;
-                        $preorden = $_POST[$preorden_sel];
+                        $preorden = $_POST[$preorden_sel] ?? 0;
                         $cantidad = 'cantidad_muestras'.$pos;
-                        $cantidad_sel = $_POST[$cantidad];
+                        $cantidad_sel = $_POST[$cantidad] ?? '';
                         
                         //Métodos
                         $val_met = 0;
@@ -441,7 +441,7 @@ if (isset($_GET["unidad_id"])) {
                             while ($metodos = $metodos_validar->fetch_assoc()) {
                                 $metodo_id = $metodos['metodo_id'];
                                 $fila1 = 'fila'.$pos.'_'.$metodo_id;
-                                $metodo_sel = $_POST[$fila1];
+                                $metodo_sel = $_POST[$fila1] ?? '';
                                 if ($metodo_sel == 'on'){
                                     $val_met = 1;
                                 }
@@ -628,8 +628,8 @@ if (isset($_GET["unidad_id"])) {
                                                  $folio_orden_int = str_pad($string,$length,"0", STR_PAD_LEFT);
                                                 // $length_c = 3;
                                                  $length_c = $caracter_fol['cantidad_folio'];
-                                                 $string_c = (string)$cons_det;
-                                                 $cons_deta = str_pad($string_c,$length_c,"0", STR_PAD_LEFT);
+                                                 //$string_c = (string)$cons_det;
+                                                 //$cons_deta = str_pad($string_c,$length_c,"0", STR_PAD_LEFT);
                                                  
                                                  $folio_sig = str_pad($folio_actual_det,$length_c,"0", STR_PAD_LEFT);
                                                  
@@ -639,14 +639,14 @@ if (isset($_GET["unidad_id"])) {
                                                  }else{
                                                     $folio_inicial_det = $banco.$voladura_fill.$folio_sig;                                                                            
                                                  }
-                                                 $folio_interno_det = $serie_mina.$folio_orden_int.'-'.$cons_deta;                                     
+                                                 // $folio_interno_det = $serie_mina.$folio_orden_int.'-'.$cons_deta;                                     
                                                  $query = "INSERT INTO arg_ordenes_muestras (trn_id, trn_id_rel, folio, tipo_id) ".
                                                           "VALUES ($trn_id_mue, $tr_id_det, '$folio_inicial_det', 0)";
                                                  $mysqli->query($query) ;
                                                 //echo $query;
                                                 $c++;
                                                 $trn_id_mue++;
-                                                $cons_det++;
+                                                //$cons_det++;
                                                 $folio_actual_det++;
                                              }  
                                                 $j++;
@@ -655,7 +655,7 @@ if (isset($_GET["unidad_id"])) {
                                 while ($metodos = $metodos_validar->fetch_assoc()) {
                                         $metodo_id = $metodos['metodo_id'];
                                         $fila1 = 'fila'.$pos.'_'.$metodo_id;
-                                        $metodo_sel = $_POST[$fila1];
+                                        $metodo_sel = $_POST[$fila1] ?? '';
                                         if ($metodo_sel == 'on'){
                                                     $query = "INSERT INTO arg_ordenes_metodos (trn_id, trn_id_rel, metodo_id ) ".
                                                              "VALUES ($trn_id_met, $tr_id_det, $metodo_id)";
@@ -667,10 +667,10 @@ if (isset($_GET["unidad_id"])) {
                                 }                            
                                $i++;
                                $pos++;
-                               $cons++;                   
+                               //$cons++;                   
                            }   
                     }     
-                      //die();               
+                    //die();               
                      echo "<script>";
                      echo "imprimir(".$unidad_id.", ".$trn_id.")";
                      echo "</script>";

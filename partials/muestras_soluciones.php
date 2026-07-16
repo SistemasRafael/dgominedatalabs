@@ -257,7 +257,7 @@ $unidad_mina = $unidad_sele['nombre'];
 
   function actualizar_met() {
     var unidad_id = document.getElementById('unidad_mina').value;
-    var direccionar = '<? echo "\catalogos.php?tipo=2&unidad_id=" ?>' + unidad_id;
+    var direccionar = '<?php  echo "\catalogos.php?tipo=2&unidad_id=" ?>' + unidad_id;
     window.location.href = direccionar;
   }
 </script>
@@ -274,7 +274,7 @@ $unidad_mina = $unidad_sele['nombre'];
       </div>
       <div class="modal-body">
         <label for="unidad_mina" class="col-form-label">Unidad de Mina:</label>
-        <input name="unidad_mina" id="unidad_mina" class="form-control" value="<? echo $unidad_mina; ?>" disabled />
+        <input name="unidad_mina" id="unidad_mina" class="form-control" value="<?php  echo $unidad_mina; ?>" disabled />
         <label for="folio_ex" class="col-form-label">Muestra:</label>
         <input name="folio_ex" id="folio_ex" class="form-control" value="" enabled />
         <label for="area" class="col-form-label">Area:</label>
@@ -290,7 +290,7 @@ $unidad_mina = $unidad_sele['nombre'];
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="GuardarMuestra(<? echo $unidad_id; ?>)">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="GuardarMuestra(<?php  echo $unidad_id; ?>)">Guardar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -298,14 +298,6 @@ $unidad_mina = $unidad_sele['nombre'];
 </div>
 
 <style type="text/css">
-  .izq {
-    background-color: ;
-  }
-
-  .derecha {
-    background-color: ;
-  }
-
   .btnSubmit {
     width: 50%;
     border-radius: 1rem;
@@ -360,7 +352,7 @@ if (isset($unidad_id)) {
         <label for="unidad_id_ex" class="col-form-label"><b>UNIDAD DE MINA</b></label>
 
         <select name="unidad_id_ex" id="unidad_id_ex" class="form-control">
-          <? if ($_SESSION['unidad_acc'] == '0') {
+          <?php  if ($_SESSION['unidad_acc'] == '0') {
             $datos_minas = $mysqli->query("SELECT unidad_id, nombre
                                                       FROM arg_empr_unidades") or die(mysqli_error($mysqli));
             //while ($row2 = $datos_minas->fetch_assoc()){
@@ -371,11 +363,11 @@ if (isset($unidad_id)) {
                 $string = "selected";
               }
           ?>
-              <option value="<? echo $row2['unidad_id'] ?>" <? echo $string ?>><? echo $met_sele ?></option>
-          <? }
+              <option value="<?php  echo $row2['unidad_id'] ?>" <?php  echo $string ?>><?php  echo $met_sele ?></option>
+          <?php  }
           } ?>
 
-          <? if ($_SESSION['unidad_acc'] <> '0' and $_SESSION['unidad_acc'] <> '999') {
+          <?php  if ($_SESSION['unidad_acc'] <> '0' and $_SESSION['unidad_acc'] <> '999') {
             $datos_minas = $mysqli->query("SELECT unidad_id, nombre
                                                                     FROM arg_empr_unidades 
                                                                     WHERE unidad_id = " . $_SESSION['unidad_acc']) or die(mysqli_error($mysqli));
@@ -387,12 +379,12 @@ if (isset($unidad_id)) {
                 $string = "selected";
               }
           ?>
-              <option value="<? echo $row2['unidad_id'] ?>" <? echo $string ?>><? echo $met_sele ?></option>
-          <?
+              <option value="<?php  echo $row2['unidad_id'] ?>" <?php  echo $string ?>><?php  echo $met_sele ?></option>
+          <?php 
             }
           } ?>
 
-          <?  //999=Varias unidades de mina (No Todas) 
+          <?php   //999=Varias unidades de mina (No Todas) 
           $cadena = $_SESSION['unidades'];
           $i = 0;
           if ($_SESSION['unidad_acc'] == '999') {
@@ -408,8 +400,8 @@ if (isset($unidad_id)) {
                     $string = "selected";
                   }
           ?>
-                  <option value="<? echo $row2['unidad_id'] ?>" <? echo $string ?>><? echo $met_sele ?></option>
-          <? }
+                  <option value="<?php  echo $row2['unidad_id'] ?>" <?php  echo $string ?>><?php  echo $met_sele ?></option>
+          <?php  }
               }
             }
           } ?>
@@ -429,19 +421,19 @@ if (isset($unidad_id)) {
         </select>
       </div>
 
-      <?/*<div class="col-md-2 col-lg-2">
+      <?php /*<div class="col-md-2 col-lg-2">
         <label for="orden_sel" class="col-form-label"><b>ORDEN</b></label>
         <input list="list_orden_sel" id="orden_sel" name="orden_sel" class="form-control">
         <datalist id="list_orden_sel">
           <option value="Todos"></option>
-          <?
+          <?php 
           $datos_ordenes = $mysqli->query("SELECT DISTINCT orden as orden FROM arg_ordenes_muestrasSoluciones") or die(mysqli_error($mysqli));
           while ($row2 = $datos_ordenes->fetch_array(MYSQLI_ASSOC)) {
             $orden = $row2['orden'];
 
           ?>
-            <option value="<? echo $orden ?>">
-            <?
+            <option value="<?php  echo $orden ?>">
+            <?php 
           }
             ?>
         </datalist>
@@ -450,7 +442,7 @@ if (isset($unidad_id)) {
 
 
       <div class="col-md-2 col-lg-2" style="margin-top:24;">
-        <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar(1, <? echo $unidad_id ?>)"> EXPORTAR
+        <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar(1, <?php  echo $unidad_id ?>)"> EXPORTAR
           <span class='fa fa-file-excel-o fa-1x'></span>
         </button>
       </div>
@@ -461,7 +453,7 @@ if (isset($unidad_id)) {
       <br>
       <br>
       <br>
-  <?
+  <?php 
     $html_det = "<div class='container'>
                         <table class='table table-striped' id='motivos'>
                                 <thead>

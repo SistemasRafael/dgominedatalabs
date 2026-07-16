@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trn_id = $_POST['trn_id_pul'];
@@ -21,7 +21,7 @@ if (isset($trn_id)){
                                       FROM arg_ordenes ord
                                       LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                      WHERE odet.trn_id = ".$trn_id) or die(mysqli_error());             
+                                      WHERE odet.trn_id = ".$trn_id) or die(mysqli_error($mysqli));             
        $tipo_ord = $tipo_orden->fetch_assoc();
        $reensaye = $tipo_ord['reensaye'];
        $orden_trabajo = $tipo_ord['orden_trabajo'];
@@ -39,7 +39,7 @@ if (isset($trn_id)){
                                       LEFT JOIN ordenes_transacciones om
                                             ON se.trn_id = om.trn_id_batch
                                             AND se.trn_id_rel = om.trn_id_rel
-                                  WHERE porcentaje = 0 AND se.trn_id = ".$trn_id) or die(mysqli_error());
+                                  WHERE porcentaje = 0 AND se.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
      }
      else{
         $resultado = $mysqli->query("SELECT
@@ -55,7 +55,7 @@ if (isset($trn_id)){
                                                     ON se.trn_id = om.trn_id_rel
                                                     AND se.trn_id_rel = om.trn_id_muestra
                                           WHERE se.porcentaje = 0 
-                                                AND se.trn_id = ".$trn_id) or die(mysqli_error());
+                                                AND se.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
      }
              //echo $query;
         if ($resultado->num_rows > 0) {
@@ -86,8 +86,8 @@ if (isset($trn_id)){
                                 <td style='display:none;'> <input type='input' id='trn_batch_pul".$con."' value='".$trn_id_batch."'/></td>  
                                 <td style='display:none;'> <input type='input' id='trn_rel_pul".$con."' value='".$trn_id_rel."'/>".$res_muestras['muestra']."</td>                             
                                 <td> <input type='input' name='trn_rel_pul".$con."' class='form-control' id='trn_rel_pul".$con."' value='".$muestra."' disabled></td> 
-                                <td> <input type='number' name='peso_pul".$con."' step='.01' id='peso_pul".$con."' class='form-control' value='".$peso_mu_pulv."' onchange='calcula_porc_pulv(".$con.")' /> </td>
-                                <td> <input type='number' name='peso_malla_pul".$con."' id='peso_malla_pul".$con."' class='form-control' value='".$peso_malla_pulv."' onchange='calcula_porc_pulv(".$con.")' /> </td>
+                                <td> <input type='number' name='peso_pul".$con."' step='.01' id='peso_pul".$con."' class='form-control' onchange='calcula_porc_pulv(".$con.")' /> </td>
+                                <td> <input type='number' name='peso_malla_pul".$con."' id='peso_malla_pul".$con."' class='form-control' onchange='calcula_porc_pulv(".$con.")' /> </td>
                                 <td> <input type='number' name='porc_pul".$con."' id='porc_pul".$con."' class='form-control' value='".$porc_pulv."' disabled/> </td>
                                 <td> <input type='text' name='comentario_pul".$con."' id='comentario_pul".$con."' class='form-control' value='".$coment."' disabled /></td>
                                 <td> <button type='button'class='btn btn-primary' id='boton_save_pulverizado' onclick='pulverizado_guardar(".$trn_id_batch.", ".$trn_id_rel.", ".$con.")' >
@@ -116,7 +116,7 @@ if (isset($trn_id)){
                                       LEFT JOIN ordenes_transacciones om
                                             ON se.trn_id = om.trn_id_batch
                                             AND se.trn_id_rel = om.trn_id_rel
-                                  WHERE se.trn_id = ".$trn_id) or die(mysqli_error());
+                                  WHERE se.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
         }
         else{
             $resultado_pul = $mysqli->query("SELECT
@@ -131,7 +131,7 @@ if (isset($trn_id)){
                                                 LEFT JOIN ordenes_reensayes om
                                                     ON se.trn_id = om.trn_id_rel
                                                 AND se.trn_id_rel = om.trn_id_muestra
-                                            WHERE se.trn_id = ".$trn_id) or die(mysqli_error());
+                                            WHERE se.trn_id = ".$trn_id) or die(mysqli_error($mysqli));
         }
              //echo $query;
         if ($resultado_pul->num_rows > 0) {

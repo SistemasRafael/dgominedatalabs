@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trn_id_rel   = $_POST['trn_id_tem'];
@@ -10,22 +10,27 @@ $etapa_id     = $_POST['etapa_id_agi'];
 $u_id = $_SESSION['u_id'];
 
 if (isset($trn_id_rel)){
-   mysqli_multi_query ($mysqli, "CALL arg_cianurado_guardar(".$trn_id_rel.", ".$metodo_tem.", ".$fase_id.", ".$etapa_id.", '".$hora_ini."', '".$hora_fin."', ".$u_id.")") OR DIE (mysqli_error($mysqli));   
+    mysqli_multi_query ($mysqli, "CALL arg_cianurado_guardar(".$trn_id_rel.", ".$metodo_tem.", ".$fase_id.", ".$etapa_id.", '".$hora_ini."', '".$hora_fin."', ".$u_id.")") OR DIE (mysqli_error($mysqli));   
   
-   $resultado = $mysqli->query("SELECT
-                                   cantidad
+    $resultado = $mysqli->query("SELECT
+                                   count(*)
                                 FROM 
-                                    arg_muestras_cianurado
-                                WHERE trn_id_rel = ".$trn_id_rel." AND se.metodo_id = ".$metodo_tem." AND fase_id = ".$fase_id." AND etapa_id = ".$etapa_id) or die(mysqli_error());
-             //echo $query;
-        if ($resultado->num_rows > 0) {
-            $html =  'La etapa de Centrifugado ha finalizado.';
-        }
-        else{
-            $html = 'Hubo un error, reintente por favor.';
-        }
-         $mysqli -> set_charset("utf8");
-     
-         echo utf8_encode($html);
+                                    arg_muestras_cianuradoAgitacion
+                                WHERE trn_id_rel = ".$trn_id_rel." AND 
+                                        metodo_id = ".$metodo_tem." AND 
+                                        fase_id = ".$fase_id." AND 
+                                        etapa_id = ".$etapa_id) or die(mysqli_error($mysqli));
+    if ($resultado->num_rows > 0) 
+    {
+        $html =  'La etapa de Centrifugado ha finalizado.';
+    }
+    else
+    {
+        $html = 'Hubo un error, reintente por favor.';
+    }
+    
+    $mysqli -> set_charset("utf8");
+    
+    echo utf8_encode($html);
  }
 ?>

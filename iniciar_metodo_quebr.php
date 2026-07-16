@@ -500,7 +500,6 @@ if (isset($trn_id)){
 
    //Metodo GRAN
    if($fase_id == 20 & $etapa_id == 5 & $metodo_id == 5){
-    echo 'entro';
         while ($res = $resultado->fetch_assoc()) {            
                   $tipo_can          = $res['cantidad_tipo'];
                   $cantidad_muestras = $res['cantidad_muestras']; 

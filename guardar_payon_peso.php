@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trnid_m    = $_POST['trnid_pay'];
@@ -16,7 +16,7 @@ if (isset($trnid_m)){
         $resultado_efaa = $mysqli->query(" SELECT metodo, fase, etapa
                                            FROM ordenes_fases_etapas
                                            WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel
-                                         ) or die(mysqli_error());
+                                         ) or die(mysqli_error($mysqli));
         
        $tipo_orden = $mysqli->query("SELECT 
                                          (CASE WHEN ord.trn_id_rel = 0 THEN 0 ELSE 1 END) AS reensaye 
@@ -24,7 +24,7 @@ if (isset($trnid_m)){
                                       FROM arg_ordenes ord
                                       LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error());             
+                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error($mysqli));             
        $tipo_ord = $tipo_orden->fetch_assoc();
        $reensaye = $tipo_ord['reensaye'];
        $orden_trabajo = $tipo_ord['folio_interno'];
@@ -43,7 +43,7 @@ if (isset($trnid_m)){
                                     WHERE 
                                         up.perfil_id = 5
                                         AND up.activo = 1
-                                    	AND up.u_id = ".$u_id) or die(mysqli_error());             
+                                    	AND up.u_id = ".$u_id) or die(mysqli_error($mysqli));             
       $validar_supervi = $validar_superv->fetch_assoc();
       $supervisor = $validar_supervi['perfil_id'];
            
@@ -71,7 +71,7 @@ if (isset($trnid_m)){
                                         AND (CASE ".$etapa_sel." WHEN 5 THEN se.peso = 0 WHEN 6 THEN se.peso_payon = 0 WHEN 7 THEN se.absorcion = 0 END)
                                      ORDER BY 
                                         om.folio_interno"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
        }
        else{
             $origen_reen = $mysqli->query("SELECT 
@@ -114,7 +114,7 @@ if (isset($trnid_m)){
                                                  END)
                                          ORDER BY 
                                             om.folio_interno"
-                                        ) or die(mysqli_error());
+                                        ) or die(mysqli_error($mysqli));
                                     }
                                     else{
                                         $resultado = $mysqli->query("SELECT
@@ -143,7 +143,7 @@ if (isset($trnid_m)){
                                                  END)
                                          ORDER BY 
                                             om.folio_interno"
-                                        ) or die(mysqli_error());
+                                        ) or die(mysqli_error($mysqli));
                                     }
        }
         if ($resultado->num_rows > 0) {
@@ -204,7 +204,7 @@ if (isset($trnid_m)){
                  $html.="<tr class='table-info' align='left'>
                                         <th>No.</th>
                                         <th>Muestra</th>
-                                        <th>Peso Payónnn</th>
+                                        <th>Peso Payï¿½nnn</th>
                                         <th></th>                       
                                 </thead>
                                 <tbody>";
@@ -260,7 +260,7 @@ if (isset($trnid_m)){
                                         AND ".$fase_sel." = 2
                                      ORDER BY 
                                         om.folio_interno"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
            }
            else{
                 $origen_reen = $mysqli->query("SELECT 
@@ -296,7 +296,7 @@ if (isset($trnid_m)){
                                                            WHERE
                                                               pul.metodo_id = ".$metodo_id." 
                                                               AND pul.trn_id = ".$trn_id."
-                                                              ORDER BY ot.folio_interno") or die(mysqli_error());
+                                                              ORDER BY ot.folio_interno") or die(mysqli_error($mysqli));
                                     }
                                     else{
                                         $resultado = $mysqli->query("SELECT
@@ -316,7 +316,7 @@ if (isset($trnid_m)){
                                                            WHERE
                                                               pul.metodo_id = ".$metodo_id." 
                                                               AND pul.trn_id = ".$trn_id."
-                                                           ORDER BY ot.folio_interno") or die(mysqli_error());
+                                                           ORDER BY ot.folio_interno") or die(mysqli_error($mysqli));
                                     }
            }
             $html .=  "<table class='table text-black' id='tab_datos_payon'>
@@ -330,7 +330,7 @@ if (isset($trnid_m)){
                  $html.="<tr class='table-info' align='left'>
                                         <th>No.</th>
                                         <th>Muestra</th>
-                                        <th>Peso Payónnn</th>
+                                        <th>Peso Payï¿½nnn</th>
                                         <th></th>                       
                                 </thead>
                                 <tbody>";
@@ -356,7 +356,7 @@ if (isset($trnid_m)){
                                 <td>".$muestra_met."</td>
                                 <td>".$peso."</td>";
                                 if ($supervisor == 1){
-                                           $html .="<td> <input type='number' id='peso_pay".$cont."' value='".$peso_actual."' class='form-control'/> </td>
+                                           $html .="<td> <input type='number' id='peso_pay".$cont."' class='form-control'/> </td>
                                              <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardarEdit(".$trnid_batch_met.",".$trnid_rel_met.",".$metodo_sel.",".$fase_sel.",".$etapa_sel.",".$cont.")' >
                                                         <span class='fa fa-cloud fa-1x'></span>
                                                   </button>

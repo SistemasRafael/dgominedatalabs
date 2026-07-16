@@ -8,7 +8,6 @@ $etapa_id  = $_POST['etapa'];
 $u_id  = $_SESSION['u_id'];
 $unidad_id = $_POST['unidad_tem'];
 
-//echo 'aqui'.$fase_id.' '.$trn_id.$etapa_id;
 if (isset($trn_id)){    
         $resultado = $mysqli->query("SELECT
                                 	      ob.trn_id_rel
@@ -192,14 +191,13 @@ if (isset($trn_id)){
                             $trnid_rel     = $res_muestras['trn_id_rel'];
                             $muestra_folio = $res_muestras['muestra'];
                             $muestra_control = $res_muestras['control'];
-                            //$peso_actual   = $res_muestras['peso'];
                             $html.="<tr>                                  
                                          <td>".$con."</td> 
                                          <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
                                          <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                           
                                          <td>".$muestra_folio."</td>
                                          <td>".$muestra_control."</td>
-                                         <td> <input type='number' id='peso_met".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                         <td> <input type='number' id='peso_met".$con."' class='form-control'/> </td>
                                          <td> <button type='button'class='btn btn-primary' id='boton_save' onclick='met_peso_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
                                               </button>
@@ -587,13 +585,12 @@ if (isset($trn_id)){
                             $trnid_rel     = $res_muestras_pay['trn_id_rel'];
                             $muestra_folio = $res_muestras_pay['muestra'];
                             $control = $res_muestras_pay['control'];
-                            $peso_actual   = $res_muestras_pay['peso_payon'];
                             $html.="<tr>                                  
                                          <td>".$con."</td> 
                                          <td style='display:none;'> <input type='input' id='trnid_batch_pay".$con."' value='".$trnid_batch."'/></td>  
                                          <td style='display:none;'> <input type='input' id='trnid_rel_pay".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                             
                                          <td>".$muestra_folio."</td>                                         
-                                         <td> <input type='number' id='peso_pay".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                         <td> <input type='number' id='peso_pay".$con."' class='form-control'/> </td>
                                          <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
                                               </button>
@@ -713,7 +710,7 @@ if (isset($trn_id)){
                                         <td>".$muestra_met."</td>
                                         <td>".$peso."</td>";
                                         if ($supervisor == 1){
-                                           $html .="<td> <input type='number' id='peso_pay".$cont."' value='".$peso_actual."' class='form-control'/> </td>
+                                           $html .="<td> <input type='number' id='peso_pay".$cont."' class='form-control'/> </td>
                                              <td> <button type='button'class='btn btn-primary' id='boton_save_pay' onclick='met_payon_guardarEdit(".$trnid_batch_met.",".$trnid_rel_met.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$cont.")' >
                                                         <span class='fa fa-cloud fa-1x'></span>
                                                   </button>
@@ -820,7 +817,7 @@ if (isset($trn_id)){
                                         <th>No.</th>
                                         <th>Muestra</th>
                                         <th>Control</th>
-                                        <th>Peso</th>
+                                        <th>Peso g</th>
                                         <th></th>                                
                                 </thead>
                             <tbody>";
@@ -930,15 +927,14 @@ if (isset($trn_id)){
                             $trnid_batch   = $res_muestras['trn_id_batch'];
                             $trnid_rel     = $res_muestras['trn_id_rel'];
                             $muestra_folio = $res_muestras['muestra'];
-                            $muestra_control = $res_muestras['control'];                            
-                            //$peso_actual   = $res_muestras['peso'];
+                            $muestra_control = $res_muestras['control'];
                             $html.="<tr>                                  
                                          <td>".$con."</td> 
                                          <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
                                          <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                             
                                          <td>".$muestra_folio."</td>
                                          <td>".$muestra_control."</td>
-                                         <td> <input type='number' id='peso_met".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                         <td> <input type='number' id='peso_met".$con."' class='form-control'/> </td>
                                          <td> <button type='button'class='btn btn-primary' id='boton_save' onclick='met_peso_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
                                               </button>
@@ -1141,7 +1137,7 @@ if (isset($trn_id)){
        }//Fin fase 6 y etapa 5 pesaje muestras
        //Inicia metodo con pesaje de la fase 7
         if($fase_id == 7 && $etapa_id == 5){
-        while ($res = $resultado->fetch_assoc()) {            
+        while ($res = $resultado->fetch_assoc()) {  
                   $tipo_can          = $res['cantidad_tipo'];
                   $cantidad_muestras = $res['cantidad_muestras']; 
                   $total             = $res['total'];
@@ -1154,7 +1150,7 @@ if (isset($trn_id)){
                   $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                 <thead class='thead-info' align='center'>
                                     <tr class='table-info'>
-                                        <th colspan='5'>M�todo: f".$metodo." Fase: ".$fase." Etapa: ".$etapa."</th>
+                                        <th colspan='5'>M&eacute;todo: ".$metodo." Fase: ".$fase." Etapa: ".$etapa."</th>
                                     </tr>
                                     <tr class='table-warning' align='center'>
                                         <th colspan='11'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>
@@ -1163,7 +1159,7 @@ if (isset($trn_id)){
                                         <th>No.</th>
                                         <th>Muestra</th>
                                         <th>Control</th>
-                                        <th>Peso</th>
+                                        <th>Peso g</th>
                                         <th></th>                                
                                 </thead>
                             <tbody>";
@@ -1174,10 +1170,9 @@ if (isset($trn_id)){
                                                   FROM 
                                                     arg_muestras_resultados pul
                                                   WHERE
-                                                     pul.trn_id = ".$trn_id." 
-                                                     AND pul.metodo_id = ".$metodo_id."
-                                                 ") or die(mysqli_error($mysqli));
-            
+                                                     pul.trn_id = $trn_id
+                                                     AND pul.metodo_id = $metodo_id") or die(mysqli_error($mysqli)); 
+
                  if ($existen_peso->num_rows > 0) {
                         if($reensaye == 0){                        
                             $peso_det = $mysqli->query("SELECT
@@ -1220,15 +1215,14 @@ if (isset($trn_id)){
                             $trnid_batch   = $res_muestras['trn_id_batch'];
                             $trnid_rel     = $res_muestras['trn_id_rel'];
                             $muestra_folio = $res_muestras['muestra'];
-                            $muestra_control = $res_muestras['control'];                            
-                            //$peso_actual   = $res_muestras['peso'];
+                            $muestra_control = $res_muestras['control'];
                             $html.="<tr>                                  
                                          <td>".$con."</td> 
                                          <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
                                          <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                             
                                          <td>".$muestra_folio."</td>
                                          <td>".$muestra_control."</td>
-                                         <td> <input type='number' id='peso_met".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                         <td> <input type='number' id='peso_met".$con."' class='form-control'/> </td>
                                          <td> <button type='button'class='btn btn-primary' id='boton_save' onclick='met_peso_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
                                               </button>
@@ -1238,9 +1232,8 @@ if (isset($trn_id)){
                      }
                 }
                 else{
-                    if ($tipo_can == 1){ //Porcentaje
+                    if ($tipo_can == 1){
                         $limite = (($cantidad_muestras*$total)/100);
-                        //echo $limite;
                         if ($reensaye == 0){
                             $resultado_mues = $mysqli->query("SELECT * FROM  ( SELECT
                                                                                 trn_id_batch,
@@ -1269,18 +1262,20 @@ if (isset($trn_id)){
                                                                             LIMIT ".$limite.") AS x 
                                                         ORDER BY bloque, posicion")   or die(mysqli_error($mysqli));
                         }
-                        else{
-                                $resultado_mues = $mysqli->query("SELECT * FROM (SELECT
-                                                                            	trn_id_rel AS trn_id_batch,                                                                                
-                                                                                trn_id_muestra AS trn_id_rel,
-                                                                                folio_interno AS muestra,
-                                                                                control                                                  
-                                                                            FROM 
-                                                                                `ordenes_reensayes`                                                                      
-                                                                            WHERE trn_id_rel = ".$trn_id." AND metodo_id = ".$metodo_id."
-                                                                            ORDER BY (FLOOR (1+RAND()*".$total."))
-                                                                            LIMIT ".$limite.") AS x 
-                                                                ORDER BY folio_interno")   or die(mysqli_error($mysqli));
+                        else {
+                            $resultado_mues = $mysqli->query("SELECT * 
+                                                                FROM (
+                                                                    SELECT
+                                                                        trn_id_rel AS trn_id_batch,                                                                                
+                                                                        trn_id_muestra AS trn_id_rel,
+                                                                        folio_interno AS muestra,
+                                                                        control                                                  
+                                                                    FROM `ordenes_reensayes`                                                                      
+                                                                    WHERE trn_id_rel = $trn_id AND metodo_id = $metodo_id
+                                                                    ORDER BY (FLOOR (1 + RAND() * $total))
+                                                                    LIMIT $limite
+                                                                ) AS x 
+                                                            ORDER BY muestra")   or die(mysqli_error($mysqli));
                         }
                         $con = 1;
                         while ($res_muestras = $resultado_mues->fetch_assoc()) {
@@ -1428,10 +1423,8 @@ if (isset($trn_id)){
            while ($res = $resultado->fetch_assoc()) {
                 $metodo = $res['metodo'];
                 $fase   = $res['fase'];
-                $etapa  = $res['etapa']; 
-                $Object = new DateTime(); 
-                $fecha_hora_ini = $Object->format("d/m/Y h:i:s a");
-            }                
+                $etapa  = $res['etapa'];
+            }    
             $html =  "<table class='table text-black' id='datos_temperatura'>
                             <thead class='thead-info' align='left'>
                                 <tr class='table-info'>
@@ -1442,15 +1435,15 @@ if (isset($trn_id)){
                                 </tr>
                                 <tr class='table-info' align='left'>
                                         <th>Hora de Inicio</th>
-                                        <th>Hora de Finalizaci�n</th>
+                                        <th>Hora de Finalizaci&oacute;n</th>
                                         <th></th>                                                         
                             </thead>
                             <tbody>
                             <tr>";                             
                                 $html.="                                                           
-                                    <td> <input type='datetime-local' class='form-control' id='hora_inicio'></td>
-                                    <td> <input type='input' class='form-control' value='".$fecha_hora_ini."' id='hora_final'></td>
-                                    <td> <button type='button'class='btn btn-primary' id='boton_save_fun' onclick='agitacion_guardar(".$trn_id.", ".$metodo_id.")' >
+                                    <td><input type='datetime-local' class='form-control' id='hora_inicio'></td>
+                                    <td><input type='datetime-local' class='form-control' id='hora_final'></td>
+                                    <td> <button type='button'class='btn btn-primary' id='boton_save_fun' onclick='agitacion_guardar(".$trn_id.", ".$metodo_id.", ".$fase_id.", ".$etapa_id.")' >
                                              <span class='fa fa-cloud fa-1x'></span>
                                          </button>
                                     </td>
@@ -1483,7 +1476,7 @@ if (isset($trn_id)){
                             <tbody>
                             <tr>";                             
                                 $html.=" 
-                                    <td> <input type='dametime-local' class='form-control' value='".$fecha_hora."' id='hora_final_cen'></td>
+                                    <td> <input type='datetime-local' class='form-control' id='hora_final_cen'></td>
                                     <td> <button type='button'class='btn btn-primary' id='boton_save_fun' onclick='centrifugado_guardar(".$trn_id.", ".$metodo_id.")' >
                                              <span class='fa fa-cloud fa-1x'></span>
                                          </button>
@@ -1621,7 +1614,7 @@ if (isset($trn_id)){
                                          <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
                                          <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                        
                                          <td>".$muestra_folio."</td>
-                                         <td> <input type='number' id='peso_tit".$con."' value='".$peso_actual."' class='form-control'/> </td>
+                                         <td> <input type='number' id='peso_tit".$con."' class='form-control'/> </td>
                                          <td> <button type='button'class='btn btn-primary' id='boton_save_tit' onclick='met_titulacion_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
                                               </button>

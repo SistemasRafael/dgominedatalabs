@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trn_id = $_POST['trn_id_sec'];
@@ -24,13 +24,13 @@ if (isset($trn_id)){
                                         WHERE 
                                             se.trn_id = ".$trn_id."
                                             AND se.peso = 0
-                                    ORDER BY om.muestra_geologia") or die(mysqli_error());
+                                    ORDER BY om.muestra_geologia") or die(mysqli_error($mysqli));
 
         $orden_tr = $mysqli->query("SELECT folio_interno AS orden_trabajo
                                     FROM
                                         arg_ordenes_detalle
                                     WHERE
-                                        trn_id = ".$trn_id) or die(mysqli_error());
+                                        trn_id = ".$trn_id) or die(mysqli_error($mysqli));
        $orden_tra = $orden_tr->fetch_assoc();
        $orden_trabajo  = $orden_tra['orden_trabajo'];                                        
        

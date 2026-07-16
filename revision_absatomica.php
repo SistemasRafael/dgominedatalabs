@@ -4,8 +4,7 @@
 		<title>Argonaut Gold</title>
 	</head>
 		<body>		
-            <?include('partials/header.php'); ?>
-            <?include('partials/revision_absatomica.php');?>
-            <?//include('partials/footer.php'); ?>
+            <?php include('partials/header.php'); ?>
+            <?php include('partials/revision_absatomica.php');?>
 		</body>
 	</html>

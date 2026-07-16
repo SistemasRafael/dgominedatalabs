@@ -1,18 +1,10 @@
 <?php
- include "../connections/config.php";
+//include "../connections/config.php";
 $unidad_id = $_GET['unidad_id'];
 $_SESSION['unidad_id'] = $unidad_id;
 
 ?>
 <style type="text/css">
-  .izq {
-    background-color: ;
-  }
-
-  .derecha {
-    background-color: ;
-  }
-
   .btnSubmit {
     width: 50%;
     border-radius: 1rem;
@@ -211,22 +203,22 @@ $_SESSION['unidad_id'] = $unidad_id;
 
         <label for="metodo_id" class="col-form-label">Método a aplicar:</label>
         <select name="metodo_id" id="metodo_id" class="form-control">
-          <? $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error());
+          <?php  $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error($mysqli));
           while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
             $banco_sele = $row2['nombre'];
           ?>
-            <option value="<? echo $row2['metodo_id'] ?>"><? echo $banco_sele ?></option>
-          <? } ?>
+            <option value="<?php  echo $row2['metodo_id'] ?>"><?php  echo $banco_sele ?></option>
+          <?php  } ?>
         </select>
 
         <label for="material_id_selecc" class="col-form-label">Seleccione el material de referencia:</label>
         <select name="material_id_selecc" id="material_id_selecc" class="form-control">
-          <? $result_h = $mysqli->query("SELECT material_id, nombre FROM `arg_materiales_referencia`") or die(mysqli_error());
+          <?php  $result_h = $mysqli->query("SELECT material_id, nombre FROM `arg_materiales_referencia`") or die(mysqli_error($mysqli));
           while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
             $banco_sele = $row2['nombre'];
           ?>
-            <option value="<? echo $row2['material_id'] ?>"><? echo $banco_sele ?></option>
-          <? } ?>
+            <option value="<?php  echo $row2['material_id'] ?>"><?php  echo $banco_sele ?></option>
+          <?php  } ?>
         </select>
 
         <label for="cantidad_desviacion" class="col-form-label">Cantidad desviaciones:</label>
@@ -234,7 +226,7 @@ $_SESSION['unidad_id'] = $unidad_id;
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="GuardarMateriales(<? echo $unidad_id; ?>)">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="GuardarMateriales(<?php  echo $unidad_id; ?>)">Guardar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -253,7 +245,7 @@ $_SESSION['unidad_id'] = $unidad_id;
       </div>
       <div class="modal-body">   
     
-    <form name='importar_veh' method='post' action='controles.php?unidad_id=<?echo $unidad_id."'";?> enctype='multipart/form-data' >
+    <form name='importar_veh' method='post' action='controles.php?unidad_id=<?php echo $unidad_id."'";?> enctype='multipart/form-data' >
 
     <h5 style="width:470px; color:#4999e9" >ELEMENTO Au</h5>
     <br />
@@ -284,26 +276,26 @@ $_SESSION['unidad_id'] = $unidad_id;
         <h5 style="width:470px; color:#4999e9" >MÉTODO A APLICAR</h5>
         <br />
         <select name="metodo_id_asig" id="metodo_id_asig" class="form-control">
-          <? $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error());
+          <?php  $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error($mysqli));
           while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
             $banco_sele = $row2['nombre'];
           ?>
-            <option value="<? echo $row2['metodo_id'] ?>"><? echo $banco_sele ?></option>
-          <? } ?>
+            <option value="<?php  echo $row2['metodo_id'] ?>"><?php  echo $banco_sele ?></option>
+          <?php  } ?>
         </select>
 
         <label for="carbones" class="col-form-label">Carbones Ricos/Pobres/NA:</label>
          <select name="carbones" id="carbones" class="form-control">
-          <? $result_r = $mysqli->query("SELECT null AS ricos_id, 'No Aplica' AS nombre_ricos
+          <?php  $result_r = $mysqli->query("SELECT null AS ricos_id, 'No Aplica' AS nombre_ricos
                                          UNION ALL
                                          SELECT 0 AS ricos_id, 'RICOS' AS nombre_ricos
                                          UNION ALL
-                                         SELECT 1 AS ricos_id, 'POBRES' AS nombre_ricos ") or die(mysqli_error());
+                                         SELECT 1 AS ricos_id, 'POBRES' AS nombre_ricos ") or die(mysqli_error($mysqli));
           while ($row3 = $result_r->fetch_array(MYSQLI_ASSOC)) {
           $banco_sele2 = $row3['nombre_ricos'];
           ?>
-            <option value="<? echo $row3['ricos_id'] ?>"><? echo $banco_sele2 ?></option>
-          <? } ?>
+            <option value="<?php  echo $row3['ricos_id'] ?>"><?php  echo $banco_sele2 ?></option>
+          <?php  } ?>
         </select>
         
         <table width="470" border="0" cellpadding="1" cellspacing="1" class="box">
@@ -353,21 +345,21 @@ $_SESSION['unidad_id'] = $unidad_id;
 
         <label for="control_id" class="col-form-label">Tipo de Control:</label>
         <select name="control_id" id="control_id" class="form-control">
-          <? $result_h = $mysqli->query("SELECT control_id, nombre FROM `arg_controles_calidad` WHERE control_id IN (1,5)") or die(mysqli_error());
+          <?php  $result_h = $mysqli->query("SELECT control_id, nombre FROM `arg_controles_calidad` WHERE control_id IN (1,5)") or die(mysqli_error($mysqli));
           while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
             $banco_sele = $row2['nombre'];
           ?>
-            <option value="<? echo $row2['control_id'] ?>"><? echo $banco_sele ?></option>
-          <? } ?>
+            <option value="<?php  echo $row2['control_id'] ?>"><?php  echo $banco_sele ?></option>
+          <?php  } ?>
         </select>
         <label for="metodo_id_bl" class="col-form-label">Método a aplicar:</label>
         <select name="metodo_id_bl" id="metodo_id_bl" class="form-control">
-          <? $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error());
+          <?php  $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos`") or die(mysqli_error($mysqli));
           while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
             $banco_sele = $row2['nombre'];
           ?>
-            <option value="<? echo $row2['metodo_id'] ?>"><? echo $banco_sele ?></option>
-          <? } ?>
+            <option value="<?php  echo $row2['metodo_id'] ?>"><?php  echo $banco_sele ?></option>
+          <?php  } ?>
         </select>
         <label for="valor_ley" class="col-form-label">Ley:</label>
         <input name="valor_ley" id="valor_ley" size=40 style="width:470px; color:#996633" value="" enabled />
@@ -378,7 +370,7 @@ $_SESSION['unidad_id'] = $unidad_id;
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="GuardarBlancos(<? echo $unidad_id; ?>)">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="GuardarBlancos(<?php  echo $unidad_id; ?>)">Guardar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -388,7 +380,7 @@ $_SESSION['unidad_id'] = $unidad_id;
 <?php
 
 //if (isset($unidad_id)){
-$metodo_filtro = $_GET['metodo_id_sel'];
+$metodo_filtro = $_GET['metodo_id_sel'] ?? 0;
 $metodo_filtro_fun = $metodo_filtro;
 //echo $metodo_filtro;
 if ($metodo_filtro == '' or $metodo_filtro == 0) {
@@ -412,8 +404,9 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
       <div class="container" class="col-md-12 col-lg-12">
         <br />
         <br />
-        <? $datos_materiales = $mysqli->query(
-          "SELECT 
+        <?php  
+        // var_dump("[".$metodo_filtro . "]Esoooo");
+        $datos_materiales = $mysqli->query("SELECT 
                          mat.id as id, un.nombre as unidad_mina, met.nombre AS metodo, cal.control_id, cal.nombre as control_calidad
                         ,mat.nombre, cantidad_desviacion, valor_ley, desv_esta, cantidad_desviacion, maximo, minimo
                         ,(CASE WHEN mat.activo = 1 THEN 'SI' ELSE 'NO' END) AS activo
@@ -426,13 +419,13 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                         ON met.metodo_id = mat.metodo_id
                     WHERE met.metodo_id = " . $metodo_filtro."
                     AND mat.unidad_id = ".$unidad_id
-        ) or die(mysqli_error());
+        ) or die(mysqli_error($mysqli));
         ?>
         <br />
         <div class="container" class="col-md-2 col-lg-12">
           <div class="col-md-2 col-lg-4">
             <!--  <button type='button' class='btn btn-primary' name='agregar_material' id='agregar_material' data-toggle="modal" data-target="#ModalMaterial" >+ ASIGNAR MATERIAL</button>
-                                    --!><button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_materiales(1, <? echo $metodo_filtro_fun; ?>)" >EXPORTAR
+                                    --!><button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_materiales(1, <?php  echo $metodo_filtro_fun; ?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>
@@ -440,25 +433,25 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                             <div class="col-md-2 col-lg-5">
                             </div>
                             <div class="col-md-2 col-lg-2">
-                                <select name="metodo_id_sel" id="metodo_id_sel" value="<? echo $metodo_filtro; ?>" class="form-control"> 
-                                <? $result_h = $mysqli->query("SELECT metodo_id, nombre 
+                                <select name="metodo_id_sel" id="metodo_id_sel" value="<?php  echo $metodo_filtro; ?>" class="form-control"> 
+                                <?php  $result_h = $mysqli->query("SELECT metodo_id, nombre 
                                                               FROM `arg_metodos` 
                                                               UNION ALL SELECT 0 AS metodo_id, 'Todos los métodos' as nombre 
-                                                              ORDER BY metodo_id ") or die(mysqli_error());
+                                                              ORDER BY metodo_id ") or die(mysqli_error($mysqli));
                                 while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
                                   $banco_sele = $row2['nombre']; ?>       
-                                                    <option value="<? echo $row2['metodo_id'] ?>"><? echo $banco_sele ?></option>
-                                <? } ?>
+                                                    <option value="<?php  echo $row2['metodo_id'] ?>"><?php  echo $banco_sele ?></option>
+                                <?php  } ?>
                                 </select>            
                             </div>
                              <div class="col-md-2 col-lg-1">
-                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <? echo $unidad_id ?>)" >FILTRAR
+                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <?php  echo $unidad_id ?>)" >FILTRAR
                                         <span class='fa fa-filter fa-1x'></span>
                                 </button>
                              </div>                                
                      </div>
                         <br/><br/>
-                            <?
+                            <?php 
                             $html_det = "<div class='container'>
                             <table class='table table-striped' id='materiales'>
                                <thead>
@@ -513,7 +506,7 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
         <div class="container" class="col-md-12 col-lg-12"> 
             <br />
             <br />
-                    <? $datos_materiales = $mysqli->query(
+                    <?php  $datos_materiales = $mysqli->query(
                                                             "SELECT 
                                                                  met.`nombre`, un.nombre AS unidad_mina, `valor_ley`, `desv_esta`
                                                                 ,`cantidad_desviacion`, `maximo`, `minimo`
@@ -530,13 +523,13 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                                                             WHERE
                                                                 met.metodo_id = " . $metodo_filtro."
                                                                 AND met.unidad_id = ".$unidad_id
-                    ) or die(mysqli_error());
+                    ) or die(mysqli_error($mysqli));
                     ?>
                      <br />
                      <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                     <button type='button' class='btn btn-primary' name='crear_material' id='crear_material' data-toggle="modal" data-target="#ModalMaterialRef" >+ AGREGAR MATERIAL</button>
-                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_materiales(1, <? echo $metodo_filtro_fun; ?>)" >EXPORTAR
+                                    <button type='button' class='btn btn-success' name='exportar_material' id='exportar_material' onclick="exportar_materiales(1, <?php  echo $metodo_filtro_fun; ?>)" >EXPORTAR
                                         <span class='fa fa-file-excel-o fa-1x'></span>
                                     </button>
                             </div>
@@ -544,25 +537,25 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                             <div class="col-md-2 col-lg-5">
                             </div>
                             <div class="col-md-2 col-lg-2">
-                                <select name="metodo_id_sel" id="metodo_id_sel" value="<? echo $metodo_filtro; ?>" class="form-control"> 
-                                <? $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos` 
+                                <select name="metodo_id_sel" id="metodo_id_sel" value="<?php  echo $metodo_filtro; ?>" class="form-control"> 
+                                <?php  $result_h = $mysqli->query("SELECT metodo_id, nombre FROM `arg_metodos` 
                                                               UNION ALL 
                                                               SELECT 0 AS metodo_id, 'Todos los métodos' AS nombre 
-                                                              ORDER BY metodo_id ") or die(mysqli_error());
+                                                              ORDER BY metodo_id ") or die(mysqli_error($mysqli));
                                 while ($row2 = $result_h->fetch_array(MYSQLI_ASSOC)) {
                                   $banco_sele = $row2['nombre']; ?>       
-                                                    <option value="<? echo $row2['metodo_id'] ?>"><? echo $banco_sele ?></option>
-                                <? } ?>
+                                                    <option value="<?php  echo $row2['metodo_id'] ?>"><?php  echo $banco_sele ?></option>
+                                <?php  } ?>
                                 </select>            
                             </div>
                              <div class="col-md-2 col-lg-1">
-                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <? echo $unidad_id ?>)" >FILTRAR
+                                <button type='button' class='btn btn-warning' name='filtro' id='filtro' onclick="redireccion(1, <?php  echo $unidad_id ?>)" >FILTRAR
                                         <span class='fa fa-filter fa-1x'></span>
                                 </button>
                              </div>                                
                      </div>
                         <br/><br/>
-                            <?
+                            <?php 
                             $html_det = "<div class='container'>
                                     <table class='table table-striped' id='materiales'>
                                     <thead>
@@ -628,7 +621,7 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                 <div id="content" class="col-md-12 col-lg-12">            
                     <br />
                     <br />                  
-                    <? $datos_blancos = $mysqli->query(
+                    <?php  $datos_blancos = $mysqli->query(
                       "SELECT
             	                                          bl.nombre, un.nombre AS unidad_mina, bl.valor_ley, maximo, minimo, met.nombre as metodo
                                                          ,(CASE WHEN bl.activo = 1 THEN 'Si' ELSE 'No' END) AS activo
@@ -643,13 +636,13 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                                                             ON un.unidad_id = bl.unidad_id
                                                         WHERE bl.metodo_id = " . $metodo_filtro."
                                                               AND bl.unidad_id = ".$unidad_id
-                    ) or die(mysqli_error());
+                    ) or die(mysqli_error($mysqli));
                     ?>
                     <br />
                     <div class="container" class="col-md-2 col-lg-12">
                             <div class="col-md-2 col-lg-4">
                                 <button type='button' class='btn btn-primary' name='agregar_blanco' id='agregar_blanco' data-toggle="modal" data-target="#ModalBlancos" >+ AGREGAR BLANCO</button>
-                                <button type='button' class='btn btn-success' name='exportar_blancos' id='exportar_blancos' onclick="exportar_materiales(2, <? echo $metodo_filtro_fun ?>)">EXPORTAR
+                                <button type='button' class='btn btn-success' name='exportar_blancos' id='exportar_blancos' onclick="exportar_materiales(2, <?php  echo $metodo_filtro_fun ?>)">EXPORTAR
                                     <span class='fa fa-file-excel-o fa-1x'></span>
                                 </button>
                              </div>   
@@ -658,7 +651,7 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                              
                     </div>
                     <br/><br/>
-                    <?
+                    <?php 
                     $html_det = "<div class='container'>
                             <table class='table table-striped' id='motivos'>
                                     <thead>
@@ -699,7 +692,7 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                 <div id="content" class="col-md-12 col-lg-12">            
                     <br />
                     <br />    
-                            <? $datos_blancos = $mysqli->query(
+                            <?php  $datos_blancos = $mysqli->query(
                                                                 "SELECT
                                                                     dup.`nombre`,
                                                                     un.nombre AS unidad_mina,
@@ -729,17 +722,17 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
                                                                 WHERE
                                                                     met.metodo_id = " . $metodo_filtro."
                                                                     AND dup.unidad_id = ".$unidad_id
-                            ) or die(mysqli_error());
+                            ) or die(mysqli_error($mysqli));
                             ?>
                     <br />
                     <div class="container" class="col-md-2 col-lg-4">
                             <button type='button' class='btn btn-primary' name='agregar_banco' id='agregar_banco' data-toggle="modal" data-target="#ModalBan" >+ AGREGAR DUPLICADO</button>
-                            <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar(1, <? echo $unidad_id ?>)">EXPORTAR
+                            <button type='button' class='btn btn-success' name='export' id='export' onclick="exportar(1, <?php  echo $unidad_id ?>)">EXPORTAR
                                 <span class='fa fa-file-excel-o fa-1x'></span>
                             </button>           
                     </div>
                     <br/><br/>
-                    <?
+                    <?php 
                     $html_det = "<div class='container'>
                             <table class='table table-striped' id='motivos'>
                                     <thead>
@@ -804,7 +797,7 @@ if ($metodo_filtro == '' or $metodo_filtro == 0) {
         
         
         </div>
-        <?
+        <?php 
         // }
         
 if (isset($_POST['subir_poliza'])) {
@@ -844,7 +837,7 @@ if (isset($_POST['subir_poliza'])) {
     $ricospobres = 'null';
   }
 
-  $serie_mina = $mysqli->query("SELECT `serie` FROM `arg_empr_unidades` WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+  $serie_mina = $mysqli->query("SELECT `serie` FROM `arg_empr_unidades` WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
       $serie_mi = $serie_mina->fetch_array(MYSQLI_ASSOC);
       $serie_m  = $serie_mi['serie'];
       
@@ -858,7 +851,7 @@ if (isset($_POST['subir_poliza'])) {
      // echo 'entro'.$unidad_id;
      // die();
      
-      $max_metodo_id = $mysqli->query("SELECT MAX(material_id) AS material_id FROM arg_controles_materiales") or die(mysqli_error());
+      $max_metodo_id = $mysqli->query("SELECT MAX(material_id) AS material_id FROM arg_controles_materiales") or die(mysqli_error($mysqli));
       $max_meto = $max_metodo_id->fetch_array(MYSQLI_ASSOC);
       $material_id = $max_meto['material_id'];
       $material_id = $material_id + 1;
@@ -876,7 +869,7 @@ if (isset($_POST['subir_poliza'])) {
                                         material_id
                                      FROM 
                                         arg_controles_materiales
-                                     WHERE material_id = " . $material_id) or die(mysqli_error());
+                                     WHERE material_id = " . $material_id) or die(mysqli_error($mysqli));
       
         if ($resultado->num_rows > 0) {
           $html = 'Se registro exitosamente!.';

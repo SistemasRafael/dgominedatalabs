@@ -1,4 +1,4 @@
-<?include "connections/config.php";?>
+<?php include "connections/config.php";?>
 <?php
 $html = '';
 $trnid_m    = $_POST['trnid_orden'];
@@ -10,18 +10,11 @@ $cantidad   = $_POST['cantidad_metodo'];
 $final      = $_POST['fin_met'];
 $u_id       = $_SESSION['u_id'];
 
-//echo 'llego';
-//echo $final;
-//echo $u_id;
 if (isset($trnid_m)){
-    //echo 'entRo';
-   //if ($fase_sel == 2 && $etapa_sel == 5){
         mysqli_multi_query ($mysqli, "CALL arg_prc_ordenMetodoPeso(".$trnid_m.", ".$trnidrel_m.", ".$metodo_sel.", ".$fase_sel.", ".$etapa_sel.", ".$cantidad.", ".$u_id.",".$final.")") OR DIE (mysqli_error($mysqli));  
-   //}     
         $resultado_efaa = $mysqli->query(" SELECT metodo, fase, etapa
                                            FROM ordenes_fases_etapas
-                                           WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel
-                                         ) or die(mysqli_error());
+                                           WHERE trn_id_rel = ".$trnid_m." AND fase_id = ".$fase_sel." AND etapa_id = ".$etapa_sel. " AND metodo_id = ".$metodo_sel) or die(mysqli_error($mysqli));
         
        $tipo_orden = $mysqli->query("SELECT 
                                           (CASE WHEN ord.trn_id_rel = 0 THEN 0 ELSE 1 END) AS reensaye 
@@ -29,7 +22,7 @@ if (isset($trnid_m)){
                                       FROM arg_ordenes ord
                                       LEFT JOIN arg_ordenes_detalle odet
                                             ON ord.trn_id =  odet.trn_id_rel
-                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error());             
+                                      WHERE odet.trn_id = ".$trnid_m) or die(mysqli_error($mysqli));             
        $tipo_ord = $tipo_orden->fetch_assoc();
        $reensaye = $tipo_ord['reensaye'];
        $orden_trabajo = $tipo_ord['folio_interno'];
@@ -58,34 +51,9 @@ if (isset($trnid_m)){
                                             AND (CASE ".$etapa_sel." WHEN 5 THEN se.peso = 0 WHEN 6 THEN se.peso_payon = 0 WHEN 7 THEN se.absorcion = 0 END)
                                          ORDER BY
                                             om.folio_interno"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
         }
         else{
-            /*$resultado = $mysqli->query("SELECT
-                                             se.trn_id as trnid_batch_met
-                                            ,se.trn_id_rel as trnid_rel_met
-                                            ,met.nombre as metodo_nombre
-                                            ,ROUND(se.peso, 2) AS peso_muestra
-                                            ,ROUND(se.peso_payon, 2) AS peso_payon
-                                            ,ROUND(se.absorcion, 2) AS absorcion
-                                            ,om.folio_interno as muestra_met                                      
-                                            ,om.muestra_geologia as muestra_interna_met
-                                            ,om.control
-                                         FROM 
-                                            arg_muestras_resultados se
-                                            LEFT JOIN ordenes_reensayes om
-                                                ON se.trn_id = om.trn_id_rel
-                                                AND se.trn_id_rel = om.trn_id_muestra
-                                                AND se.metodo_id = om.metodo_id
-                                            LEFT JOIN arg_metodos met
-                                                ON met.metodo_id = se.metodo_id
-                                         WHERE 
-                                            se.trn_id = ".$trnid_m."
-                                            AND se.metodo_id = ".$metodo_sel."
-                                            AND (CASE ".$etapa_sel." WHEN 5 THEN se.peso = 0 WHEN 6 THEN se.peso_payon = 0 WHEN 7 THEN se.absorcion = 0 END)
-                                         ORDER BY
-                                            om.folio_interno"
-                                    ) or die(mysqli_error());*/
             $origen_reen = $mysqli->query("SELECT 
                                             COUNT(*) AS existe_rech
                                            FROM 
@@ -126,7 +94,7 @@ if (isset($trnid_m)){
                                             AND (CASE ".$etapa_sel." WHEN 5 THEN se.peso = 0 WHEN 6 THEN se.peso_payon = 0 WHEN 7 THEN se.absorcion = 0 END)
                                          ORDER BY
                                             om.folio_interno"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
             }
             else{
                 $resultado = $mysqli->query("SELECT
@@ -153,7 +121,7 @@ if (isset($trnid_m)){
                                             AND (CASE ".$etapa_sel." WHEN 5 THEN se.peso = 0 WHEN 6 THEN se.peso_payon = 0 WHEN 7 THEN se.absorcion = 0 END)
                                          ORDER BY
                                             om.folio_interno"
-                                    ) or die(mysqli_error());
+                                    ) or die(mysqli_error($mysqli));
             }
         }
         if ($resultado->num_rows > 0) {
@@ -165,7 +133,7 @@ if (isset($trnid_m)){
             $html =  "<table class='table text-black' id='tabla_pesaje_met'>
                                 <thead class='thead-info' align='center'>
                                    <tr class='table-info'>
-                                        <th colspan='5'>".$metodo_codigo." Fase: ".$metodo_fase." Etapa: ".$metodo_etapa."</th>
+                                        <th colspan='5'>M&eacute;todo: ".$metodo_codigo." Fase: ".$metodo_fase." Etapa1: ".$metodo_etapa."</th>
                                     </tr>
                                     <tr class='table-warning' align='center'>
                                         <th colspan='11'>ORDEN DE TRABAJO: ".$orden_trabajo."</th>
@@ -275,7 +243,7 @@ if (isset($trnid_m)){
                  $html.="<tr class='table-info' align='left'>
                                         <th>No.</th>
                                         <th>Muestra</th>
-                                        <th>Peso Payón</th>
+                                        <th>Peso Payï¿½n</th>
                                         <th></th>                       
                                 </thead>
                                 <tbody>";

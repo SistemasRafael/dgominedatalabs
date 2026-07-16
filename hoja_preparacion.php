@@ -1,4 +1,5 @@
-<? include "connections/config.php";
+<?php 
+include "connections/config.php";
 require_once 'vendors/dompdf/autoload.inc.php';
 
 use Dompdf\Dompdf;
@@ -174,7 +175,7 @@ $pdf_header .= '<cfs FONTSIZE="15"></cfs>';
 $pdf_header .= '<CXY X="' . $par_x + 50 . '" Y="' . ($par_y + 150) . '"></CXY>';
 $pdf_header .= $html_en;
 
-$pdf_content .= '<html>';
+$pdf_content = '<html>';
 $pdf_content .= '<head>';
 $pdf_content .= '<style>';
 $pdf_content .= $pdf_style;
@@ -194,6 +195,7 @@ $pdf->load_html($pdf_content);
 
 $pdf->render();
 
+$file_name = "Nombre";
 $pdf->stream($file_name . ".pdf", array("Attachment" => false));
 
-file_put_contents($file_path . $file_name . '.pdf', $pdf->output());
+file_put_contents($file_name . '.pdf', $pdf->output());

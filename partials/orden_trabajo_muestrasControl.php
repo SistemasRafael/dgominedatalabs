@@ -1,8 +1,8 @@
-   <? // include "connections/config.php";
-        $trn_id = $_GET['trn_id_batch'];
+   <?php // include "connections/config.php";
+        $trn_id = $_GET['trn_id_batch'] ?? $_GET['trn_id'];
         $metodo_id = $_GET['metodo_id'];
-        $unidad_id = $_GET['unidad_id'];
-        $ree = $_GET['ree'];
+        $unidad_id = $_GET['unidad_id'] ?? 0;
+        // $ree = $_GET['ree'];
    ?>
       <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
       <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
@@ -50,12 +50,6 @@
  </script>
  
 <style type="text/css">
-	.izq{
-		background-color:;
-	}
-	.derecha{
-		background-color:;
-	}
 	.btnSubmit
     {
         width: 50%;
@@ -90,7 +84,7 @@ if (isset($_GET['trn_id'])){
         //echo 'aqui'.$metodo_id;
     }
     $trn_id = $_GET['trn_id'];
-    $unidad_id = $_GET['unidad_id'];
+    $unidad_id = $_GET['unidad_id'] ?? 0;
     $datos_orden = $mysqli->query("SELECT
                                          un.nombre AS unidad, ord.folio, ord.fecha_inicio, ord.hora, us.nombre AS usuario
                                         ,(CASE WHEN ord.trn_id_rel <> 0 THEN 1 ELSE 0 END) AS reensaye
@@ -104,7 +98,7 @@ if (isset($_GET['trn_id'])){
                                         LEFT JOIN arg_usuarios us
                                             ON us.u_id = ord.usuario_id
                                    WHERE det.trn_id = ".$trn_id
-                                   ) or die(mysqli_error());               
+                                   ) or die(mysqli_error($mysqli));               
     $orden_encabezado = $datos_orden->fetch_assoc();                                            
                
     $datos_batchs = $mysqli->query("SELECT trn_id_rel as trn_id_batch, folio_interno, m.nombre as metodo
@@ -113,7 +107,7 @@ if (isset($_GET['trn_id'])){
                                         LEFT JOIN arg_metodos AS m
                                             ON m.metodo_id = ml.metodo_id
                                     WHERE trn_id_rel =".$trn_id." AND ml.metodo_id = (CASE WHEN ".$metodo_id." = 0 THEN ml.metodo_id ELSE ".$metodo_id." END) ORDER BY ml.metodo_id"
-                                            ) or die(mysqli_error());
+                                            ) or die(mysqli_error($mysqli));
     $datos_batch = $datos_batchs->fetch_assoc();
             ?>
              <br/> <br/>
@@ -121,33 +115,33 @@ if (isset($_GET['trn_id'])){
                 <div class="container">
                     <div class="col-md-4 col-lg-4">                 
                     <h3>                         
-                         <?
+                           <?php 
                             echo ("Orden de Trabajo: ".$orden_encabezado['folio']);
                             echo ("</br>");
                             echo ("</br>");
                          ?>
                     </div>           
                     <div class="col-md-4 col-lg-4">
-                            <select name="metodo_id_sel" id="metodo_id_sel" value="<?echo $metodo_id;?>" onchange="redireccion(<?echo $trn_id.", ".$metodo_id.", ".$unidad_id?>)"  class="form-control"> 
-                            <?$result_h = $mysqli->query("SELECT 0 AS metodo_id, 'Seleccione Método: ' AS nombre UNION ALL SELECT od.metodo_id, m.nombre FROM `ordenes_detalle_metodos` AS od LEFT JOIN arg_metodos AS m ON od.metodo_id = m.metodo_id WHERE od.trn_id_rel = ".$trn_id) or die(mysqli_error());                             
+                            <select name="metodo_id_sel" id="metodo_id_sel" value="  <?php echo $metodo_id;?>" onchange="redireccion(<?php echo $trn_id; ?>, <?php echo $metodo_id; ?>, <?php echo $unidad_id; ?>)"  class="form-control"> 
+                              <?php $result_h = $mysqli->query("SELECT 0 AS metodo_id, 'Seleccione Método: ' AS nombre UNION ALL SELECT od.metodo_id, m.nombre FROM `ordenes_detalle_metodos` AS od LEFT JOIN arg_metodos AS m ON od.metodo_id = m.metodo_id WHERE od.trn_id_rel = ".$trn_id) or die(mysqli_error($mysqli));                             
                             while ( $row2 = $result_h ->fetch_array(MYSQLI_ASSOC)) {
                                 $banco_sele = $row2['nombre'];?>       
-                                <option value="<?echo $row2['metodo_id']?>"><?echo $banco_sele?></option>
-                            <?}?>
+                                <option value="  <?php echo $row2['metodo_id']?>">  <?php echo $banco_sele?></option>
+                              <?php }?>
                             </select>            
                     </div>
                     
                      <div class="col-2 col-md-2 col-lg-2">
                      </div>
                      <div class="col-4 col-md-4 col-lg-4">
-                        <button type="button" class="btn btn-info" name="print_muestras" id="print_muestras" onclick="print_muestras(<?echo $trn_id.", ".$metodo_id.", 1";?>)">  <span class="fa fa-file-pdf-o fa-2x">  Imprimir</span>    </button>
+                        <button type="button" class="btn btn-info" name="print_muestras" id="print_muestras" onclick="print_muestras(<?php echo $trn_id; ?>, <?php echo $metodo_id; ?>, 1)">  <span class="fa fa-file-pdf-o fa-2x">  Imprimir</span>    </button>
                      
-                        <button type="button" class="btn btn-success" name="export_muestras" id="export_muestras" onclick="exportar_muestras(<?echo $trn_id.", 1)"?>;">  <span class="fa fa-file-excel-o fa-2x">  Exportar</span>    </button>
+                        <button type="button" class="btn btn-success" name="export_muestras" id="export_muestras" onclick="exportar_muestras(<?php echo $trn_id; ?>, 1)">  <span class="fa fa-file-excel-o fa-2x">  Exportar</span>    </button>
                      </div>
                   
                </div>               
                    
-               </h3><?                 
+               </h3>  <?php                  
                  
                  $html_en = "<table class='table table-striped' id='encabezado'>
                              <thead>
@@ -164,7 +158,7 @@ if (isset($_GET['trn_id'])){
                                   </tr>";
                   $html_en.="</thead></table>";
                   
-                  $html_det .= "<table class='table table-striped' id='motivos'>
+                  $html_det = "<table class='table table-striped' id='motivos'>
                                 <thead>
                                 
                                 <tr class='table-info'>      
@@ -184,7 +178,7 @@ if (isset($_GET['trn_id'])){
                                                                     0 as tipo_id
                                                                 FROM
                                                                     arg_ordenes_muestras ot WHERE ot.trn_id_rel =  ".$trn_id)
-                                                               or die(mysqli_error());
+                                                               or die(mysqli_error($mysqli));
                                 }
                                 else {
                                     if ($orden_encabezado['tipo_orden'] == 2){
@@ -331,7 +325,7 @@ if (isset($_GET['trn_id'])){
                 ?>
                 <br /> 
     </div>
-    <?
+      <?php 
     }
     ?>                    
 <script type="text/javascript" src="js/jquery.min.js"></script>
