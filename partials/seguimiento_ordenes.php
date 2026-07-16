@@ -2447,8 +2447,8 @@
                     $tipo  = $_FILES['excel']['type']; //captura el tipo de archivo (2003 o 2007)
                     ///$dest  = 'c:\\xampp\\htdocs\\__pro\\argonaut\\VinculosKpi'.'\\ '; //lugar donde se copiara el archivo
                     // $dest  = dirname(__DIR__).'\\absorcion'.'\\ '; //lugar donde se copiara el archivo
-                    $dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
-                    //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
+                    //$dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
+                    $dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
                     $desti = rtrim($dest).$archivo; 
                     copy($_FILES['excel']['tmp_name'],$desti);
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
@@ -2474,8 +2474,8 @@
                     $archivo = $_FILES['excel']['name']; //captura el nombre del archivo
                     $archivo = strtoupper($archivo);
                     $tipo  = $_FILES['excel']['type'];
-                    $dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
-                    //$dest  = '/var/www/html/lcminedatalabs/absorcion'.'/ '; 
+                    //$dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
+                    $dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; 
                     $desti = rtrim($dest).$archivo;                        
                     copy($_FILES['excel']['tmp_name'],$desti);
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             

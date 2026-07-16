@@ -1,6 +1,5 @@
 DELIMITER $$
 DROP PROCEDURE IF EXISTS arg_cianurado_guardar$$
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `arg_cianurado_guardar`(IN `trn_id_batch` INT, IN `metodo_id_sel` INT, IN `fase_id_sel` INT, IN `etapa_id_sel` INT, IN `fecha_ini` VARCHAR(25), IN `fecha_fin` VARCHAR(25), IN `u_id_sel` INT)
     NO SQL
 BEGIN

@@ -187,7 +187,7 @@ if (isset($_GET['trn_id_abs'])){
     $metodo_nombre = $metodo['nombre'];
     $elemento      = $metodo['elemento'];
     
-    if ($metodo_id == 3 || $metodo_id == 6 || $metodo_id == 24 || $metodo_id == 36){
+    if ($metodo_id == 3 || $metodo_id == 6 || $metodo_id == 24 || $metodo_id == 36 || $metodo_id == 37){
         
         $existe_revision = $mysqli->query("SELECT COUNT(*) AS total_revision
                                            FROM 

@@ -8,7 +8,7 @@ DECLARE trn_id_sig INT;
 
 SET trn_id_sig = IFnull((SELECT max(trn_id) as trn_id FROM arg_muestras_temperaturas), 0);
 SET trn_id_sig = trn_id_sig+1;
-
+                     
 INSERT INTO arg_muestras_temperaturas(trn_id, trn_id_rel, metodo_id, instrumento_id, cantidad)
 VALUES (trn_id_sig, trn_id_batch, metodo_id_cia, 0, cant_temp);
 
@@ -87,7 +87,8 @@ END;
     END;
 	ELSE
 BEGIN
-
+	INSERT INTO arg_muestras_temperaturas(trn_id, trn_id_rel, metodo_id, instrumento_id, cantidad)
+    VALUES (trn_id_sig, trn_id_batch, metodo_id_cia, 0, cant_temp);
 
     INSERT INTO arg_ordenes_bitacora_detalle (trn_id_rel, metodo_id, fase_id, etapa_id, fecha, u_id)
         SELECT 

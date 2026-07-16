@@ -20,4 +20,4 @@ INSERT INTO `arg_controles_blancos` (`unidad_id`, `material_id`, `nombre`, `cont
 
 INSERT INTO `arg_controles_materiales` (`id`, `unidad_id`, `material_id`, `nombre`, `control_id`, `valor_ley`, `desv_esta`, `cantidad_desviacion`, `maximo`, `minimo`, `metodo_id`, `valor_ley_ag`, `desv_est_ag`, `cant_desv_ag`, `maximo_ag`, `minimo_ag`, `u_id`, `activo`, `ricos_pobres`, `file_path`) VALUES
 (150, 2, 108, 'CN_HOT_Au_CDN', 2, 0.121000, 0.003000, 2, 0.127000, 0.115000, 36, NULL, NULL, NULL, NULL, NULL, 82, 1, NULL, 'upload/SA/CN_HOTCertificate.pdf'),
-(150, 2, 109, 'CN_HOT_Au_CDN', 2, 0.121000, 0.003000, 2, 0.127000, 0.115000, 37, NULL, NULL, NULL, NULL, NULL, 82, 1, NULL, 'upload/SA/CN_HOTCertificate.pdf');
+(151, 2, 109, 'CN_HOT_Ag_CDN', 2, 0.121000, 0.003000, 2, 0.127000, 0.115000, 37, NULL, NULL, NULL, NULL, NULL, 82, 1, NULL, 'upload/SA/CN_HOTCertificate.pdf');
