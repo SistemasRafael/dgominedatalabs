@@ -1627,6 +1627,12 @@ if (isset($trn_id)){
                                         VALUES ($trn_id, $metodo_id, 12, now(), $u_id)") or die(mysqli_error($mysqli));                                                
                         $mysqli->query("INSERT INTO arg_ordenes_bitacora_detalle (trn_id_rel, metodo_id, fase_id, etapa_id, u_id, fecha_fin, u_id_fin)
                                         VALUES ($trn_id, $metodo_id, 12, 10, now(), $u_id)") or die(mysqli_error($mysqli));
+                        $html = "<div class='alert alert-success' role='alert'>
+                                    <h4 class='alert-heading'>¡Proceso de Medición finalizado!</h4>
+                                    <p>Se ha registrado correctamente el proceso de Medición para la orden de trabajo: <strong>".$orden_trabajo."</strong>.</p>
+                                    <hr>
+                                    <p class='mb-0'>Puede continuar con el siguiente proceso.</p>
+                                </div>";
 
                     }
                 }  
