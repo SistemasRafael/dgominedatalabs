@@ -49,6 +49,7 @@ if($soluciones != 2) {
             mysqli_multi_query($mysqli, "CALL arg_consultar_resultados_ree ($trn_id_a, $metodo_id_a, 0)") or die(mysqli_error($mysqli));
         }
     }
+
     $objSheet->setTitle($nombre_metodo);
     $i = 1;
     $objSheet->setCellValue('A' . $i, 'Muestra');
@@ -59,6 +60,7 @@ if($soluciones != 2) {
     $objSheet->setCellValue('F' . $i, 'FECHA RESULTADO');
     $objSheet->setCellValue('G' . $i, 'HORA');
     $i = 2;
+
     if ($result = mysqli_store_result($mysqli)) {
         while ($row = mysqli_fetch_assoc($result)) {
             $objSheet->setCellValue('A' . $i, $row['muestra']);
@@ -89,39 +91,72 @@ if($soluciones != 2) {
             mysqli_free_result($result);
         } 
         while(mysqli_more_results($mysqli) && mysqli_next_result($mysqli));
-    
-        
-        mysqli_multi_query ($mysqli, "CALL arg_consultar_resultadosesp ($trn_id_a, $metodo_id_a, 1)") OR DIE (mysqli_error($mysqli));
-        
-        $spreadsheet->createSheet(1);
-        $spreadsheet->setActiveSheetIndex(1); 
-        $spreadsheet->setActiveSheetIndex(1)
-                ->setCellValue('A1', 'MUESTRA')
-                ->setCellValue('B1', 'BANVOL')
-                ->setCellValue('C1', 'FECHA')
-                ->setCellValue('D1', $elemento)
-                ->setCellValue('E1', 'RESULTADO1')
-                ->setCellValue('F1', 'RESULTADO2')                
-                ->setCellValue('G1', 'METODO FINAL')
-                ->setCellValue('H1', 'FECHA RESULTADO')
-                ->setCellValue('I1', 'HORA');
 
-        $spreadsheet->getActiveSheet(1)->setTitle($nombre_metodo.'_REENSAYES');
-        $i = 2;
-        if ($result = mysqli_store_result($mysqli)) {                
-            while ($row = mysqli_fetch_assoc($result)) {
-                $spreadsheet->setActiveSheetIndex(1) 
-                ->setCellValue('A'.$i, $row['folio_interno'])
-                ->setCellValue('B'.$i, $row['banvol'])
-                ->setCellValue('C'.$i, $row['fecha'])
-                ->setCellValue('D'.$i, $row['resultado_ori'])
-                ->setCellValue('E'.$i, $row['resultado1'])
-                ->setCellValue('F'.$i, $row['resultado2'])
-                ->setCellValue('G'.$i, $row['metodo'])
-                ->setCellValue('H'.$i, $row['fecha_fin'])
-                ->setCellValue('I'.$i, $row['hora']);
-                
-                $i=$i+1;
+        mysqli_multi_query ($mysqli, "CALL arg_consultar_resultadosesp ($trn_id_a, $metodo_id_a, 1)") OR DIE (mysqli_error($mysqli));
+
+        if($metodo_id_a == 3 or $metodo_id_a == 36 or $metodo_id_a == 37) {
+            $spreadsheet->createSheet(1);
+            $spreadsheet->setActiveSheetIndex(1); 
+            $spreadsheet->getActiveSheet(1)
+                        ->setTitle($nombre_metodo.'_REENSAYES');
+            $spreadsheet->setActiveSheetIndex(1)
+                        ->setCellValue('A1', 'MUESTRA')
+                        ->setCellValue('B1', 'BANVOL')
+                        ->setCellValue('C1', 'FECHA')
+                        ->setCellValue('D1', 'RESULTADO ORIGINAL')
+                        ->setCellValue('E1', 'RESULTADO NUEVO')              
+                        ->setCellValue('F1', 'METODO FINAL')
+                        ->setCellValue('G1', 'FECHA RESULTADO')
+                        ->setCellValue('H1', 'HORA');
+           
+            $i = 2;
+            if ($result = mysqli_store_result($mysqli)) {                
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $spreadsheet->setActiveSheetIndex(1) 
+                                ->setCellValue('A'.$i, $row['folio_interno'])
+                                ->setCellValue('B'.$i, $row['banvol'])
+                                ->setCellValue('C'.$i, $row['fecha'])
+                                ->setCellValue('D'.$i, $row['resultado_ori'])
+                                ->setCellValue('E'.$i, $row['resultado_nue'])
+                                ->setCellValue('F'.$i, $row['metodo'])
+                                ->setCellValue('G'.$i, $row['fecha_fin'])
+                                ->setCellValue('H'.$i, $row['hora']);
+                    
+                    $i=$i+1;
+                }
+            }
+        }
+        else {
+            $spreadsheet->createSheet(1);
+            $spreadsheet->setActiveSheetIndex(1); 
+            $spreadsheet->setActiveSheetIndex(1)
+                        ->setCellValue('A1', 'MUESTRA')
+                        ->setCellValue('B1', 'BANVOL')
+                        ->setCellValue('C1', 'FECHA')
+                        ->setCellValue('D1', $elemento)
+                        ->setCellValue('E1', 'RESULTADO1')
+                        ->setCellValue('F1', 'RESULTADO2')                
+                        ->setCellValue('G1', 'METODO FINAL')
+                        ->setCellValue('H1', 'FECHA RESULTADO')
+                        ->setCellValue('I1', 'HORA');
+
+            $spreadsheet->getActiveSheet(1)->setTitle($nombre_metodo.'_REENSAYES');
+            $i = 2;
+            if ($result = mysqli_store_result($mysqli)) {                
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $spreadsheet->setActiveSheetIndex(1) 
+                                ->setCellValue('A'.$i, $row['folio_interno'])
+                                ->setCellValue('B'.$i, $row['banvol'])
+                                ->setCellValue('C'.$i, $row['fecha'])
+                                ->setCellValue('D'.$i, $row['resultado_ori'])
+                                ->setCellValue('E'.$i, $row['resultado1'])
+                                ->setCellValue('F'.$i, $row['resultado2'])
+                                ->setCellValue('G'.$i, $row['metodo'])
+                                ->setCellValue('H'.$i, $row['fecha_fin'])
+                                ->setCellValue('I'.$i, $row['hora']);
+                    
+                    $i=$i+1;
+                }
             }
         }
     }

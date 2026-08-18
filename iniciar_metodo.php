@@ -1588,40 +1588,47 @@ if (isset($trn_id)){
                                                              AND sol.metodo_id = ".$metodo_id
                                                          ) or die(mysqli_error($mysqli));
                     
-                 if ($existen_titulacion->num_rows > 0) {                                         
-                        $titulacion_det = $mysqli->query("SELECT DISTINCT (ms.folio) as muestra
-                                                            ,os.trn_id_batch
-                                                            ,os.trn_id_rel                                                           
-                                                            ,os.resultado             
-                                                            ,ms.orden                                          
-                                                          FROM `arg_ordenes_soluciones`  os
-                                                          LEFT JOIN arg_ordenes_muestrasSoluciones ms
-                                                          	ON os.trn_id_rel = ms.trn_id
-                                                          WHERE
-                                                             os.metodo_id =  ".$metodo_id." 
-                                                             AND os.resultado = 0 
-                                                             AND os.trn_id_batch = ".$trn_id."
-                                                            ORDER BY
-                                                               ms.orden ") or die(mysqli_error($mysqli));
-                                        
+                if ($existen_titulacion->num_rows > 0) {                                         
+                    $titulacion_det = $mysqli->query("SELECT DISTINCT (ms.folio) as muestra
+                                                        ,os.trn_id_batch
+                                                        ,os.trn_id_rel                                                           
+                                                        ,os.resultado             
+                                                        ,ms.orden                                          
+                                                        FROM `arg_ordenes_soluciones`  os
+                                                        LEFT JOIN arg_ordenes_muestrasSoluciones ms
+                                                        ON os.trn_id_rel = ms.trn_id
+                                                        WHERE
+                                                            os.metodo_id =  ".$metodo_id." 
+                                                            AND os.resultado = 0 
+                                                            AND os.trn_id_batch = ".$trn_id."
+                                                        ORDER BY
+                                                            ms.orden ") or die(mysqli_error($mysqli));
+                    if ($titulacion_det->num_rows > 0) { 
                         while ($res_muestras = $titulacion_det->fetch_assoc()) {
-                            //$con = $res_muestras['posicion'];
                             $trnid_batch   = $res_muestras['trn_id_batch'];
                             $trnid_rel     = $res_muestras['trn_id_rel'];
                             $muestra_folio = $res_muestras['muestra'];
                             $html.="<tr>                                  
-                                         <td>".$con."</td> 
-                                         <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
-                                         <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                        
-                                         <td>".$muestra_folio."</td>
-                                         <td> <input type='number' id='peso_tit".$con."' class='form-control'/> </td>
-                                         <td> <button type='button'class='btn btn-primary' id='boton_save_tit' onclick='met_titulacion_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
+                                            <td>".$con."</td> 
+                                            <td style='display:none;'> <input type='input' id='trnid_batch_met".$con."' value='".$trnid_batch."'/></td>  
+                                            <td style='display:none;'> <input type='input' id='trnid_rel_met".$con."' value='".$trnid_rel."'/>".$muestra_folio."</td>                        
+                                            <td>".$muestra_folio."</td>
+                                            <td> <input type='number' id='peso_tit".$con."' class='form-control'/> </td>
+                                            <td> <button type='button'class='btn btn-primary' id='boton_save_tit' onclick='met_titulacion_guardar(".$trnid_batch.",".$trnid_rel.",".$metodo_id.",".$fase_id.",".$etapa_id.",".$con.",".$unidad_id.")' >
                                                     <span class='fa fa-cloud fa-1x'></span>
-                                              </button>
-                                         </td>
+                                                </button>
+                                            </td>
                                     </tr>";                                   
-                        $con = $con+1;
-                     }
+                            $con = $con+1;
+                        }
+                    }
+                    else {
+                        $mysqli->query("INSERT INTO arg_ordenes_bitacora (trn_id_rel, metodo_id, fase_id, u_id)
+                                        VALUES ($trn_id, $metodo_id, 12, now(), $u_id)") or die(mysqli_error($mysqli));                                                
+                        $mysqli->query("INSERT INTO arg_ordenes_bitacora_detalle (trn_id_rel, metodo_id, fase_id, etapa_id, u_id, fecha_fin, u_id_fin)
+                                        VALUES ($trn_id, $metodo_id, 12, 10, now(), $u_id)") or die(mysqli_error($mysqli));
+
+                    }
                 }  
            }    
     

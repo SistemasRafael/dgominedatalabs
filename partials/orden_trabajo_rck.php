@@ -1,10 +1,8 @@
-<? //include "../connections/config.php"; 
-$unidad_id = $_GET['unidad_id'];
-//$trn_id = $_GET['trn_id'];
-$_SESSION['unidad_id'] = $unidad_id;
-//echo $unidad_id;
-?> 
-
+<?php
+    $unidad_id = $_GET['unidad_id'];
+    $trn_id = $_GET['trn_id'] ?? 0;
+    $_SESSION['unidad_id'] = $unidad_id;
+?>
 <style>
     .multiselect {
         width: 200px;
@@ -46,145 +44,126 @@ $_SESSION['unidad_id'] = $unidad_id;
     #checkboxes label:hover {
         background-color: #1e90ff;
     }
-    </style>
+</style>
 
 <script>
     var contador=1;
 </script>
 
 <script>
-    function buscar_orden($unidad_id)
-    {
-         var trn_id = $trn_id;
-         var unidad_id = $unidad_id;                
-         var print_d = '<?php echo "\orden_trabajo_print.php?unidad_id="?>'+unidad_id;                
-         window.location.href = print_d;
+    function buscar_orden($unidad_id) {
+        var trn_id = $trn_id;
+        var unidad_id = $unidad_id;                
+        var print_d = '<?php echo "\orden_trabajo_print.php?unidad_id="?>'+unidad_id;                
+        window.location.href = print_d;
     }
     
-    function verificar_seleccion(numb){          
-          var validar = numb;          
-          //alert(validar); 
-          if(validar == 1){
-            alert('Se deben seleccionar al menos una muestra y dar click en SELECCIONAR MUESTRAS. Por favor reintente');
-            history.go(-1)
-          }
-          if(validar == 4){
-            alert('Se debe capturar al menos un método');
-            history.go(-1)
-          }                             
-     }
+    function verificar_seleccion(numb) {          
+        var validar = numb;          
+        //alert(validar); 
+        if(validar == 1){
+        alert('Se deben seleccionar al menos una muestra y dar click en SELECCIONAR MUESTRAS. Por favor reintente');
+        history.go(-1)
+        }
+        if(validar == 4){
+        alert('Se debe capturar al menos un método');
+        history.go(-1)
+        }                             
+    }
     
      //Actualizar voladuras despues de seleccionar banco
-     function actualiza_muestras(contador)
-        {
-            var cont = contador;
-            //alert(cont);
-            var cambia = "muestras"+cont;
-            var preor  =  "preorden"+cont;
-            //alert(cont);
-            var preorden  = document.getElementById(preor).value;
-            var unidad_id = document.getElementById("mina_seleccionada").value; 
-            
-            //alert(preorden);
-            $.ajax({
-            		url: 'actualizar_muestras.php' ,
-            		type: 'POST' ,
-            		dataType: 'html',
-            		data: {preorden, unidad_id},
-            	})
-            	.done(function(respuesta){
-            	   //alert(respuesta);  
-                                   
-                        document.getElementById("tablaprueba").insertRow(1).innerHTML = 
-                          '<div class="multiselect"><div id="checkboxes" class="hide"><select name="'+cambia+'" id="'+cambia+'" ><option value=0>SELECT</option> </select><div class="overSelect" > </div><div id="checkboxes" class="hide"><td>' 
-                           +respuesta
-                        +'</td></select></div></div>'                       		                  
-              })
-              
-      }
-      
-function showCheckboxes() {
-    var checkboxes = document.getElementById("checkboxes");
-    if(checkboxes.classList.contains("hide")) {
-        checkboxes.classList.remove("hide");
-        calculatotal();
-    } else {
-        checkboxes.classList.add("hide");
+    function actualiza_muestras(contador) {
+        var cont = contador;
+        var cambia = "muestras"+cont;
+        var preor  =  "preorden"+cont;
+        var preorden  = document.getElementById(preor).value;
+        var unidad_id = document.getElementById("mina_seleccionada").value; 
+        $.ajax({
+            url: 'actualizar_muestras.php' ,
+            type: 'POST' ,
+            dataType: 'html',
+            data: { preorden, unidad_id },
+        })
+        .done(function(respuesta){
+            document.getElementById("tablaprueba").insertRow(1).innerHTML = 
+                '<div class="multiselect"><div id="checkboxes" class="hide"><select name="'+cambia+'" id="'+cambia+'" ><option value=0>SELECT</option> </select><div class="overSelect" > </div><div id="checkboxes" class="hide"><td>' 
+                +respuesta
+            +'</td></select></div></div>';                     		                  
+        });
+    }
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        
+        if(checkboxes.classList.contains("hide")) {
+            checkboxes.classList.remove("hide");
+            calculatotal();
+        } else {
+            checkboxes.classList.add("hide");
+            calculatotal();
+        }
+    }
+
+    function seleccionar() {
+        var tableRows = document.getElementById("nuevaTabla");
+        var rowCount = tableRows.rows.length-1;
+        var j = rowCount;
+                                
+        $("input[type=checkbox]:checked").each(function(){
+            var muestr = $(this).val()    
+            var fila = 'fila'+j;
+            if(muestr == 24 || muestr == 1) {
+                j = j+1;
+            }
+            else {
+                var muestra_folio = document.getElementById(muestr).value;
+                document.getElementById("nuevaTabla").insertRow(-1).innerHTML = 
+                                '<td><input type="number" id="'+j+'" name="'+j+'" value="'+j+'" class="form-control" ></td>'
+                                +'<td><input type="text" id="'+fila+'" name="'+fila+'" value="'+muestra_folio+'" class="form-control" ></td>';
+            }
+
+            j = j+1;
+        });
+        document.getElementById("tablaprueba").deleteRow(-1)       
+        document.getElementById('total_muestras_sel').value = j;
         calculatotal();
     }
-}
 
-function seleccionar() {
-    
-var tableRows = document.getElementById("nuevaTabla");
-var rowCount = tableRows.rows.length-1;
-var j = rowCount;
-                          
-$("input[type=checkbox]:checked").each(function(){
-	//cada elemento seleccionado
-	//alert($(this).val());
-    var muestr = $(this).val()    
-    var fila = 'fila'+j;
-    if(muestr == 24 || muestr == 1){
-        j = j+1;/*<div class="row">*/
-    }
-    else{
-        var muestra_folio = document.getElementById(muestr).value;
-        document.getElementById("nuevaTabla").insertRow(-1).innerHTML = 
-                          '<td><input type="number" id="'+j+'" name="'+j+'" value="'+j+'" class="form-control" ></td>'
-                          +'<td><input type="text" id="'+fila+'" name="'+fila+'" value="'+muestra_folio+'" class="form-control" ></td>'                                   
-        
-                            }
-    j = j+1;
-});
- document.getElementById("tablaprueba").deleteRow(-1)       
- document.getElementById('total_muestras_sel').value = j;
- calculatotal();
-     
-}
-
-function calculatotal()
-    {    
-         var table = document.getElementById("nuevaTabla");
-         var total_rows = parseInt(table.rows.length)-2;
-         var total_mues = parseInt(0);
-         //alert(total_rows);      
-        
+    function calculatotal() {    
+        var table = document.getElementById("nuevaTabla");
+        var total_rows = parseInt(table.rows.length)-2;
+        var total_mues = parseInt(0);
         document.getElementById('total_muestras').value = total_rows;
         document.getElementById('total_muestras1').value = total_rows; 
     }
 
     
-     function imprimir($unidad_id,$trn_id)
-            {
-                 //alert('llegoo');
-                 var trn_id = $trn_id;
-                 var unidad_id = $unidad_id                 
-                 var print_d = '<?php echo "\orden_trabajo_print.php?unidad_id="?>'+unidad_id+'&trn_id='+trn_id;  
-                // alert(print_d);              
-                 window.location.href = print_d;
-            }
-    
+    function imprimir($unidad_id,$trn_id) {
+        var trn_id = $trn_id;
+        var unidad_id = $unidad_id                 
+        var print_d = '<?php echo "\orden_trabajo_print.php?unidad_id="?>'+unidad_id+'&trn_id='+trn_id;  
+        window.location.href = print_d;
+    }
 </script>
     <br/><br/>
-     <?  
+     <?php  
         if(($_SESSION['LoggedIn']) <> '')
         {
             $user_fir = $mysqli->query("SELECT nombre
                                         FROM `arg_usuarios`                                        
-                                        WHERE u_id = ".$_SESSION['u_id']) or die(mysqli_error());
+                                        WHERE u_id = ".$_SESSION['u_id']) or die(mysqli_error($mysqli));
             $user_firmado = $user_fir ->fetch_array(MYSQLI_ASSOC);
             $nombre_usuario = $user_firmado['nombre'];
             
             if (isset($_GET['trn_id'])){
-                echo"<script> imprimir($unidad_id,$trn_id); </script>";
+                echo"<script> imprimir($unidad_id, $trn_id); </script>";
             }
             else{
                  //Tomar caracter de la unidad de mina
                 $caracter_mina = $mysqli->query("SELECT caracter_folio, nombre, serie
                                                  FROM 
                                                      `arg_empr_unidades`                                        
-                                                 WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                                 WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                 $caracter_fol = $caracter_mina ->fetch_array(MYSQLI_ASSOC);
                 $caracter_folio = $caracter_fol['caracter_folio'];
                 $serie_mina = $caracter_fol['serie'];
@@ -193,7 +172,8 @@ function calculatotal()
                 if (isset($_POST['generar_orden'])){        
                      $fecha = $_POST['fecha'];
                      $hora  = $_POST['hora_sel'];
-                     $mina_seleccionada = $_POST['mina_seleccionada'];
+                    //  var_dump($_POST['mina_seleccionada']);
+                     $mina_seleccionada = $_POST['mina_seleccionada'] ?? $unidad_id;
                      $u_id = $_SESSION['u_id'];
                      $total_muestras = $_POST['total_muestras1'];
                      
@@ -206,15 +186,15 @@ function calculatotal()
                      if ($total_muestras <> 0){  
                         //Métodos
                         $val_met = 0;
-                        $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error());
+                        $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error($mysqli));
                             while ($metodos = $metodos_validar->fetch_assoc()) {
                                 $metodo_id = $metodos['metodo_id'];
-                                echo 'entro';
+                                // echo 'entro';
                                 
                                 $fila1 = 'fila0_'.$metodo_id;
-                                echo $fila1;
+                                // echo $fila1;
                                 $metodo_sel = $_POST[$fila1];
-                                echo 'metsel'.$metodo_sel;
+                                // echo 'metsel'.$metodo_sel;
                                 //die();
                                 if ($metodo_sel  <> 0){
                                     $val_met = 1;
@@ -228,13 +208,13 @@ function calculatotal()
                                    // echo $val_met;
                                     $i = 0;      
                                 }                              
-                         else{
-                                 $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error());
+                         else {
+                                 $max_trn_id = $mysqli->query("SELECT ifnull(MAX(trn_id), 0) AS trn_id FROM arg_ordenes") or die(mysqli_error($mysqli));
                                  $ma_trn_id = $max_trn_id ->fetch_array(MYSQLI_ASSOC);
                                  $trn_id = $ma_trn_id['trn_id'];
                                  $trn_id = $trn_id + 1;
                                          
-                                 $max_fol = $mysqli->query("SELECT ifnull(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                 $max_fol = $mysqli->query("SELECT ifnull(MAX(folio), 0) AS folio FROM arg_ordenes WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                  $max_foli = $max_fol ->fetch_array(MYSQLI_ASSOC);
                                  $max_folio = $max_foli['folio'];
                                  $folio_orden = $max_folio + 1;
@@ -245,15 +225,18 @@ function calculatotal()
                                  $mysqli->query($query) ;
                                  //echo $query;
                         
-                                 $max_muestras_metodo = $mysqli->query("SELECT maximo_muestras FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                 $max_muestras_metodo = $mysqli->query("SELECT maximo_muestras FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                  $max_muestras  = $max_muestras_metodo ->fetch_array(MYSQLI_ASSOC);
                                  $max_muest_ord = $max_muestras['maximo_muestras'];
                                                                                     
-                                 if ($total_muestras <= $max_muest_ord){                                            
+                                 if ($total_muestras <= $max_muest_ord){     
+                                    // var_dump("rafael1");
                                          $total_ordenes = 1;
                                          $resto_muestras = 0;  
-                                         $cant_bloque_muestras = $total_muestras;                                   
-                                 }else{                                            
+                                         $cant_bloque_muestras = $total_muestras; 
+                                        //  var_dump("rafaelRespuesta = ".$cant_bloque_muestras);                                  
+                                 }else{      
+                                    // var_dump("rafael2");                                      
                                          $total_ordenes = ceil($total_muestras/$max_muest_ord);
                                          $resto_muestras = fmod($total_muestras,$max_muest_ord);//ceil($cantidad_sel/$max_muest_ord); 
                                          $cant_bloque_muestras = $max_muest_ord;
@@ -300,7 +283,7 @@ function calculatotal()
                                     }
                                     
                                      //Ordenes_detalle    
-                                     $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error());
+                                     $max_trn_det = $mysqli->query("SELECT MAX(trn_id) AS trn_id FROM arg_ordenes_detalle") or die(mysqli_error($mysqli));
                                      $max_trn = $max_trn_det ->fetch_array(MYSQLI_ASSOC);
                                      $tr_id_det = $max_trn['trn_id'];
                                      $tr_id_det = $tr_id_det + 1;
@@ -313,7 +296,7 @@ function calculatotal()
                                                                             ON od.trn_id_rel = o.trn_id
                                                                         WHERE
                                                                             o.unidad_id = ".$unidad_id
-                                                                     ) or die(mysqli_error());
+                                                                     ) or die(mysqli_error($mysqli));
                                      $max_fol = $max_folio_det ->fetch_array(MYSQLI_ASSOC);
                                      $folio_det = $max_fol['folio_ord'];
                                      $folio_det = $folio_det + 1;
@@ -325,8 +308,9 @@ function calculatotal()
                                          
                                      $query = "INSERT INTO arg_ordenes_detalle (trn_id, trn_id_rel, banco_id, voladura_id, cantidad, folio_inicial, folio_final, folio, folio_interno, estado, usuario_id) ".
                                               "VALUES ($tr_id_det, $trn_id, 0, 0, $cant_bloque_muestras, '','', $folio_det, '$folio_interno', 0, $u_id)";
+                                    // var_dump($query);
                                      $mysqli->query($query) ;
-                                     echo $query;
+                                    //  echo $query;
                                     
                                      //ORDENES CON DETALLE DE MUESTRAS
                                      $bloc = 1;
@@ -334,36 +318,36 @@ function calculatotal()
                                                  $renglon = 'fila'.$i;
                                                  $muestra_sel = $_POST[$renglon];
                                                  
-                                                 echo 'muestrsel:'.$muestra_sel;
-                                                 echo '***i***'.$i;
+                                                //  echo 'muestrsel:'.$muestra_sel;
+                                                //  echo '***i***'.$i;
                                                                                       
                                              if ($muestra_sel <> ''){
-                                                echo 'entroa muestras sel';
+                                                // echo 'entroa muestras sel';
                                                 $trn_muestra_b = $mysqli->query("SELECT trn_id
                                                                                  FROM `arg_ordenes_muestras`                                        
                                                                                  WHERE folio = '".$muestra_sel."'"
-                                                                                 ) or die(mysqli_error());
+                                                                                 ) or die(mysqli_error($mysqli));
                                                 $trn_muestra_bu = $trn_muestra_b ->fetch_array(MYSQLI_ASSOC);
                                                 $trn_muestra_bus = $trn_muestra_bu['trn_id'];
                                                 
-                                                echo $trn_muestra_bus;
+                                                // echo $trn_muestra_bus;
                                                 
                                                 $query = "INSERT INTO arg_ordenes_muestrasRecheck (trn_id, trn_id_rel, folio, tipo_id) ".
                                                          "VALUES ($trn_muestra_bus, $tr_id_det, '$muestra_sel', 0)";
                                                 $mysqli->query($query) ;
-                                                echo $query;
+                                                // echo $query;
                                              }
                                              $bloc++;
                                              $i++;
                                       }
                              
                                      //MUESTRAS METODOS   
-                                     $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos") or die(mysqli_error());
+                                     $max_trn_id_met = $mysqli->query("SELECT IFNULL(MAX(trn_id), 0) AS trn_id FROM arg_ordenes_metodos") or die(mysqli_error($mysqli));
                                      $ma_trn_id_m = $max_trn_id_met ->fetch_array(MYSQLI_ASSOC);
                                      $trn_id_met = $ma_trn_id_m['trn_id'];
                                      $trn_id_met = $trn_id_met +1;                                  
                                   
-                                     $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error());
+                                     $metodos_validar = $mysqli->query("SELECT metodo_id FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error($mysqli));
                                      while ($metodos = $metodos_validar->fetch_assoc()) {
                                         $metodo_id = $metodos['metodo_id'];
                                         $fila1 = 'fila0_'.$metodo_id;
@@ -375,7 +359,7 @@ function calculatotal()
                                             $query = "INSERT INTO arg_ordenes_metodos (trn_id, trn_id_rel, metodo_id ) ".
                                                      "VALUES ($trn_id_met, $tr_id_det, $metodo_id)";
                                             $mysqli->query($query) ;
-                                            echo $query;
+                                            // echo $query;
                                             $trn_id_met++;
                                         }
                                     } 
@@ -384,6 +368,8 @@ function calculatotal()
                         }   
                         if ($trn_id_met <> 0){
                             echo "<script>";
+                            
+                            // var_dump("entro aquiii");
                             echo "imprimir(".$unidad_id.", ".$trn_id.")";
                             echo "</script>";
                         }
@@ -397,7 +383,7 @@ function calculatotal()
                 }                
                 else{            
                     ?>                     
-                    <form method="post" action="app_rck.php?unidad_id=<?echo $unidad_id;?>" name="Visitaform" id="Visitaform">  
+                    <form method="post" action="app_rck.php?unidad_id=<?php echo $unidad_id;?>" name="Visitaform" id="Visitaform">  
                     <div class="container">
                     <fieldset>                       
                             <div class="col-md-12 col-lg-12 bg-info text-black text-center">
@@ -409,27 +395,27 @@ function calculatotal()
                             <div class="col-md-11 col-lg-11">
                                                     
                                     <div class="col-md-1 col-lg-1">               
-                                        <h5><?echo 'Fecha:'?></h5>
+                                        <h5><?php echo 'Fecha:'?></h5>
                                     </div>
                                     <div class="col-md-2 col-lg-2">
                                          <input type="date" name="fecha" class="form-control" id="fecha" value="<?php echo date("Y-m-d");?>"/>
                                     </div>                                
                                     <div class="col-md-1 col-lg-1">
-                                         <h5><?echo 'Hora:'?></h5>
+                                         <h5><?php echo 'Hora:'?></h5>
                                     </div>                                
                                     <div class='col-sm-2'>
                                          <input type="hora" name="hora_sel" class="form-control" id="hora_sel" value=""/>                                        
                                       </div>
                                       
                               <div class="col-md-2 col-lg-2">                                
-                                        <?                           
+                                        <?php                            
                                         $unidad_id = $_GET['unidad_id'];
                                         if ($unidad_id == ""){
                                             $nombretop = "Seleccione Mina";
                                         }
                                         else{
                                             $nomtop = $unidad_id;
-                                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error());
+                                            $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades WHERE unidad_id = ".$unidad_id) or die(mysqli_error($mysqli));
                                                 while( $row = $result ->fetch_array(MYSQLI_ASSOC)){
                                                    $nombretop = $row['Nombre']; 
                                                 }
@@ -437,7 +423,7 @@ function calculatotal()
                                         echo ("<form name=\"Busqueda\" id=\"Busqueda\">");                                   
                                         echo ("<select name=\"mina_seleccionada\" id=\"mina_seleccionada\" disabled class=\"form-control\" > ");        
                                         echo ("<option value=$nomtop>$nombretop</option>");
-                                        $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error());
+                                        $result = $mysqli->query("SELECT unidad_id, Nombre FROM arg_empr_unidades") or die(mysqli_error($mysqli));
                                         while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                      
                                           {
                                               $nombre =($row["Nombre"]);
@@ -456,8 +442,8 @@ function calculatotal()
                                   <thead class="thead-secondary" align='center'>
                                 
                                     
-                                        <th colspan='1'>BUSCAR PREORDEN:    <?                           
-                                        $organizaciontop = $_GET['bancos'];
+                                        <th colspan='1'>BUSCAR PREORDEN:    <?php                            
+                                        $organizaciontop = $_GET['bancos'] ?? "";
                                         if ($organizaciontop == ""){
                                             $nombretop = "Seleccione PREORDEN";
                                             $nomtop = 0;
@@ -472,7 +458,7 @@ function calculatotal()
                                                                   LEFT JOIN arg_bancos_voladuras AS ba
                                                                		ON ba.banco_id = ord.banco_id
                                                                     AND ba.voladura_id = ord.voladura_id 
-                                                                  WHERE unidad_id = ".$_SESSION['unidad_id']." ORDER BY preorden") or die(mysqli_error());
+                                                                  WHERE unidad_id = ".$_SESSION['unidad_id']." ORDER BY preorden") or die(mysqli_error($mysqli));
                                         while( $row = $result ->fetch_array(MYSQLI_ASSOC))                                       
                                           {
                                               $nombre =($row["preorden"]);
@@ -499,20 +485,20 @@ function calculatotal()
                                        
                                         <th colspan='1'>METODOS </th> 
                                         <th colspan='1'>
-                                         <?$datos_res = $mysqli->query("SELECT metodo_id, nombre FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error());?>
+                                         <?php $datos_res = $mysqli->query("SELECT metodo_id, nombre FROM arg_metodos WHERE activo = 1 AND metodo_id IN(3,6)") or die(mysqli_error($mysqli));?>
                                                  <div class="[ form-group ] ">   
-                                                    <?while ($fila = $datos_res->fetch_assoc()) {?>
-                                                            <input type="checkbox" name="<?echo 'fila0_'.$fila['metodo_id'];?>" id="<?echo 'fila0_'.$fila['metodo_id'];?>" value="<?echo $fila['metodo_id'];?>" autocomplete="off" />
+                                                    <?php while ($fila = $datos_res->fetch_assoc()) {?>
+                                                            <input type="checkbox" name="<?php echo 'fila0_'.$fila['metodo_id'];?>" id="<?php echo 'fila0_'.$fila['metodo_id'];?>" value="<?php echo $fila['metodo_id'];?>" autocomplete="off" />
                                                             <div class="[ btn-group ]">                                                                
-                                                                <label for="<?echo 'fila0_'.$fila['metodo_id'];?>" class="[ btn btn-info ]">
+                                                                <label for="<?php echo 'fila0_'.$fila['metodo_id'];?>" class="[ btn btn-info ]">
                                                                     <span class="[ glyphicon glyphicon-ok ]"></span>                            
                                                                     <span></span>
                                                                 </label>                                                    
-                                                                <label for="<?echo 'fila0_'.$fila['metodo_id'];?>" class="[ btn btn-default active ]">
-                                                                    <?echo $fila['nombre']?>
+                                                                <label for="<?php echo 'fila0_'.$fila['metodo_id'];?>" class="[ btn btn-default active ]">
+                                                                    <?php echo $fila['nombre']?>
                                                                 </label>                              
                                                             </div>                                            
-                                                 <?}?> 
+                                                 <?php }?> 
                                         </th>
                                         
                                       </tr> 
@@ -574,11 +560,8 @@ function calculatotal()
                     </div>
                   </div>
                 </div>
-       <?}
+       <?php }
     }
 }?>           
 <br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 <script type="text/javascript" src="js/jquery.min.js"></script>
-
- 
- 

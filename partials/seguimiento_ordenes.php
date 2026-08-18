@@ -1958,7 +1958,7 @@
             dataType: 'html',
             data: { archivo_imp : archivo_imp },
         })
-        .done(function(respuesta) {                	   
+        .done(function(respuesta) {  
             alert(respuesta);   
             actualizar_importar();                        
         });
@@ -2446,9 +2446,9 @@
                     $archivo = strtoupper($archivo);
                     $tipo  = $_FILES['excel']['type']; //captura el tipo de archivo (2003 o 2007)
                     ///$dest  = 'c:\\xampp\\htdocs\\__pro\\argonaut\\VinculosKpi'.'\\ '; //lugar donde se copiara el archivo
-                    // $dest  = dirname(__DIR__).'\\absorcion'.'\\ '; //lugar donde se copiara el archivo
+                    $dest  = dirname(__DIR__).'\\absorcion'.'\\ '; //lugar donde se copiara el archivo
                     //$dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
-                    $dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
+                    //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; //lugar donde se copiara el archivo
                     $desti = rtrim($dest).$archivo; 
                     copy($_FILES['excel']['tmp_name'],$desti);
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
@@ -2474,8 +2474,9 @@
                     $archivo = $_FILES['excel']['name']; //captura el nombre del archivo
                     $archivo = strtoupper($archivo);
                     $tipo  = $_FILES['excel']['type'];
+                    $dest  = dirname(__DIR__).'\\absorcion'.'\\ '; //lugar donde se copiara el archivo
                     //$dest  = '/var/www/html/dgopruebas/absorcion'.'/ '; //lugar donde se copiara el archivo
-                    $dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; 
+                    //$dest  = '/var/www/html/dgominedatalabs/absorcion'.'/ '; 
                     $desti = rtrim($dest).$archivo;                        
                     copy($_FILES['excel']['tmp_name'],$desti);
                     $archivo_exis = $mysqli->query("SELECT folio FROM arg_ordenes_csv WHERE folio = '".$archivo."'") or die(mysqli_error($mysqli));             
@@ -2562,6 +2563,10 @@
 <?php 
     if (isset($_GET['unidad_id'])) {
         $mysqli -> set_charset("utf8");
+        var_dump($fecha_i);
+        var_dump($fecha_f);
+        var_dump($unidad_id);
+        var_dump($u_id);
         $datos_orden_detalle = $mysqli->query("SELECT 
                                                 ord.folio, 
                                                 ord.fecha,
@@ -2843,8 +2848,14 @@
                                       $html_det.="<td>".$fila['cantidad']."</td>";                                 
                                       $html_det.="<td>".$fila['folio_inicial']."</td>";
                                       $html_det.="<td>".$fila['folio_final']."</td>";                                     
-                                      $html_det.="<td>".$fila['estado']."</td>";                                      
-                                    
+                                      $html_det.="<td>".$fila['estado']."</td>";   
+
+                                      if( $fila['trn_id_batch'] === '11586'){
+                                        var_dump($fila['trn_id_batch']);
+                                        var_dump($fila['estado_id']);
+                                      }
+
+                                        
                                       if ($fila['estado_id'] == 0){
                                             if ($fila['humedad'] <> 0){
                                                 $html_det.="<td><a type='button' class='btn btn-warning' name='print' id='print'";
@@ -2990,6 +3001,6 @@
         </div>
             <?php 
     }
-?>                    
+?>
  
 
