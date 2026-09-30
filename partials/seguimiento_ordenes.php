@@ -49,25 +49,25 @@
               //actualizar_prep(unidad_id);
         }
           
-  function iniciar_batch (trn_id, unidad)
-        {               
-            trn_id = trn_id;
-            unidad_id = unidad;
-            //alert(trn_id);
-            $('#iniciando_modal').modal('show');  
-            document.getElementById("mina").value = unidad;
-            $.ajax({
-            		url: 'iniciar_batch.php' ,
-            		type: 'POST' ,
-            		dataType: 'html',
-            		data: {trn_id: trn_id},
-            	})
-            	.done(function(respuesta){
-            		///$("#placas_dat").html(respuesta);                      
-                       alert(respuesta);
-              })
-              actualizar_prep(unidad_id);
-        }
+    function iniciar_batch (trn_id, unidad)
+    {               
+        trn_id = trn_id;
+        unidad_id = unidad;
+        $('#iniciando_modal').modal('show');  
+        document.getElementById("mina").value = unidad;
+
+        $.ajax({
+            url: 'iniciar_batch.php' ,
+            type: 'POST' ,
+            dataType: 'html',
+            data: {trn_id: trn_id},
+        })
+        .done(function(respuesta) {                    
+            alert(respuesta);
+        });
+        
+        actualizar_prep(unidad_id);
+    }
   
   function iniciar_batch_ree (trn_id, unidad)
         {               
@@ -1194,7 +1194,9 @@
             }
         }
           
-        if (metodo_id == 6) {
+        if (metodo_id == 6 || 
+            metodo_id == 38 ||
+            metodo_id == 39) {
             if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
             {
                 warn_met = 1;
@@ -1261,70 +1263,82 @@
         }
     }
 
-     /******** HUMEDADES PARA CARBONES Y METALURGIA *************/
     function met_peso_guardarHumCh(trnid_batch, trnid_rel, metodo, fase, etapa, contador, unidad)
     {
-         var contador = contador;   
-         var warn_met = 0;
-         var trnid_orden   = trnid_batch;
-         var trnid_muestra = trnid_rel;
-         var metodo_id = metodo;
-         var fase = fase;
-         var etapa = etapa;
-         var unidad = unidad;
-         var table = document.getElementById("tabla_pesaje_met");
-         var total_rows_m = parseInt(table.rows.length)-3;
-         
-         if (total_rows_m == contador){
-             var fin_met = 1;
-         }
-         else{
-             var fin_met = 0;
-         }
-         cantidad_met_ch    = "peso_ch"+contador;
-         cantidad_metodo_ch = document.getElementById(cantidad_met_ch).value;
-         cantidad_met       = "peso_met"+contador;
-         cantidad_metodo    = document.getElementById(cantidad_met).value;
+        var contador = contador;   
+        var warn_met = 0;
+        var trnid_orden   = trnid_batch;
+        var trnid_muestra = trnid_rel;
+        var metodo_id = metodo;
+        var fase = fase;
+        var etapa = etapa;
+        var unidad = unidad;
+        var table = document.getElementById("tabla_pesaje_met");
+        var total_rows_m = parseInt(table.rows.length)-3;
         
+        if (total_rows_m == contador){
+            var fin_met = 1;
+        }
+        else{
+            var fin_met = 0;
+        }
+
+        cantidad_met_ch    = "peso_ch"+contador;
+        cantidad_metodo_ch = document.getElementById(cantidad_met_ch).value;
+        cantidad_met       = "peso_met"+contador;
+        cantidad_metodo    = document.getElementById(cantidad_met).value;
+    
         if(cantidad_metodo == 0 || cantidad_metodo == '' || cantidad_metodo == 0.00)
-            {
-                warn_met = 1;
-                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
-            }
-            
-        if(cantidad_metodo_ch == 0 || cantidad_metodo_ch == '' || cantidad_metodo_ch == 0.00)
-            {
-                warn_met = 1;
-                meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
-            }
+        {
+            warn_met = 1;
+            meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+        }
         
-         if (warn_met == 1){
+        if(cantidad_metodo_ch == 0 || cantidad_metodo_ch == '' || cantidad_metodo_ch == 0.00)
+        {
+            warn_met = 1;
+            meg_error = 'El valor debe ser diferente de cero. Por favor reintente';
+        }
+    
+        if (warn_met == 1) {
             alert(meg_error);
-         } 
-         else {
+        } 
+        else {
             cantidad_met_ch    = "peso_ch"+contador;
             cantidad_metodo_ch = document.getElementById(cantidad_met_ch).value;
             cantidad_met = "peso_met"+contador;            
             cantidad_metodo = document.getElementById(cantidad_met).value;
             $('#boton_save').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>');
-                    $.ajax({
-                		url: 'guardar_peso_charolaHumedo.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                		data: {trnid_orden:trnid_orden, trnid_muestra:trnid_muestra, metodo_id:metodo_id, fase:fase, etapa:etapa, cantidad_metodo_ch:cantidad_metodo_ch, cantidad_metodo:cantidad_metodo, fin_met:fin_met, unidad:unidad},
-                    }).done(function(respuesta){
-                        if(respuesta == 'Ha finalizado la etapa.')//alert(respuesta);  
-                        {
-                            alert(respuesta);
-                        }
-                            $('#metodo_modal').modal('show');
-                            $("#datos_metodo").html(respuesta); 
-                            $('#metodo_modal').on('shown.bs.modal', function (e) {
-                                $(this).find('#peso_ch1').focus();
-                            })                
-                            $('#metodo_modal').modal('show').trigger('shown');
-                })
-          }
+            
+            $.ajax({
+                url: 'guardar_peso_charolaHumedo.php' ,
+                type: 'POST' ,
+                dataType: 'html',
+                data: { 
+                    trnid_orden:trnid_orden, 
+                    trnid_muestra:trnid_muestra, 
+                    metodo_id:metodo_id, 
+                    fase:fase, 
+                    etapa:etapa, 
+                    cantidad_metodo_ch:cantidad_metodo_ch, 
+                    cantidad_metodo:cantidad_metodo, 
+                    fin_met:fin_met, 
+                    unidad:unidad
+                },
+            }).done(function(respuesta){
+                if(respuesta == 'Ha finalizado la etapa.')  
+                {
+                    alert(respuesta);
+                }
+
+                $('#metodo_modal').modal('show');
+                $("#datos_metodo").html(respuesta); 
+                $('#metodo_modal').on('shown.bs.modal', function (e) {
+                    $(this).find('#peso_ch1').focus();
+                })                
+                $('#metodo_modal').modal('show').trigger('shown');
+            });
+        }
     }
 
     /******** REVISION PARA CARBONES Y METALURGIA *************/
@@ -1895,54 +1909,55 @@
         }            
     }
         
-    //Digestion
     function digestion_guardar(trn_id_dig, metodo_dig)
-        {         
-            var trn_id_dg    = trn_id_dig;
-            var metodo_dg    = metodo_dig
-            var cantidad_dg  = document.getElementById("cantidad_dig").value;
-            var error_tem = 0;
-            var error_desc = '';
-            if (cantidad_dg == 0 || cantidad_dg == ''){
-                //alert('La temperatura no puede ser 0');
-                error_tem = 1;
-                error_desc = 'La temperatura no puede ser 0';
-            }
-            else 
-            {
-                if(metodo_dg == 3 && (cantidad_dg < 65 || cantidad_dg > 85)) {
-                         error_desc = 'Error: Temperatura fuera de rango, reintente por favor';
-                         error_tem = 1;
-                }else{
-                    if ((metodo_dg == 6 || metodo_dg == 7) && (cantidad_dg < 100 || cantidad_dg > 140)){                        
-                         error_desc = 'Error: Temperatura fuera de rango, reintente por favor';
-                         error_tem = 1;
-                    }
+    {         
+        var trn_id_dg    = trn_id_dig;
+        var metodo_dg    = metodo_dig
+        var cantidad_dg  = document.getElementById("cantidad_dig").value;
+        var error_tem = 0;
+        var error_desc = '';
+
+        if (cantidad_dg == 0 || cantidad_dg == '') {
+            error_tem = 1;
+            error_desc = 'La temperatura no puede ser 0';
+        }
+        else 
+        {
+            if(metodo_dg == 3 && (cantidad_dg < 65 || cantidad_dg > 85)) {
+                        error_desc = 'Error: Temperatura fuera de rango, reintente por favor';
+                        error_tem = 1;
+            }else{
+                if ((metodo_dg == 6 || 
+                    metodo_dg == 7 || 
+                    metodo_dg == 38 || 
+                    metodo_dg == 39) && 
+                    (cantidad_dg < 100 || cantidad_dg > 140)){                        
+                        error_desc = 'Error: Temperatura fuera de rango, reintente por favor';
+                        error_tem = 1;
                 }
             }
-             /*   else{
-                    (metodo_dg == 6 || metodo_dg == 7){
-                    if(cantidad_dg < 100 || cantidad_dg > 140){
-                        alert('Error: Temperatura fuera de rango, reintente por favor');
-                    } */  
-            if (error_tem == 1){
-                alert(error_desc);
-            }
-                else{
-                    $('#boton_save_dig').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
-                    $.ajax({
-                    		url: 'guardar_digestion.php' ,
-                    		type: 'POST' ,
-                    		dataType: 'html',
-                    		data: {trn_id_dg:trn_id_dg, metodo_dg:metodo_dg, cantidad_dg:cantidad_dg},
-                    	})
-                    	.done(function(respuesta){
-                    		///$("#placas_dat").html(respuesta);  
-                               alert(respuesta);
-                               $('#boton_save_dig').html('<div class="loading" disabled><i class="fa fa-cloud fa-1x"></i><span class="sr-only">Loading...</span></div>'); 
-                    })
-                }
-           // }
+        }
+
+        if (error_tem == 1) {
+            alert(error_desc);
+        }
+        else {
+            $('#boton_save_dig').html('<div class="loading"><i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span></div>'); 
+            $.ajax({
+                url: 'guardar_digestion.php' ,
+                type: 'POST' ,
+                dataType: 'html',
+                data: {
+                    trn_id_dg: trn_id_dg, 
+                    metodo_dg: metodo_dg, 
+                    cantidad_dg: cantidad_dg
+                },
+            })
+            .done(function(respuesta) {
+                alert(respuesta);
+                $('#boton_save_dig').html('<div class="loading" disabled><i class="fa fa-cloud fa-1x"></i><span class="sr-only">Loading...</span></div>'); 
+            });
+        }
     }
     
     //Importar satisfactoriamente

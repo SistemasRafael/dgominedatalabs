@@ -98,6 +98,26 @@ BEGIN
                            END;
                            END IF;
 
+                           IF (metodo_id_row = 38) THEN
+                            BEGIN
+                                INSERT INTO arg_ordenes_bitacora (trn_id_rel, metodo_id, fase_id, fecha, u_id)
+                                VALUES (trn_id_reensaye, metodo_id_row, 6, curdate(), u_id_ree);
+
+                                INSERT INTO arg_ordenes_bitacora_detalle (trn_id_rel, metodo_id, fase_id, etapa_id, fecha, u_id)
+                                VALUES (trn_id_reensaye, metodo_id_row, 6,5, now(), u_id_ree);
+                           END;
+                           END IF;
+
+                           IF (metodo_id_row = 39) THEN
+                            BEGIN
+                                INSERT INTO arg_ordenes_bitacora (trn_id_rel, metodo_id, fase_id, fecha, u_id)
+                                VALUES (trn_id_reensaye, metodo_id_row, 6, curdate(), u_id_ree);
+
+                                INSERT INTO arg_ordenes_bitacora_detalle (trn_id_rel, metodo_id, fase_id, etapa_id, fecha, u_id)
+                                VALUES (trn_id_reensaye, metodo_id_row, 6,5, now(), u_id_ree);
+                           END;
+                           END IF;
+
                             IF (metodo_id_row = 37) THEN
                             BEGIN
                                 INSERT INTO arg_ordenes_bitacora (trn_id_rel, metodo_id, fase_id, fecha, u_id)

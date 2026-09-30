@@ -34,9 +34,11 @@ BEGIN
       ,resultado4  	VARCHAR (255) DEFAULT NULL
       ,resultado5  	VARCHAR (255) DEFAULT NULL
       ,resultado6  	VARCHAR (255) DEFAULT NULL
+      ,resultado7  	VARCHAR (255) DEFAULT NULL
+      ,resultado8  	VARCHAR (255) DEFAULT NULL
   );
   
-  INSERT INTO resultados_tempo(orden, muestra, resultado1, resultado2, resultado3, resultado4, resultado5, resultado6)
+  INSERT INTO resultados_tempo(orden, muestra, resultado1, resultado2, resultado3, resultado4, resultado5, resultado6, resultado7, resultado8)
   SELECT 
         0 AS orden
        ,'ELEMENTO' AS muestra
@@ -46,6 +48,8 @@ BEGIN
        ,'Au' AS resultado4
        ,'Au' AS resultado5
        ,'Ag' AS resultado6
+       ,'Zn' AS resultado7
+       ,'Mn' AS resultado8
   UNION ALL
   SELECT        
         1 AS orden
@@ -56,6 +60,8 @@ BEGIN
        ,'EFGRA30' AS resultado4
        ,'CNH_Au' AS resultado5
        ,'CNH_Ag' AS resultado6
+       ,'VHAAZn' AS resultado7
+       ,'VHAAMn' AS resultado8
   UNION ALL
   SELECT
         2 AS orden
@@ -66,6 +72,8 @@ BEGIN
        ,'1.0000' AS resultado4
        ,'0.0420' AS resultado5
        ,'0.7000' AS resultado6
+       ,'0.5000' AS resultado7
+       ,'0.5000' AS resultado8
   UNION ALL
   SELECT 
         3 AS orden
@@ -75,7 +83,9 @@ BEGIN
        ,'PPM' AS resultado3       
        ,'PPM' AS resultado4
        ,'PPM' AS resultado5
-       ,'PPM' AS resultado6;
+       ,'PPM' AS resultado6
+       ,'PPM' AS resultado7
+       ,'PPM' AS resultado8;
   
   IF (tipo_orden = 1) THEN
   BEGIN
@@ -199,6 +209,24 @@ BEGIN
        THEN
   	  		UPDATE resultados_tempo
             	SET resultado6 = obtener_resultados(trn_id_batch, trn_idmuestra, metodo_sel)
+            WHERE
+            	trn_idbatch = trn_id_batch;
+      
+    END IF;
+
+    IF (metodo_sel=38)
+       THEN
+  	  		UPDATE resultados_tempo
+            	SET resultado7 = obtener_resultados(trn_id_batch, trn_idmuestra, metodo_sel)
+            WHERE
+            	trn_idbatch = trn_id_batch;
+      
+    END IF;
+
+    IF (metodo_sel=39)
+       THEN
+  	  		UPDATE resultados_tempo
+            	SET resultado8 = obtener_resultados(trn_id_batch, trn_idmuestra, metodo_sel)
             WHERE
             	trn_idbatch = trn_id_batch;
       
