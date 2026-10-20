@@ -24,29 +24,30 @@
             }
             
              
-       function liberar_res(trn_id_l, metodo_id_l, u_id_l, unidad_id_l){           
-            var trn_id_a    = trn_id_l;
-            var metodo_id_a = metodo_id_l;
-            var u_id_a      = u_id_l;
-            var unidad_id_a = unidad_id_l;
-            
-            /*alert(trn_id_a);
-            alert(metodo_id_l);
-            alert(u_id_l);
-            alert(unidad_id_l);*/
-            $('#progress_modal').modal('show');
-            alert('Liberando Orden');
-            $.ajax({
-                		url: 'liberar_resultados.php' ,
-                		type: 'POST' ,
-                		dataType: 'html',
-                		data: {trn_id_a:trn_id_a, metodo_id_a:metodo_id_a, u_id_a:u_id_a, unidad_id_a:unidad_id_a},
-                	})
-                	.done(function(respuesta){  
-                           alert(respuesta);                     
-                })
-            actualizar_lib(unidad_id_l); 
-        }
+    function liberar_res(trn_id_l, metodo_id_l, u_id_l, unidad_id_l) {           
+        var trn_id_a    = trn_id_l;
+        var metodo_id_a = metodo_id_l;
+        var u_id_a      = u_id_l;
+        var unidad_id_a = unidad_id_l;
+        $('#progress_modal').modal('show');
+        alert('Liberando Orden');
+
+        $.ajax({
+            url: 'liberar_resultados.php',
+            type: 'POST' ,
+            dataType: 'html',
+            data: {
+                trn_id_a : trn_id_a, 
+                metodo_id_a : metodo_id_a, 
+                u_id_a : u_id_a, 
+                unidad_id_a : unidad_id_a
+            },
+        }).done(function(respuesta){  
+            alert(respuesta);                     
+        });
+
+        actualizar_lib(unidad_id_l); 
+    }
         
         function deshacer_rev(trn_id_l, metodo_id_l, u_id_l, unidad_id_l){           
             var trn_id_a    = trn_id_l;
@@ -187,7 +188,13 @@ if (isset($_GET['trn_id_abs'])){
     $metodo_nombre = $metodo['nombre'];
     $elemento      = $metodo['elemento'];
     
-    if ($metodo_id == 3 || $metodo_id == 6 || $metodo_id == 24 || $metodo_id == 36 || $metodo_id == 37){
+    if ($metodo_id == 3 || 
+        $metodo_id == 6 || 
+        $metodo_id == 24 || 
+        $metodo_id == 36 || 
+        $metodo_id == 37 ||
+        $metodo_id == 38 ||
+        $metodo_id == 39){
         
         $existe_revision = $mysqli->query("SELECT COUNT(*) AS total_revision
                                            FROM 

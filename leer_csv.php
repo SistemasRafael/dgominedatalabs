@@ -34,12 +34,9 @@ if( $met_id_b == 14 or $met_id_b == 15 or $met_id_b == 16) {
         $abs = $celda_c->getValue();
 
         if ($folio != '') {
-            $query = "INSERT INTO arg_ordenes_csv_detalle (trn_id, trn_id_rel, folio, metodo_id, valor1, valor2 ) ".
-                                                " VALUES(".$trn_id_max.",".$trn_id_batch.", '".$folio."', ".$met_id_b.",".$abs.",".$abs.")";
-            $mysqli->query($query); 
-        }
-        else {
-            $numeroMayorDeFila = 1000;
+            $query = "INSERT INTO arg_ordenes_csv_detalle (trn_id, trn_id_rel, folio, metodo_id, valor1, valor2 )
+                    VALUES(".$trn_id_max.",".$trn_id_batch.", '".$folio."', ".$met_id_b.",".$abs.",".$abs.")";
+            $mysqli->query($query);
         }
     }
 
